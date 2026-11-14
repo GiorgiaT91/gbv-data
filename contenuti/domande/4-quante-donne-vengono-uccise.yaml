@@ -7,7 +7,7 @@ numero: 4
 indirizzo: quante-donne-vengono-uccise
 domanda: "Quante donne vengono uccise in Italia?"
 titolo: "Dipende da chi conta."
-attacco: "Tre fonti contano i femminicidi in Italia, ognuna con regole sue. Prima di guardare i numeri, guarda chi viene contato."
+attacco: "Tre fonti contano i femminicidi in Italia, ognuna con proprie regole. Prima di guardare i numeri, occorre comprendere le regole."
 
 fonti:
   - id: istat
@@ -26,7 +26,7 @@ fonti:
 regole:
   etichetta: "1 · Le regole"
   titolo: "Chi viene contato?"
-  sottotitolo: "Scegli una situazione e guarda come la tratta ciascuna fonte."
+  sottotitolo: "Scegli una situazione e guarda come è trattata da ciascuna fonte."
   # tipo: si | parziale | no | nonrilevabile (decide il colore dell'etichetta)
   gruppi:
     - titolo: "Una donna viene uccisa…"
@@ -34,27 +34,27 @@ regole:
         - id: partner
           etichetta: "dal partner o dall'ex"
           risposte:
-            istat: { tipo: si, esito: "Sì, sempre", testo: "Ogni donna uccisa da un partner o da un ex è contata come femminicidio." }
-            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio. Gennaio–settembre 2026: 15 casi su 38." }
+            istat: { tipo: si, esito: "Sì", testo: "Ogni donna uccisa da un partner o da un ex è contata come femminicidio." }
+            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio." }
             nudm: { tipo: si, esito: "Sì", testo: "Contata fra i femminicidi." }
         - id: familiare
           etichetta: "dal figlio o da un altro familiare"
           risposte:
-            istat: { tipo: si, esito: "Sì, sempre", testo: "Ogni donna uccisa da un familiare è contata come femminicidio." }
-            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio. Gennaio–settembre 2026: nessun caso." }
+            istat: { tipo: si, esito: "Sì", testo: "Ogni donna uccisa da un familiare è contata come femminicidio." }
+            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio." }
             nudm: { tipo: si, esito: "Sì", testo: "Contata fra i femminicidi." }
         - id: altri
           etichetta: "da un conoscente o da uno sconosciuto"
           risposte:
-            istat: { tipo: parziale, esito: "Solo in parte", testo: "Solo se il contesto indica un movente di genere, per esempio violenze precedenti, violenza sessuale o accanimento sul corpo. Nel 2024: 7 casi." }
+            istat: { tipo: parziale, esito: "Solo in parte", testo: "Solo se il contesto indica un movente di genere, per esempio violenze precedenti, violenza sessuale o accanimento sul corpo." }
             interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio." }
             nudm: { tipo: parziale, esito: "Solo in parte", testo: "Se il caso è ritenuto legato alla violenza di genere." }
         - id: suicidio-autore
           etichetta: "e l'autore poi si toglie la vita"
           risposte:
             istat: { tipo: si, esito: "Sì", testo: "Conta la relazione con l'autore, come negli altri casi." }
-            interno: { tipo: parziale, esito: "Non chiaro", testo: "Secondo il ministero è possibile. Con la morte dell'autore però il reato si estingue e non c'è processo. Nel primo trimestre 2026 tre casi così non risultavano fra i femminicidi." }
-            nudm: { tipo: si, esito: "Sì", testo: "Fra le 44 donne uccise da partner o ex nel 2026, in 12 casi l'autore è morto." }
+            interno: { tipo: parziale, esito: "Non chiaro", testo: "Con la morte dell'autore il reato si estingue e non c'è processo." }
+            nudm: { tipo: si, esito: "Sì", testo: "Contata fra i femminicidi." }
     - titolo: "Oppure…"
       situazioni:
         - id: suicidio-indotto

@@ -1,6 +1,7 @@
 ---
 // Selettore di situazioni: a sinistra le situazioni, a destra come le tratta ciascuna fonte.
 // Senza JavaScript tutte le situazioni restano visibili una sotto l'altra.
+import { fmt } from '../lib/testo.js';
 const { fonti, gruppi, riquadro, nota } = Astro.props;
 const situazioni = gruppi.flatMap((g) => g.situazioni);
 const prima = situazioni[0].id;
@@ -33,15 +34,15 @@ const prima = situazioni[0].id;
                   <span class="sotto">{f.sottotitolo}</span>
                 </div>
                 <span class={`esito esito-${r.tipo}`}>{r.esito}</span>
-                <p>{r.testo}</p>
+                <p set:html={fmt(r.testo)} />
               </div>
             );
           })}
         </div>
       </div>
     )))}
-    {riquadro && <p class="riquadro-accento">{riquadro}</p>}
-    {nota && <p class="nota">{nota}</p>}
+    {riquadro && <p class="riquadro-accento" set:html={fmt(riquadro)} />}
+    {nota && <p class="nota" set:html={fmt(nota)} />}
   </div>
 </div>
 
