@@ -1,0 +1,110 @@
+---
+// Infografica dell'Osservatorio Non Una Di Meno, modello B.
+import Riquadro from '../grafici/Riquadro.astro';
+import Legenda from '../grafici/Legenda.astro';
+import BarreSemplici from '../grafici/BarreSemplici.astro';
+import BarraComposta from '../grafici/BarraComposta.astro';
+import { leggiDati, richiesto } from '../../lib/dati.js';
+import { C } from '../../lib/colori.js';
+
+const F = 'nudm-osservatorio';
+const righe = leggiDati(F);
+const PARZIALE = '1 gennaio-8 novembre';
+
+// Anni disponibili: gli anni interi più l'anno in corso
+const periodi = [...new Set(righe.filter((r) => r.indicatore === 'casi_monitorati').map((r) => `${r.anno}|${r.periodo}`))]
+  .map((s) => { const [anno, periodo] = s.split('|'); return { anno: Number(anno), periodo }; })
+  .sort((a, b) => a.anno - b.anno);
+const v = (p, indicatore, categoria) => richiesto(F, { anno: p.anno, periodo: p.periodo, indicatore, categoria });
+const etichetta = (p) => (p.periodo === 'anno' ? String(p.anno) : `${p.anno}*`);
+
+// 1. Femminicidi per anno, e le altre voci in tabella
+const femm = periodi.map((p) => ({ etichetta: etichetta(p), valore: v(p, 'casi_monitorati', 'femminicidi'), parziale: p.periodo !== 'anno' }));
+const altreVoci = [
+  { nome: 'Persone trans uccise', cat: 'transcidi' },
+  { nome: 'Suicidi indotti', cat: 'suicidi_indotti' },
+  { nome: 'Casi in accertamento', cat: 'in_accertamento' },
+].map((x) => ({ ...x, valori: periodi.map((p) => v(p, 'casi_monitorati', x.cat)) }));
+const descr1 = `Femminicidi contati dall'Osservatorio: ${femm.map((f) => `${f.valore} nel ${f.etichetta.replace('*', '')}`).join(', ')} fino all'8 novembre.`;
+
+// 2. Denunce o contatti precedenti
+const den = periodi.map((p) => ({ etichetta: etichetta(p), valore: v(p, 'femminicidi_con_denunce_o_contatti_precedenti', 'totale'), parziale: p.periodo !== 'anno' }));
+const interi = periodi.filter((p) => p.periodo === 'anno');
+const sommaDen = interi.reduce((s, p) => s + v(p, 'femminicidi_con_denunce_o_contatti_precedenti', 'totale'), 0);
+const sommaFemm = interi.reduce((s, p) => s + v(p, 'casi_monitorati', 'femminicidi'), 0);
+const quota = sommaDen / sommaFemm;
+const titoloDen = quota > 0.1 ? 'Più di una su dieci aveva già denunciato o chiesto aiuto' : 'Circa una su dieci aveva già denunciato o chiesto aiuto';
+const primoAnno = interi[0].anno;
+const ultimoAnno = interi[interi.length - 1].anno;
+
+// 3. Reato contestato nel 2026, donne uccise da partner o ex
+const pc = periodi[periodi.length - 1];
+const reato = (c) => v(pc, 'femminicidi_da_partner_o_ex', c);
+const totPartner = reato('totale');
+const voci = [
+  { c: 'reato_femminicidio_art_577bis', nome: 'Femminicidio (art. 577-bis)', colore: C.accento },
+  { c: 'reato_omicidio_volontario', nome: 'Omicidio volontario', colore: C.familiare },
+  { c: 'reato_omicidio_preterintenzionale_o_colposo', nome: 'Preterintenzionale o colposo', colore: C.lilla },
+  { c: 'reato_estinto_autore_morto', nome: "Reato estinto: l'autore è morto", colore: C.grigio },
+  { c: 'reato_non_indicato', nome: 'Non indicato', colore: C.grigioChiaro },
+].map((x) => ({ ...x, n: reato(x.c) }));
+const descr3 = `Le ${totPartner} donne uccise da partner o ex nel ${pc.anno}, per reato contestato: ${voci.map((x) => `${x.n} ${x.nome.toLowerCase()}`).join(', ')}.`;
+---
+<Riquadro
+  sottotitolo="Femminicidi contati ogni anno dall'Osservatorio"
+  nota={`* ${pc.anno}: dal 1° gennaio all'8 novembre. Femminicidi: donne uccise; le persone trans uccise sono contate a parte.`}
+>
+  <div class="principale">
+    <div class="barre">
+      <BarreSemplici valori={femm} massimo={150} passo={50} descrizione={descr1} />
+    </div>
+    <table>
+      <caption>Contate a parte, mai sommate ai femminicidi</caption>
+      <thead>
+        <tr><td></td>{periodi.map((p) => <th scope="col">{etichetta(p)}</th>)}</tr>
+      </thead>
+      <tbody>
+        {altreVoci.map((x) => (
+          <tr><th scope="row">{x.nome}</th>{x.valori.map((n) => <td>{n}</td>)}</tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Riquadro>
+
+<div class="dettagli">
+  <Riquadro
+    titolo={titoloDen}
+    sottotitolo={`Femminicidi con denunce o contatti precedenti con centri antiviolenza o servizi sociali (${sommaDen} su ${sommaFemm} fra il ${primoAnno} e il ${ultimoAnno})`}
+    nota="È un minimo: si sa solo quando i giornali lo riportano."
+  >
+    <BarreSemplici valori={den} massimo={20} passo={10} larghezza={520} altezza={240} descrizione={`Femminicidi con denunce o contatti precedenti: ${den.map((d) => `${d.valore} nel ${d.etichetta.replace('*', '')}`).join(', ')} fino all'8 novembre.`} />
+  </Riquadro>
+
+  <Riquadro
+    titolo={`Nel ${pc.anno}, per ${voci[0].n} delle ${totPartner} donne uccise da partner o ex si procede per femminicidio`}
+    sottotitolo={`Donne uccise da partner o ex, 1° gennaio – 8 novembre ${pc.anno}, per reato contestato`}
+    nota="Reato contestato secondo i giornali: può cambiare durante le indagini. Quando l'autore si toglie la vita il reato si estingue e non c'è processo."
+  >
+    <BarraComposta
+      modo="percentuale"
+      larghezza={520}
+      colonna={80}
+      righe={[{ etichetta: `${totPartner} donne`, parti: voci.map((x) => ({ valore: x.n, colore: x.colore, testo: String(x.n) })) }]}
+      descrizione={descr3}
+    />
+    <Legenda voci={voci.map((x) => ({ etichetta: x.nome, colore: x.colore }))} />
+  </Riquadro>
+</div>
+
+<style>
+  .principale { display: grid; grid-template-columns: 1fr; gap: 24px; }
+  .barre { min-width: 0; }
+  table { border-collapse: collapse; font-size: 14px; width: 100%; max-width: 760px; }
+  caption { text-align: left; color: var(--testo-3); padding-bottom: 8px; }
+  th, td { padding: 6px 4px; border-bottom: 1px solid #EEEEEA; text-align: right; }
+  thead th { color: var(--testo-3); font-weight: 500; border-bottom-color: var(--bordo); }
+  tbody th { text-align: left; font-weight: 400; }
+  .dettagli { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  @media (max-width: 640px) { table { overflow-x: auto; display: block; font-size: 13px; } }
+</style>

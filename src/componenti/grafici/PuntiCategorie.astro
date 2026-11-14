@@ -1,0 +1,25 @@
+---
+// Un punto per persona, colorato per gruppo. gruppi: [{ n, colore, bordo? }]
+import { C } from '../../lib/colori.js';
+
+const { gruppi, descrizione, perRiga = 17, r = 13 } = Astro.props;
+const lato = r * 2 + 8;
+const punti = gruppi.flatMap((g) => Array.from({ length: g.n }, () => g));
+const righe = Math.ceil(punti.length / perRiga);
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${perRiga * lato} ${righe * lato}`} class="punti">
+  {punti.map((g, i) => (
+    <circle
+      cx={(i % perRiga) * lato + lato / 2}
+      cy={Math.floor(i / perRiga) * lato + lato / 2}
+      r={r}
+      fill={g.colore}
+      stroke={g.bordo ?? 'none'}
+      stroke-width={g.bordo ? 1.5 : 0}
+    />
+  ))}
+</svg>
+
+<style>
+  .punti { width: 100%; max-width: 578px; height: auto; }
+</style>

@@ -1,0 +1,120 @@
+---
+// Infografica Istat, modello B: grafico principale a tutta larghezza, sotto due dettagli.
+import Riquadro from '../grafici/Riquadro.astro';
+import Legenda from '../grafici/Legenda.astro';
+import BarreImpilate from '../grafici/BarreImpilate.astro';
+import BarraComposta from '../grafici/BarraComposta.astro';
+import BarreAccoppiate from '../grafici/BarreAccoppiate.astro';
+import { leggiDati, richiesto } from '../../lib/dati.js';
+import { C, percentuale } from '../../lib/colori.js';
+
+const F = 'istat-omicidi';
+const righe = leggiDati(F);
+
+// 1. Donne uccise per anno e per autore; femminicidi stimati
+const perAnno = (indicatore, categoria) => {
+  const out = {};
+  for (const r of righe) {
+    if (r.periodo === 'anno' && r.indicatore === indicatore && r.categoria === categoria && !(r.anno in out)) out[r.anno] = r.valore;
+  }
+  return out;
+};
+const partner = perAnno('donne_vittime_omicidio', 'autore_partner_o_ex');
+const familiari = perAnno('donne_vittime_omicidio', 'autore_altro_familiare');
+const altri = perAnno('donne_vittime_omicidio', 'autore_altri_o_non_identificato');
+const stimati = perAnno('femminicidi_stimati', 'totale');
+const anni = Object.keys(altri).map(Number).sort((a, b) => a - b);
+const primo = anni[0];
+const ultimo = anni[anni.length - 1];
+const primoStima = Math.min(...Object.keys(stimati).map(Number));
+const totaleUltimo = richiesto(F, { anno: ultimo, periodo: 'anno', indicatore: 'donne_vittime_omicidio', categoria: 'totale' });
+const famiglia = anni.map((a) => (partner[a] ?? 0) + (familiari[a] ?? 0));
+const descr1 = `Donne uccise ogni anno dal ${primo} al ${ultimo}, per autore. Le donne uccise da partner o ex e da altri familiari sono fra ${Math.min(...famiglia)} e ${Math.max(...famiglia)} ogni anno; quelle uccise da altre persone passano da ${altri[primo]} a ${altri[ultimo]}. I femminicidi stimati da Istat vanno da ${Math.min(...Object.values(stimati))} a ${Math.max(...Object.values(stimati))} fra il ${primoStima} e il ${ultimo}.`;
+
+// 2. Donne e uomini per autore, ultimo anno
+const cat = ['autore_partner_o_ex', 'autore_altro_familiare', 'autore_conoscente', 'autore_sconosciuto', 'autore_non_identificato'];
+const colori = [
+  { colore: C.accento }, { colore: C.familiare }, { colore: C.grigio }, { colore: C.grigioChiaro }, { colore: C.bianco, bordo: C.bordo },
+];
+const quota = (sesso) => {
+  const tot = richiesto(F, { anno: ultimo, periodo: 'anno', indicatore: `${sesso}_vittime_omicidio`, categoria: 'totale' });
+  const val = cat.map((c) => richiesto(F, { anno: ultimo, periodo: 'anno', indicatore: `${sesso}_vittime_omicidio`, categoria: c }));
+  return { tot, pct: val.map((v) => (100 * v) / tot) };
+};
+const donne = quota('donne');
+const uomini = quota('uomini');
+const parti = (q) => q.pct.map((p, i) => ({ valore: p, ...colori[i], testo: p >= 8 ? `${Math.round(p)}%` : undefined }));
+const nomi = ['partner o ex', 'altro familiare', 'conoscente', 'sconosciuto', 'non identificato'];
+const leggi = (q) => q.pct.map((p, i) => `${Math.round(p)} per cento ${nomi[i]}`).join(', ');
+const descr2 = `Vittime di omicidio nel ${ultimo} secondo l'autore. Donne: ${leggi(donne)}. Uomini: ${leggi(uomini)}.`;
+
+// 3. Età, quattro anni sommati
+const fasce = ['0_13', '14_17', '18_24', '25_34', '35_44', '45_54', '55_64', '65_e_oltre'];
+const etichetteFasce = ['0-13', '14-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65 e più'];
+const quad = righe.find((r) => r.periodo === 'quadriennio')?.anno ?? '2021-2024';
+const totEta = (s) => richiesto(F, { anno: quad, periodo: 'quadriennio', indicatore: `${s}_vittime_omicidio`, categoria: 'totale' });
+const dTot = totEta('donne');
+const uTot = totEta('uomini');
+const categorie = fasce.map((f, i) => ({
+  etichetta: etichetteFasce[i],
+  a: (100 * richiesto(F, { anno: quad, periodo: 'quadriennio', indicatore: 'donne_vittime_omicidio', categoria: `eta_${f}` })) / dTot,
+  b: (100 * richiesto(F, { anno: quad, periodo: 'quadriennio', indicatore: 'uomini_vittime_omicidio', categoria: `eta_${f}` })) / uTot,
+}));
+const anziane = categorie[categorie.length - 1];
+const [qa, qb] = quad.split('-');
+const descr3 = `Vittime per età, ${qa}-${qb}, in percentuale. Donne di 65 anni e più: ${percentuale(anziane.a, 1)} per cento; uomini: ${percentuale(anziane.b, 1)} per cento.`;
+---
+<Riquadro sottotitolo="Donne uccise ogni anno in Italia, per autore" nota={`Istat stima i femminicidi solo dal ${primoStima}. Per gli anni precedenti il grafico mostra le donne uccise e da chi, non i femminicidi stimati.`}>
+  <BarreImpilate
+    anni={anni}
+    serie={[
+      { nome: 'Partner o ex', colore: C.accento, valori: partner, etichettaFinale: 'partner o ex' },
+      { nome: 'Altro familiare', colore: C.familiare, valori: familiari, etichettaFinale: 'altri familiari' },
+      { nome: 'Altre persone', colore: '#D9D9D4', valori: altri },
+    ]}
+    linea={{ valori: stimati }}
+    etichetteLinea={[`${stimati[ultimo]} femminicidi`, `stimati nel ${ultimo},`, `su ${totaleUltimo} donne uccise`]}
+    massimo={200}
+    passo={50}
+    descrizione={descr1}
+  />
+  <Legenda voci={[
+    { etichetta: 'Partner o ex', colore: C.accento },
+    { etichetta: 'Altro familiare', colore: C.familiare },
+    { etichetta: 'Altre persone o autore non identificato', colore: '#D9D9D4' },
+    { etichetta: `Femminicidi stimati da Istat (dal ${primoStima})`, colore: C.testo, tipo: 'linea' },
+  ]} />
+</Riquadro>
+
+<p class="etichetta-gruppo">Donne e uomini a confronto</p>
+
+<div class="dettagli">
+  <Riquadro
+    titolo="Le donne sono uccise quasi sempre in famiglia, gli uomini soprattutto da sconosciuti"
+    sottotitolo={`Vittime nel ${ultimo} secondo chi le ha uccise, in % (${donne.tot} donne, ${uomini.tot} uomini)`}
+  >
+    <BarraComposta righe={[{ etichetta: 'Donne', parti: parti(donne) }, { etichetta: 'Uomini', parti: parti(uomini) }]} descrizione={descr2} />
+    <Legenda piccola voci={[
+      { etichetta: 'Partner o ex', colore: C.accento },
+      { etichetta: 'Altro familiare', colore: C.familiare },
+      { etichetta: 'Conoscente', colore: C.grigio },
+      { etichetta: 'Sconosciuto', colore: C.grigioChiaro },
+      { etichetta: 'Non identificato', colore: C.bianco, bordo: C.bordo },
+    ]} />
+  </Riquadro>
+
+  <Riquadro
+    titolo={`Quasi quattro donne uccise su dieci avevano 65 anni o più`}
+    sottotitolo={`Vittime per età, ${qa}–${qb} sommati, in % (${dTot} donne, ${uTot} uomini)`}
+  >
+    <BarreAccoppiate categorie={categorie} descrizione={descr3} />
+    <Legenda voci={[{ etichetta: 'Donne', colore: C.accento }, { etichetta: 'Uomini', colore: C.uomini }]} />
+  </Riquadro>
+</div>
+
+<p class="nota">Età: quattro anni sommati ({qa}–{qb}), perché un anno solo dà numeri troppo piccoli. Sono quote, non tassi: non tengono conto di quante persone ci sono in ogni fascia d'età.</p>
+
+<style>
+  .etichetta-gruppo { font-size: 13px; color: var(--testo-3); text-transform: uppercase; letter-spacing: 0.05em; }
+  .dettagli { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+</style>

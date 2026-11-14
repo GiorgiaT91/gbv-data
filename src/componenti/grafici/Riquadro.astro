@@ -1,0 +1,20 @@
+---
+// Contenitore di un grafico: titolo-messaggio (facoltativo), cosa mostra, grafico, nota.
+const { titolo, sottotitolo, nota } = Astro.props;
+---
+<section class="riquadro">
+  {titolo && <h2>{titolo}</h2>}
+  {sottotitolo && <p class="sotto">{sottotitolo}</p>}
+  <slot />
+  {nota && <p class="nota">{nota}</p>}
+</section>
+
+<style>
+  .riquadro {
+    background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 28px;
+    display: flex; flex-direction: column; gap: 16px; min-width: 0;
+  }
+  h2 { font-size: 20px; line-height: 1.25; }
+  .sotto { font-size: 14px; color: var(--testo-2); }
+  @media (max-width: 640px) { .riquadro { padding: 20px; } }
+</style>

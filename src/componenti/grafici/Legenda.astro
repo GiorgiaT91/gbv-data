@@ -1,0 +1,27 @@
+---
+// voci: [{ etichetta, colore, bordo?, tipo?: 'quadrato' | 'linea' | 'cerchio' | 'tratteggio' }]
+import { C } from '../../lib/colori.js';
+const { voci, piccola = false } = Astro.props;
+---
+<ul class:list={['legenda', { piccola }]}>
+  {voci.map((v) => (
+    <li>
+      {v.tipo === 'linea' ? (
+        <svg aria-hidden="true" width="26" height="14"><line x1="1" x2="25" y1="7" y2="7" stroke={v.colore} stroke-width="2.5" /><circle cx="13" cy="7" r="4" fill={C.bianco} stroke={v.colore} stroke-width="2" /></svg>
+      ) : v.tipo === 'cerchio' ? (
+        <svg aria-hidden="true" width="16" height="16"><circle cx="8" cy="8" r="6.5" fill={v.colore} stroke={v.bordo ?? 'none'} stroke-width="1.5" /></svg>
+      ) : v.tipo === 'tratteggio' ? (
+        <svg aria-hidden="true" width="14" height="14"><rect x="1" y="1" width="12" height="12" fill={C.bianco} stroke={v.colore} stroke-width="1.5" stroke-dasharray="3 2" /></svg>
+      ) : (
+        <svg aria-hidden="true" width="14" height="14"><rect x="1" y="1" width="12" height="12" fill={v.colore} stroke={v.bordo ?? 'none'} stroke-width="1.5" /></svg>
+      )}
+      <span>{v.etichetta}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .legenda { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--testo-2); }
+  .legenda.piccola { font-size: 13px; gap: 8px 16px; }
+  li { display: flex; align-items: center; gap: 8px; }
+</style>

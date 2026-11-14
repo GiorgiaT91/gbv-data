@@ -1,0 +1,67 @@
+---
+// Barre verticali impilate per anno, con una linea sovrapposta facoltativa.
+// anni: [2002, ...]; serie: [{ nome, colore, valori: { anno: n } }] dal basso verso l'alto;
+// linea: { valori: { anno: n } }; etichetteLinea: righe di testo accanto all'ultimo punto della linea.
+import { C } from '../../lib/colori.js';
+
+const { anni, serie, linea, etichetteLinea = [], massimo, passo, descrizione, ogni = 4 } = Astro.props;
+const L = 800, A = 380, x0 = 40, x1 = 650, yTop = 20, yBase = 346;
+const scala = (v) => ((yBase - yTop) * v) / massimo;
+const pass = (x1 - x0) / anni.length;
+const larg = pass * 0.68;
+const xDi = (i) => x0 + i * pass + (pass - larg) / 2;
+const centro = (i) => xDi(i) + larg / 2;
+
+const griglia = [];
+for (let v = 0; v <= massimo; v += passo) griglia.push({ v, y: yBase - scala(v) });
+
+const barre = anni.map((anno, i) => {
+  let y = yBase;
+  const pezzi = serie.map((s) => {
+    const h = scala(s.valori[anno] ?? 0);
+    y -= h;
+    return { x: xDi(i), y, h, colore: s.colore, valore: s.valori[anno] ?? 0, nome: s.nome };
+  });
+  return { anno, pezzi, mostraAnno: i % ogni === 0 || i === anni.length - 1, cx: centro(i) };
+});
+
+const ultima = barre[barre.length - 1];
+// Etichette delle serie sull'ultima barra, a destra del grafico.
+const etichetteSerie = ultima.pezzi
+  .filter((p, j) => serie[j].etichettaFinale)
+  .map((p) => ({ y: p.y + p.h / 2 + 4, testo: `${p.valore} ${serie[ultima.pezzi.indexOf(p)].etichettaFinale}` }));
+
+const puntiLinea = linea
+  ? anni.map((a, i) => (linea.valori[a] !== undefined ? { x: centro(i), y: yBase - scala(linea.valori[a]) } : null)).filter(Boolean)
+  : [];
+const fine = puntiLinea[puntiLinea.length - 1];
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${L} ${A}`} class="grafico">
+  {griglia.map((g) => (
+    <>
+      <line x1={x0} x2={x1} y1={g.y} y2={g.y} stroke={C.griglia} stroke-width="1" />
+      <text x={x0 - 8} y={g.y + 4} text-anchor="end" font-size="12" fill={C.testo3}>{g.v}</text>
+    </>
+  ))}
+  {barre.map((b) => (
+    <>
+      {b.pezzi.map((p) => <rect x={p.x} y={p.y} width={larg} height={p.h} fill={p.colore} />)}
+      {b.mostraAnno && <text x={b.cx} y={A - 12} text-anchor="middle" font-size="12" fill={C.testo3}>{b.anno}</text>}
+    </>
+  ))}
+  {puntiLinea.length > 0 && (
+    <>
+      <polyline points={puntiLinea.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={C.testo} stroke-width="2.5" />
+      {puntiLinea.map((p) => <circle cx={p.x} cy={p.y} r="4" fill={C.bianco} stroke={C.testo} stroke-width="2" />)}
+      <line x1={fine.x + 8} x2={x1 + 12} y1={fine.y} y2={fine.y} stroke={C.testo} stroke-width="1" />
+      {etichetteLinea.map((r, i) => (
+        <text x={x1 + 16} y={fine.y - 4 + i * 15} font-size={i === 0 ? 13 : 12} font-weight={i === 0 ? 600 : 400} fill={i === 0 ? C.testo : C.testo3}>{r}</text>
+      ))}
+    </>
+  )}
+  {etichetteSerie.map((e) => <text x={x1 + 16} y={e.y} font-size="12" fill={C.testo}>{e.testo}</text>)}
+</svg>
+
+<style>
+  .grafico { width: 100%; height: auto; }
+</style>

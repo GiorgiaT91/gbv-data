@@ -1,0 +1,31 @@
+---
+// Barre orizzontali a coppie (per esempio donne e uomini per fascia d'età), in percentuale.
+// categorie: [{ etichetta, a, b }]; a e b sono percentuali.
+import { C, percentuale } from '../../lib/colori.js';
+
+const { categorie, coloreA = C.accento, coloreB = C.uomini, descrizione, larghezza = 560 } = Astro.props;
+const colonna = 70, x0 = colonna;
+const spazio = larghezza - x0 - 60;
+const massimo = Math.max(...categorie.flatMap((c) => [c.a, c.b]));
+const w = (v) => (spazio * v) / massimo;
+const altezza = categorie.length * 40 + 10;
+const evidenziata = categorie.reduce((m, c) => (c.a > m.a ? c : m), categorie[0]);
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${larghezza} ${altezza}`} class="grafico">
+  {categorie.map((c, i) => {
+    const y = 14 + i * 40;
+    return (
+      <>
+        <text x={colonna - 10} y={y + 16} text-anchor="end" font-size="13" fill={C.testo}>{c.etichetta}</text>
+        <rect x={x0} y={y} width={w(c.a)} height="13" fill={coloreA} />
+        <text x={x0 + w(c.a) + 6} y={y + 11} font-size="12" font-weight={c === evidenziata ? 600 : 400} fill={C.testo}>{percentuale(c.a, 1)}%</text>
+        <rect x={x0} y={y + 16} width={w(c.b)} height="13" fill={coloreB} />
+        <text x={x0 + w(c.b) + 6} y={y + 27} font-size="12" fill={C.testo3}>{percentuale(c.b, 1)}%</text>
+      </>
+    );
+  })}
+</svg>
+
+<style>
+  .grafico { width: 100%; height: auto; }
+</style>

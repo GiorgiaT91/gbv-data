@@ -1,0 +1,39 @@
+---
+// Barre verticali con il valore sopra. Una barra "parziale" (anno in corso) è tratteggiata.
+// valori: [{ etichetta, valore, parziale? }]
+import { C } from '../../lib/colori.js';
+
+const { valori, massimo, passo, colore = C.accento, descrizione, larghezza = 760, altezza = 300 } = Astro.props;
+const x0 = 36, x1 = larghezza - 8, yTop = 24, yBase = altezza - 30;
+const scala = (v) => ((yBase - yTop) * v) / massimo;
+const pass = (x1 - x0) / valori.length;
+const larg = Math.min(pass * 0.6, 80);
+const griglia = [];
+for (let v = 0; v <= massimo; v += passo) griglia.push({ v, y: yBase - scala(v) });
+const barre = valori.map((d, i) => {
+  const h = scala(d.valore);
+  const cx = x0 + i * pass + pass / 2;
+  return { ...d, x: cx - larg / 2, y: yBase - h, h, cx };
+});
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${larghezza} ${altezza}`} class="grafico">
+  {griglia.map((g) => (
+    <>
+      <line x1={x0} x2={x1} y1={g.y} y2={g.y} stroke={C.griglia} />
+      <text x={x0 - 6} y={g.y + 4} text-anchor="end" font-size="12" fill={C.testo3}>{g.v}</text>
+    </>
+  ))}
+  {barre.map((b) => (
+    <>
+      {b.parziale
+        ? <rect x={b.x} y={b.y} width={larg} height={b.h} fill={C.bianco} stroke={colore} stroke-width="2" stroke-dasharray="5 3" />
+        : <rect x={b.x} y={b.y} width={larg} height={b.h} fill={colore} />}
+      <text x={b.cx} y={b.y - 6} text-anchor="middle" font-size="13" font-weight="600" fill={C.testo}>{b.valore}</text>
+      <text x={b.cx} y={altezza - 10} text-anchor="middle" font-size="12" fill={C.testo3}>{b.etichetta}</text>
+    </>
+  ))}
+</svg>
+
+<style>
+  .grafico { width: 100%; height: auto; }
+</style>

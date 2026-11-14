@@ -1,0 +1,45 @@
+---
+// Barre orizzontali divise in parti. Ogni riga occupa tutta la larghezza (percentuale)
+// oppure una larghezza proporzionale al proprio totale (conteggio).
+// righe: [{ etichetta, parti: [{ valore, colore, bordo?, testo? }] }]
+import { C, testoSu } from '../../lib/colori.js';
+
+const { righe, modo = 'percentuale', descrizione, larghezza = 560, colonna = 70 } = Astro.props;
+const xMax = larghezza - 10;
+const spazio = xMax - colonna;
+const massimoTotale = Math.max(...righe.map((r) => r.parti.reduce((s, p) => s + p.valore, 0)));
+const H = 40, gap = 24;
+const disegno = righe.map((r, i) => {
+  const tot = r.parti.reduce((s, p) => s + p.valore, 0);
+  const lungh = modo === 'percentuale' ? spazio : (spazio * tot) / massimoTotale;
+  let x = colonna;
+  const y = 8 + i * (H + gap);
+  const parti = r.parti.map((p) => {
+    const w = (lungh * p.valore) / tot;
+    const pezzo = { ...p, x, w, y };
+    x += w;
+    return pezzo;
+  });
+  return { ...r, y, parti };
+});
+const altezza = 8 + righe.length * (H + gap) - gap + 8;
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${larghezza} ${altezza}`} class="grafico">
+  {disegno.map((r) => (
+    <>
+      <text x={colonna - 10} y={r.y + 26} text-anchor="end" font-size="13" font-weight="600" fill={C.testo}>{r.etichetta}</text>
+      {r.parti.map((p) => (
+        <>
+          <rect x={p.x} y={r.y} width={p.w} height={H} fill={p.colore} stroke={p.bordo ?? C.bianco} stroke-width={p.bordo ? 1.5 : 1} />
+          {p.testo && p.w > 28 && (
+            <text x={p.x + p.w / 2} y={r.y + 25} text-anchor="middle" font-size="13" font-weight="600" fill={testoSu(p.colore)}>{p.testo}</text>
+          )}
+        </>
+      ))}
+    </>
+  ))}
+</svg>
+
+<style>
+  .grafico { width: 100%; height: auto; }
+</style>

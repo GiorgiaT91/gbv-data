@@ -1,0 +1,113 @@
+---
+// Infografica del Ministero dell'Interno, modello B.
+import Riquadro from '../grafici/Riquadro.astro';
+import Legenda from '../grafici/Legenda.astro';
+import PuntiCategorie from '../grafici/PuntiCategorie.astro';
+import BarreSemplici from '../grafici/BarreSemplici.astro';
+import BarraComposta from '../grafici/BarraComposta.astro';
+import { richiesto } from '../../lib/dati.js';
+import { C } from '../../lib/colori.js';
+
+const F = 'interno-femminicidi';
+const P = 'gennaio-settembre';
+const v = (anno, periodo, indicatore, categoria) => richiesto(F, { anno, periodo, indicatore, categoria });
+
+// 1. Le donne uccise nel 2026, una per punto
+const donne26 = v(2026, P, 'vittime_omicidio_e_femminicidio', 'vittime_donne');
+const famiglia26 = v(2026, P, 'vittime_omicidio_e_femminicidio', 'vittime_donne_ambito_familiare_affettivo');
+const partner26 = v(2026, P, 'vittime_omicidio_e_femminicidio', 'vittime_donne_da_partner_o_ex');
+const femm26 = v(2026, P, 'femminicidi_art_577bis', 'da_partner_o_ex');
+const femmTot26 = v(2026, P, 'femminicidi_art_577bis', 'totale');
+const omPartner26 = partner26 - femm26;
+const altriFam26 = famiglia26 - partner26;
+const altre26 = donne26 - famiglia26;
+const gruppi = [
+  { n: femm26, colore: C.accento, testo: `con un procedimento per femminicidio${femm26 === femmTot26 ? ': tutte uccise da partner o ex' : ''}` },
+  { n: omPartner26, colore: C.bianco, bordo: C.accento, testo: 'uccise da partner o ex, con un procedimento per omicidio volontario' },
+  { n: altriFam26, colore: C.familiare, testo: 'uccise da altri familiari' },
+  { n: altre26, colore: C.grigioChiaro, testo: 'uccise da altre persone' },
+];
+const descr1 = `${donne26} donne uccise fra gennaio e settembre 2026: ${femm26} con un procedimento per femminicidio, tutte uccise da partner o ex; ${omPartner26} uccise da partner o ex con un procedimento per omicidio volontario; ${altriFam26} uccise da altri familiari; ${altre26} uccise da altre persone.`;
+
+// 2. Donne uccise per anno, totale e da partner o ex
+const anni = [2023, 2024, 2025];
+const tutte = anni.map((a) => ({ etichetta: String(a), valore: v(a, 'anno', 'omicidi_volontari', 'vittime_donne') }));
+const daPartner = anni.map((a) => ({ etichetta: String(a), valore: v(a, 'anno', 'omicidi_da_partner_o_ex', 'vittime_donne') }));
+
+// 3. Primi nove mesi, 2025 e 2026, per autore
+const pezzi = (anno) => {
+  const ind = anno === 2026 ? 'vittime_omicidio_e_femminicidio' : 'omicidi_volontari';
+  const tot = anno === 2026 ? donne26 : v(anno, P, 'omicidi_volontari', 'vittime_donne');
+  const fam = anno === 2026 ? famiglia26 : v(anno, P, 'omicidi_ambito_familiare_affettivo', 'vittime_donne');
+  const par = anno === 2026 ? partner26 : v(anno, P, 'omicidi_da_partner_o_ex', 'vittime_donne');
+  return { tot, par, fam: fam - par, altre: tot - fam };
+};
+const p25 = pezzi(2025);
+const p26 = pezzi(2026);
+const parti = (p) => [
+  { valore: p.par, colore: C.accento, testo: String(p.par) },
+  { valore: p.fam, colore: C.familiare, testo: String(p.fam) },
+  { valore: p.altre, colore: C.grigioChiaro, testo: String(p.altre) },
+];
+const descr3 = `Donne uccise fra gennaio e settembre: ${p25.tot} nel 2025 (${p25.par} da partner o ex, ${p25.fam} da altri familiari, ${p25.altre} da altre persone); ${p26.tot} nel 2026 (${p26.par}, ${p26.fam} e ${p26.altre}).`;
+---
+<Riquadro
+  sottotitolo={`Le ${donne26} donne uccise fra gennaio e settembre 2026, una per punto`}
+  nota="Un caso è registrato come femminicidio quando è aperto un procedimento per l'art. 577-bis: la qualificazione dipende dall'accusa e può cambiare durante il procedimento. Dati operativi."
+>
+  <div class="punti-legenda">
+    <PuntiCategorie gruppi={gruppi} descrizione={descr1} />
+    <ul class="voci">
+      {gruppi.map((g) => (
+        <li>
+          <svg aria-hidden="true" width="18" height="18"><circle cx="9" cy="9" r="7.5" fill={g.colore} stroke={g.bordo ?? 'none'} stroke-width="1.5" /></svg>
+          <strong>{g.n}</strong>
+          <span>{g.testo}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Riquadro>
+
+<div class="dettagli">
+  <Riquadro
+    titolo={`Le donne uccise calano nel 2025, quelle uccise da partner o ex no`}
+    sottotitolo="Donne uccise per anno, totale e da partner o ex"
+    nota="Prima del 2026 il femminicidio non era un reato: questi sono omicidi volontari."
+  >
+    <div class="coppia">
+      <div>
+        <p class="piccolo">Tutte</p>
+        <BarreSemplici valori={tutte} massimo={150} passo={50} larghezza={300} altezza={220} descrizione={`Donne uccise secondo il Ministero: ${tutte.map((t) => `${t.valore} nel ${t.etichetta}`).join(', ')}.`} />
+      </div>
+      <div>
+        <p class="piccolo">Da partner o ex</p>
+        <BarreSemplici valori={daPartner} massimo={150} passo={50} larghezza={300} altezza={220} colore={C.familiare} descrizione={`Donne uccise da partner o ex: ${daPartner.map((t) => `${t.valore} nel ${t.etichetta}`).join(', ')}.`} />
+      </div>
+    </div>
+  </Riquadro>
+
+  <Riquadro
+    titolo={`Nei primi nove mesi, ${p26.tot} donne uccise nel 2026 contro ${p25.tot} nel 2025`}
+    sottotitolo="Donne uccise fra gennaio e settembre, per autore (2026: omicidi volontari più femminicidi)"
+  >
+    <BarraComposta modo="conteggio" righe={[{ etichetta: '2025', parti: parti(p25) }, { etichetta: '2026', parti: parti(p26) }]} descrizione={descr3} larghezza={520} colonna={60} />
+    <Legenda voci={[
+      { etichetta: 'Partner o ex', colore: C.accento },
+      { etichetta: 'Altri familiari', colore: C.familiare },
+      { etichetta: 'Altre persone', colore: C.grigioChiaro },
+    ]} />
+  </Riquadro>
+</div>
+
+<style>
+  .punti-legenda { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 32px; align-items: center; }
+  .voci { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 15px; line-height: 1.4; }
+  .voci li { display: flex; align-items: center; gap: 10px; }
+  .voci svg { flex-shrink: 0; }
+  .voci strong { font-family: var(--titoli); font-size: 26px; min-width: 36px; }
+  .dettagli { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+  .coppia { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .piccolo { font-size: 13px; color: var(--testo-3); margin-bottom: 4px; }
+  @media (max-width: 760px) { .punti-legenda { grid-template-columns: 1fr; } }
+</style>
