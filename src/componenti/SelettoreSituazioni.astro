@@ -46,6 +46,39 @@ const prima = situazioni[0].id;
   </div>
 </div>
 
+<!-- Su telefono: a fisarmonica. Ogni situazione si apre sotto di sé. -->
+<div class="fisarmonica">
+  {gruppi.map((g) => (
+    <>
+      <p class="gruppo">{g.titolo}</p>
+      {g.situazioni.map((s) => (
+        <details class="voce" open={s.id === prima}>
+          <summary>
+            <span>{s.etichetta}</span>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+          </summary>
+          <div class="righe">
+            {fonti.map((f) => {
+              const r = s.risposte[f.id];
+              return (
+                <div class="riga">
+                  <div class="riga-testa">
+                    <span class="nome">{f.nome}</span>
+                    <span class={`esito esito-${r.tipo}`}>{r.esito}</span>
+                  </div>
+                  <p set:html={fmt(r.testo)} />
+                </div>
+              );
+            })}
+          </div>
+        </details>
+      ))}
+    </>
+  ))}
+  {riquadro && <p class="riquadro-accento" set:html={fmt(riquadro)} />}
+  {nota && <p class="nota" set:html={fmt(nota)} />}
+</div>
+
 <style>
   .selettore { display: grid; grid-template-columns: minmax(240px, 1fr) 2fr; gap: 24px; align-items: start; }
   .scelte { display: flex; flex-direction: column; gap: 8px; }
@@ -80,7 +113,31 @@ const prima = situazioni[0].id;
   .esito-parziale { border-color: var(--attenzione); color: var(--attenzione); }
   .esito-no { background: var(--grigio); color: var(--testo-2); }
   .esito-nonrilevabile { border-color: var(--testo-3); border-style: dashed; color: var(--testo-2); }
-  @media (max-width: 760px) { .selettore { grid-template-columns: 1fr; } }
+  .fisarmonica { display: none; }
+  .fisarmonica { flex-direction: column; gap: 8px; }
+  .voce { background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; overflow: hidden; }
+  .voce[open] { border: 2px solid var(--accento); }
+  summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 14px 16px; min-height: 48px; font-size: 15px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  .voce[open] summary { background: var(--accento-chiaro); color: var(--accento-scuro); font-weight: 600; }
+  .voce[open] summary svg { transform: rotate(180deg); }
+  summary svg { flex-shrink: 0; transition: transform 0.15s; }
+  .righe { padding: 0 16px 4px; }
+  .riga { padding: 12px 0; display: flex; flex-direction: column; gap: 6px; }
+  .riga + .riga { border-top: 1px solid var(--bordo-chiaro); }
+  .riga-testa { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .riga-testa .nome { font-size: 15px; }
+  .riga-testa .esito { font-size: 13px; padding: 3px 10px; flex-shrink: 0; }
+  .riga p { font-size: 14px; color: var(--testo-2); }
+  .fisarmonica .riquadro-accento { margin-top: 8px; font-size: 14px; }
+  @media (max-width: 760px) {
+    .selettore { display: none; }
+    .fisarmonica { display: flex; }
+  }
+  @media (prefers-reduced-motion: reduce) { summary svg { transition: none; } }
 </style>
 
 <script>
