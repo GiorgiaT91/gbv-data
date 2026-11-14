@@ -1,0 +1,39 @@
+---
+import Layout from '../../componenti/Layout.astro';
+import BoxFonte from '../../componenti/BoxFonte.astro';
+import { scheda } from '../../lib/dati.js';
+
+const pronte = ['istat-omicidi', 'interno-femminicidi', 'nudm-osservatorio'].map(scheda);
+const gruppi = [
+  { titolo: 'Il sommerso', fonti: ['Indagine Istat sulla sicurezza delle donne', 'Stereotipi di genere, adulti', 'Stereotipi di genere, ragazze e ragazzi'] },
+  { titolo: 'Le richieste di aiuto', fonti: ['Numero 1522', 'Centri antiviolenza', 'Case rifugio', 'Accessi al pronto soccorso'] },
+  { titolo: 'La giustizia', fonti: ['Denunce dei reati spia', 'Processi e condanne'] },
+];
+---
+<Layout titolo="Le fonti" descrizione="Le fonti dei dati sulla violenza di genere e sui femminicidi in Italia." sezione="fonti">
+  <section class="apertura">
+    <h1>Le fonti</h1>
+    <p class="attacco">Dodici fonti in quattro gruppi. Per ognuna: chi conta, che cosa conta, quando esce, e che cosa il dato non dice.</p>
+  </section>
+
+  <section class="sezione">
+    <h2>I femminicidi</h2>
+    <div class="griglia-3">
+      {pronte.map((s) => <BoxFonte id={s.id} ente={s.ente} nome={s.nome} testo={`Aggiornamento: ${s.cadenza}.`} />)}
+    </div>
+  </section>
+
+  {gruppi.map((g) => (
+    <section class="sezione">
+      <h2>{g.titolo}</h2>
+      <ul class="in-preparazione">
+        {g.fonti.map((f) => <li>{f} <span>· in preparazione</span></li>)}
+      </ul>
+    </section>
+  ))}
+</Layout>
+
+<style>
+  .in-preparazione { margin: 0; padding-left: 20px; color: var(--testo-2); display: flex; flex-direction: column; gap: 6px; }
+  .in-preparazione span { color: var(--testo-3); font-size: 14px; }
+</style>

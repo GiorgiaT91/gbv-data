@@ -1,0 +1,185 @@
+---
+import Layout from '../../componenti/Layout.astro';
+import SelettoreSituazioni from '../../componenti/SelettoreSituazioni.astro';
+import NumeroFonte from '../../componenti/NumeroFonte.astro';
+import Punti from '../../componenti/Punti.astro';
+import BoxFonte from '../../componenti/BoxFonte.astro';
+import { valore, richiesto, contenuto, scheda } from '../../lib/dati.js';
+import { url } from '../../lib/url.js';
+
+const t = contenuto('domande', '4-quante-donne-vengono-uccise.yaml');
+const [fIstat, fInterno, fNudm] = t.fonti.map((f) => f.nome);
+const ISTAT = 'istat-omicidi';
+const INTERNO = 'interno-femminicidi';
+const NUDM = 'nudm-osservatorio';
+
+// --- Anno chiuso ---
+const A1 = t.numeri.anno_chiuso.anno;
+const istatChiuso = valore(ISTAT, { anno: A1, periodo: 'anno', indicatore: 'femminicidi_stimati', categoria: 'totale' });
+const istatChiusoDonne = valore(ISTAT, { anno: A1, periodo: 'anno', indicatore: 'donne_vittime_omicidio', categoria: 'totale' });
+const istatUltimo = richiesto(ISTAT, { anno: A1 - 1, periodo: 'anno', indicatore: 'femminicidi_stimati', categoria: 'totale' });
+const internoChiuso = richiesto(INTERNO, { anno: A1, periodo: 'anno', indicatore: 'omicidi_volontari', categoria: 'vittime_donne' });
+const internoChiusoPartner = richiesto(INTERNO, { anno: A1, periodo: 'anno', indicatore: 'omicidi_da_partner_o_ex', categoria: 'vittime_donne' });
+const internoChiuso577 = richiesto(INTERNO, { anno: A1, periodo: '17-31 dicembre', indicatore: 'femminicidi_art_577bis', categoria: 'totale' });
+const nudmChiuso = richiesto(NUDM, { anno: A1, periodo: 'anno', indicatore: 'casi_monitorati', categoria: 'femminicidi' });
+
+// --- Anno in corso ---
+const A2 = t.numeri.anno_in_corso.anno;
+const P_INTERNO = 'gennaio-settembre';
+const P_NUDM = '1 gennaio-8 novembre';
+const internoCorso = richiesto(INTERNO, { anno: A2, periodo: P_INTERNO, indicatore: 'femminicidi_art_577bis', categoria: 'totale' });
+const internoCorsoDonne = richiesto(INTERNO, { anno: A2, periodo: P_INTERNO, indicatore: 'vittime_omicidio_e_femminicidio', categoria: 'vittime_donne' });
+const nudmCorso = richiesto(NUDM, { anno: A2, periodo: P_NUDM, indicatore: 'casi_monitorati', categoria: 'femminicidi' });
+
+// --- Donne uccise da partner o ex ---
+const partnerTot = richiesto(INTERNO, { anno: A2, periodo: P_INTERNO, indicatore: 'vittime_omicidio_e_femminicidio', categoria: 'vittime_donne_da_partner_o_ex' });
+const partner577 = richiesto(INTERNO, { anno: A2, periodo: P_INTERNO, indicatore: 'femminicidi_art_577bis', categoria: 'da_partner_o_ex' });
+const partner575 = richiesto(INTERNO, { anno: A2, periodo: P_INTERNO, indicatore: 'omicidi_da_partner_o_ex', categoria: 'vittime_donne' });
+if (partner577 + partner575 !== partnerTot) {
+  throw new Error(`Domanda 4: ${partner577} + ${partner575} non fa ${partnerTot}. Controllare dati/${INTERNO}/dati.csv`);
+}
+
+const schede = Object.fromEntries([ISTAT, INTERNO, NUDM].map((id) => [id, scheda(id)]));
+const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} Ultimo dato: ${A1 - 1}.` : `${t.box_fonti.voci[0].testo} Ultimo dato: ${A1}.`;
+---
+<Layout titolo={t.domanda} descrizione={t.attacco} sezione="domande">
+  <section class="apertura">
+    <a class="briciole" href={url('/')}>Le domande / {t.numero} di 5</a>
+    <p class="domanda">{t.domanda}</p>
+    <h1>{t.titolo}</h1>
+    <p class="attacco">{t.attacco}</p>
+  </section>
+
+  <section class="sezione" aria-labelledby="regole">
+    <div class="intestazione">
+      <p class="etichetta">{t.regole.etichetta}</p>
+      <h2 id="regole">{t.regole.titolo}</h2>
+      <p class="sottotitolo">{t.regole.sottotitolo}</p>
+    </div>
+    <SelettoreSituazioni fonti={t.fonti} gruppi={t.regole.gruppi} riquadro={t.regole.riquadro} nota={t.regole.nota} />
+  </section>
+
+  <section class="sezione" aria-labelledby="numeri">
+    <div class="intestazione">
+      <p class="etichetta">{t.numeri.etichetta}</p>
+      <h2 id="numeri">{t.numeri.titolo}</h2>
+      <p class="sottotitolo">{t.numeri.sottotitolo}</p>
+    </div>
+
+    <div class="anno">
+      <div class="riga-anno">
+        <h3>{A1}</h3>
+        <span>{t.numeri.anno_chiuso.descrizione}</span>
+      </div>
+      <div class="griglia-3">
+        <NumeroFonte
+          fonte={fIstat}
+          numero={istatChiuso}
+          cosa={`<strong>femminicidi stimati</strong>${istatChiusoDonne ? `, su ${istatChiusoDonne} donne uccise` : ''}`}
+          dettaglio={`Istat · anno ${A1}`}
+          mancante={{ tipo: 'attesa', titolo: 'In arrivo il 25 novembre 2026', testo: `Ultimo dato disponibile: ${istatUltimo} femminicidi stimati nel ${A1 - 1}.` }}
+        />
+        <NumeroFonte
+          fonte={fInterno}
+          numero={internoChiuso}
+          cosa={`<strong>donne uccise</strong>, di cui ${internoChiusoPartner} da partner o ex`}
+          dettaglio={`Femminicidi in senso giuridico: ${internoChiuso577}. Il reato esiste dal 17 dicembre 2025.`}
+        />
+        <NumeroFonte
+          fonte={fNudm}
+          numero={nudmChiuso}
+          cosa="<strong>femminicidi</strong>, dalle cronache"
+          dettaglio="Suicidi indotti e tentati femminicidi contati a parte."
+        />
+      </div>
+    </div>
+
+    <div class="anno">
+      <div class="riga-anno">
+        <h3>{A2}</h3>
+        <span>{t.numeri.anno_in_corso.descrizione}</span>
+      </div>
+      <div class="griglia-3">
+        <NumeroFonte
+          fonte={fIstat}
+          numero={undefined}
+          mancante={{ tipo: 'assente', titolo: 'Nessun dato', testo: `La stima sul ${A2} è attesa a novembre ${A2 + 1}.` }}
+        />
+        <NumeroFonte
+          fonte={fInterno}
+          numero={internoCorso}
+          cosa={`<strong>femminicidi</strong> su ${internoCorsoDonne} donne uccise`}
+          periodo={{ quota: 9 / 12, testo: 'gennaio–settembre · pubblicato a ottobre', descrizione: 'Periodo coperto: da gennaio a settembre, nove mesi su dodici' }}
+        />
+        <NumeroFonte
+          fonte={fNudm}
+          numero={nudmCorso}
+          cosa="<strong>femminicidi</strong>, dalle cronache"
+          periodo={{ quota: 312 / 365, testo: "1° gennaio–8 novembre · aggiornato l'8 di ogni mese", descrizione: "Periodo coperto: dal 1° gennaio all'8 novembre" }}
+        />
+      </div>
+    </div>
+
+    <p class="nota">{t.numeri.nota}</p>
+  </section>
+
+  <section class="scheda partner" aria-labelledby="partner">
+    <p class="nota">{t.partner.sopratitolo}</p>
+    <h2 id="partner">{partnerTot} donne uccise da un partner o da un ex.</h2>
+    <Punti
+      totale={partnerTot}
+      evidenziati={partner577}
+      descrizione={`${partnerTot} punti, uno per ogni donna uccisa da un partner o da un ex: ${partner577} pieni con un procedimento per femminicidio, ${partner575} vuoti con un procedimento per omicidio volontario`}
+    />
+    <div class="legenda">
+      <span><span class="pallino pieno" aria-hidden="true"></span><strong>{partner577}</strong> con un procedimento per femminicidio</span>
+      <span><span class="pallino vuoto" aria-hidden="true"></span><strong>{partner575}</strong> con un procedimento per omicidio volontario</span>
+    </div>
+    <p>{t.partner.spiegazione}</p>
+    <p class="nota">{t.partner.fonte}</p>
+  </section>
+
+  <section class="limiti" aria-labelledby="limiti">
+    <h2 id="limiti">{t.limiti.titolo}</h2>
+    <div class="voci">
+      {t.limiti.voci.map((v) => (
+        <div>
+          <h3>{v.titolo}</h3>
+          <p>{v.testo}</p>
+        </div>
+      ))}
+    </div>
+    <p class="prossimamente">{t.limiti.collegamento.replace('Vai a: ', 'Prossimamente: ')}</p>
+  </section>
+
+  <section class="sezione" aria-labelledby="fonti">
+    <h2 id="fonti" class="titolo-fonti">{t.box_fonti.titolo}</h2>
+    <div class="griglia-3">
+      <BoxFonte id={ISTAT} ente={schede[ISTAT].ente} nome={schede[ISTAT].nome} testo={testoBoxIstat} />
+      <BoxFonte id={INTERNO} ente="Ministero dell'Interno" nome={schede[INTERNO].nome} testo={t.box_fonti.voci[1].testo} />
+      <BoxFonte id={NUDM} ente={schede[NUDM].ente} nome="Osservatorio nazionale" testo={t.box_fonti.voci[2].testo} />
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .anno { display: flex; flex-direction: column; gap: 16px; }
+  .riga-anno { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--testo); }
+  .riga-anno h3 { font-size: 26px; }
+  .riga-anno span { color: var(--testo-3); font-size: 15px; }
+  .partner { padding: 32px; gap: 20px; border-radius: 16px; }
+  .partner h2 { font-size: 32px; line-height: 1.2; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 32px; }
+  .legenda > span { display: flex; align-items: center; gap: 12px; }
+  .legenda strong { font-family: var(--titoli); font-size: 28px; }
+  .pallino { width: 18px; height: 18px; border-radius: 50%; display: inline-block; }
+  .pallino.pieno { background: var(--accento); }
+  .pallino.vuoto { border: 2px solid #6B6E75; }
+  .limiti { background: var(--limiti-fondo); border-radius: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 16px; }
+  .limiti h2 { font-size: 28px; color: var(--limiti-titolo); }
+  .voci { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .voci h3 { font-family: var(--corpo); font-size: 16px; color: var(--limiti-titolo); margin-bottom: 4px; }
+  .voci p { font-size: 15px; color: var(--limiti-testo); }
+  .prossimamente { font-size: 15px; color: var(--limiti-titolo); font-weight: 600; }
+  .titolo-fonti { font-size: 24px !important; }
+</style>

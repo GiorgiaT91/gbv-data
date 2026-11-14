@@ -1,0 +1,43 @@
+---
+// Il numero di una fonte per un anno. Se il numero manca, mostra il riquadro "dato non disponibile".
+// tipo: 'attesa' (tratteggiato, il dato sta per uscire) oppure 'assente' (grigio, nessun dato).
+import { formatta } from '../lib/dati.js';
+
+const { fonte, numero, cosa, dettaglio, mancante, periodo } = Astro.props;
+---
+{numero === undefined ? (
+  <div class={`scheda mancante mancante-${mancante.tipo}`}>
+    <span class="fonte">{fonte}</span>
+    <span class="titolo-mancante">{mancante.titolo}</span>
+    {mancante.testo && <span class="dettaglio">{mancante.testo}</span>}
+  </div>
+) : (
+  <div class="scheda">
+    <span class="fonte">{fonte}</span>
+    <span class="numero">{formatta(numero)}</span>
+    <span class="cosa" set:html={cosa} />
+    {dettaglio && <span class="dettaglio">{dettaglio}</span>}
+    {periodo && (
+      <div class="periodo">
+        <div class="barra" role="img" aria-label={periodo.descrizione}>
+          <div style={`width: ${periodo.quota * 100}%`}></div>
+        </div>
+        <span class="dettaglio">{periodo.testo}</span>
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .fonte { font-size: 15px; font-weight: 600; }
+  .numero { font-family: var(--titoli); font-size: 56px; font-weight: 600; line-height: 1; color: var(--accento); }
+  .cosa { font-size: 15px; line-height: 1.5; }
+  .dettaglio { font-size: 14px; line-height: 1.5; color: var(--testo-3); }
+  .mancante { justify-content: center; min-height: 200px; }
+  .mancante-attesa { background: transparent; border: 2px dashed #8E8E88; }
+  .mancante-assente { background: var(--grigio); border-color: var(--grigio); }
+  .titolo-mancante { font-family: var(--titoli); font-size: 22px; font-weight: 600; color: var(--testo-2); }
+  .periodo { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .barra { height: 8px; background: var(--bordo-chiaro); border-radius: 4px; overflow: hidden; }
+  .barra div { height: 8px; background: var(--testo); }
+</style>

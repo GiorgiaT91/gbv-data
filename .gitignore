@@ -1,0 +1,22 @@
+# File generati
+node_modules/
+dist/
+.astro/
+
+# Mai pubblicare: i file originali dell'Osservatorio contengono nomi e testi di cronaca.
+# Vanno tenuti solo nella cartella di lavoro WebApp.
+dati/nudm-osservatorio/originali/
+
+# Per ora non si pubblicano nemmeno le copie caso per caso senza nomi:
+# data, comune, età e professione permettono ancora di riconoscere le persone.
+# Si pubblica solo dati.csv, con i totali.
+dati/nudm-osservatorio/pubblicabili/
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+
+# Anteprima temporanea (si può cancellare)
+dist-anteprima.tgz

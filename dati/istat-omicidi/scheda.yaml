@@ -1,0 +1,43 @@
+id: istat-omicidi
+nome: "Le vittime di omicidio"
+ente: "Istat"
+gruppo: femminicidi
+domanda: 4
+
+periodo_coperto: "2002-2024 (donne uccise per autore); 2019-2024 (femminicidi stimati)"
+ultimo_aggiornamento: 2025-11-25
+ultima_verifica: 2026-11-13
+cadenza: "annuale"
+prossimo_aggiornamento: "25 novembre 2026 (anno 2025)"
+
+numero_principale: "106"
+titolo_messaggio: "Da oltre vent'anni, circa cento donne l'anno vengono uccise da un partner o da un familiare"
+componente: serie-tempo                 # grafico 1: tre gruppi di autore 2002-2024 + femminicidi stimati 2019-2024
+componenti_secondari:
+  - "barre-affiancate: donne e uomini per autore, 2024"
+  - "barre-affiancate: donne e uomini per età, 2021-2024 sommati"
+
+chi_conta: "Istat, l'istituto nazionale di statistica"
+da_dove_vengono_i_casi: "Dagli omicidi volontari registrati dalle forze di polizia nella banca dati del Ministero dell'Interno, integrati con altre informazioni"
+cosa_viene_contato: "Gli omicidi di donne 'in quanto donne', secondo il quadro statistico approvato dall'ONU nel 2022. In pratica: tutte le donne uccise da partner, ex partner o altri familiari; le donne uccise da altre persone solo se il contesto indica un movente di genere (per esempio violenze precedenti, violenza sessuale, accanimento sul corpo)."
+
+limiti:
+  - "Arriva quasi un anno dopo i fatti: il dato sul 2025 non è ancora disponibile."
+  - "È una stima statistica, non un elenco di casi: non si può sapere quali omicidi sono stati esclusi."
+  - "Conta per relazione: ogni donna uccisa da un partner o da un familiare è inclusa, qualunque sia il movente."
+  - "Si basa su dati di polizia che possono essere corretti in seguito."
+  - "L'età si legge solo sommando più anni: un anno solo dà numeri troppo piccoli."
+  - "La stima esiste solo dal 2019: per gli anni precedenti si conoscono le donne uccise e chi le ha uccise, non i femminicidi stimati."
+
+nuove_domande:
+  - "Quante di queste donne avevano già chiesto aiuto o denunciato?"
+  - "Perché il dato arriva solo una volta l'anno?"
+  - "Perché in vent'anni il numero di donne uccise da partner e familiari non è diminuito?"
+
+link_fonte: "https://www.istat.it/comunicato-stampa/le-vittime-di-omicidio-anno-2024/"
+file_originali:
+  - "originali/Report_Le-vittime-di-omicidio_Anno-2024.pdf"
+  - "originali/Appendice-statistica_Vittime-di-omicidio_Anno-2024.xlsx"
+licenza: "DA VERIFICARE"
+
+stato: bozza

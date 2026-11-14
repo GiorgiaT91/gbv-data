@@ -1,0 +1,74 @@
+---
+// Pagina di una fonte. Per ora mostra la scheda; l'infografica (modello B) arriva nel passo successivo.
+import Layout from '../../componenti/Layout.astro';
+import { scheda } from '../../lib/dati.js';
+import { url } from '../../lib/url.js';
+
+export function getStaticPaths() {
+  return ['istat-omicidi', 'interno-femminicidi', 'nudm-osservatorio'].map((id) => ({ params: { id } }));
+}
+
+const s = scheda(Astro.params.id);
+const domande = { 4: { testo: 'Quante donne vengono uccise?', indirizzo: '/domande/quante-donne-vengono-uccise/' } };
+const domanda = domande[s.domanda];
+const data = (d) => {
+  const iso = /^\d{4}-\d{2}-\d{2}$/.test(String(d));
+  return iso ? new Date(`${d}T12:00:00Z`).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }) : d;
+};
+---
+<Layout titolo={`${s.ente} · ${s.nome}`} descrizione={s.titolo_messaggio} sezione="fonti">
+  <section class="apertura">
+    <a class="briciole" href={url('/fonti/')}>Le fonti / {s.ente}</a>
+    <p class="domanda">{s.ente} · {s.nome}</p>
+    <h1 class="titolo-fonte">{s.titolo_messaggio}</h1>
+  </section>
+
+  <section class="infografica-segnaposto" aria-label="Infografica">
+    <p>Infografica in preparazione.</p>
+  </section>
+
+  <section class="sezione">
+    <h2>La fonte</h2>
+    <dl class="scheda-fonte">
+      <div><dt>Chi conta</dt><dd>{s.chi_conta}</dd></div>
+      <div><dt>Da dove vengono i casi</dt><dd>{s.da_dove_vengono_i_casi}</dd></div>
+      <div><dt>Che cosa viene contato</dt><dd>{s.cosa_viene_contato}</dd></div>
+      <div><dt>Quando esce</dt><dd>{s.cadenza}. Ultimo aggiornamento: {data(s.ultimo_aggiornamento)}. Prossimo: {s.prossimo_aggiornamento}.</dd></div>
+      <div><dt>Periodo coperto</dt><dd>{s.periodo_coperto}</dd></div>
+      <div><dt>Licenza</dt><dd>{s.licenza}</dd></div>
+    </dl>
+    <a href={s.link_fonte}>Vai alla fonte originale</a>
+  </section>
+
+  <section class="limiti">
+    <h2>Questo dato basta?</h2>
+    <ul>{s.limiti.map((l) => <li>{l}</li>)}</ul>
+  </section>
+
+  <section class="sezione">
+    <h2>Le domande che restano</h2>
+    <ul class="nuove">{s.nuove_domande.map((d) => <li>{d}</li>)}</ul>
+  </section>
+
+  {domanda && <a class="ritorno" href={url(domanda.indirizzo)}>Torna alla domanda: {domanda.testo}</a>}
+</Layout>
+
+<style>
+  .titolo-fonte { font-size: clamp(30px, 5vw, 44px) !important; }
+  .infografica-segnaposto {
+    border: 2px dashed #8E8E88; border-radius: 16px; min-height: 240px; display: flex; align-items: center; justify-content: center;
+    color: var(--testo-3);
+  }
+  .scheda-fonte { margin: 0; display: grid; gap: 0; background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; }
+  .scheda-fonte div { display: grid; grid-template-columns: minmax(160px, 1fr) 3fr; gap: 16px; padding: 16px 20px; border-top: 1px solid var(--bordo-chiaro); }
+  .scheda-fonte div:first-child { border-top: 0; }
+  dt { font-weight: 600; }
+  dd { margin: 0; color: var(--testo-2); }
+  .limiti { background: var(--limiti-fondo); border-radius: 16px; padding: 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+  .limiti h2 { font-size: 28px; color: var(--limiti-titolo); }
+  .limiti ul { margin: 0; padding-left: 20px; color: var(--limiti-testo); display: flex; flex-direction: column; gap: 8px; }
+  .nuove { margin: 0; padding: 0; list-style: none; }
+  .nuove li { font-family: var(--titoli); font-size: 21px; padding: 16px 0; border-top: 1px solid var(--bordo); }
+  .ritorno { font-weight: 600; }
+  @media (max-width: 640px) { .scheda-fonte div { grid-template-columns: 1fr; gap: 4px; } }
+</style>

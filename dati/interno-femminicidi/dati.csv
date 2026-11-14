@@ -1,0 +1,59 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2023,anno,Italia,omicidi_volontari,totale,341,persone,dati operativi
+2023,anno,Italia,omicidi_volontari,vittime_donne,119,persone,dati operativi
+2023,anno,Italia,omicidi_ambito_familiare_affettivo,totale,149,persone,dati operativi
+2023,anno,Italia,omicidi_ambito_familiare_affettivo,vittime_donne,96,persone,dati operativi
+2023,anno,Italia,omicidi_da_partner_o_ex,totale,71,persone,dati operativi
+2023,anno,Italia,omicidi_da_partner_o_ex,vittime_donne,64,persone,dati operativi
+2024,anno,Italia,omicidi_volontari,totale,338,persone,dati operativi
+2024,anno,Italia,omicidi_volontari,vittime_donne,119,persone,dati operativi
+2024,anno,Italia,omicidi_ambito_familiare_affettivo,totale,159,persone,dati operativi
+2024,anno,Italia,omicidi_ambito_familiare_affettivo,vittime_donne,101,persone,dati operativi
+2024,anno,Italia,omicidi_da_partner_o_ex,totale,72,persone,dati operativi
+2024,anno,Italia,omicidi_da_partner_o_ex,vittime_donne,61,persone,dati operativi
+2025,anno,Italia,omicidi_volontari,totale,296,persone,dati operativi
+2025,anno,Italia,omicidi_volontari,vittime_donne,99,persone,dati operativi
+2025,anno,Italia,omicidi_ambito_familiare_affettivo,totale,130,persone,dati operativi
+2025,anno,Italia,omicidi_ambito_familiare_affettivo,vittime_donne,85,persone,dati operativi
+2025,anno,Italia,omicidi_da_partner_o_ex,totale,72,persone,dati operativi
+2025,anno,Italia,omicidi_da_partner_o_ex,vittime_donne,62,persone,dati operativi
+2025,17-31 dicembre,Italia,femminicidi_art_577bis,totale,0,persone,reato in vigore dal 17 dicembre 2025
+2025,gennaio-settembre,Italia,omicidi_volontari,totale,238,persone,dati operativi
+2025,gennaio-settembre,Italia,omicidi_volontari,vittime_donne,77,persone,dati operativi
+2025,gennaio-settembre,Italia,omicidi_ambito_familiare_affettivo,totale,106,persone,dati operativi
+2025,gennaio-settembre,Italia,omicidi_ambito_familiare_affettivo,vittime_donne,66,persone,dati operativi
+2025,gennaio-settembre,Italia,omicidi_da_partner_o_ex,totale,58,persone,dati operativi
+2025,gennaio-settembre,Italia,omicidi_da_partner_o_ex,vittime_donne,48,persone,dati operativi
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,totale,238,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne,77,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,ambito_familiare_affettivo,106,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne_ambito_familiare_affettivo,66,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,da_partner_o_ex,58,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2025,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne_da_partner_o_ex,48,persone,art. 575 più art. 577 bis; nel 2025 il femminicidio non era ancora reato
+2026,gennaio-settembre,Italia,omicidi_volontari,totale,215,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,omicidi_volontari,vittime_donne,52,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,omicidi_ambito_familiare_affettivo,totale,79,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,omicidi_ambito_familiare_affettivo,vittime_donne,43,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,omicidi_da_partner_o_ex,totale,31,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,omicidi_da_partner_o_ex,vittime_donne,23,persone,solo art. 575; esclusi i femminicidi
+2026,gennaio-settembre,Italia,femminicidi_art_577bis,totale,15,persone,dati operativi
+2026,gennaio-settembre,Italia,femminicidi_art_577bis,ambito_familiare_affettivo,15,persone,dati operativi
+2026,gennaio-settembre,Italia,femminicidi_art_577bis,da_partner_o_ex,15,persone,dati operativi
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,totale,230,persone,art. 575 più art. 577 bis
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne,67,persone,art. 575 più art. 577 bis
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,ambito_familiare_affettivo,94,persone,art. 575 più art. 577 bis
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne_ambito_familiare_affettivo,58,persone,art. 575 più art. 577 bis
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,da_partner_o_ex,46,persone,art. 575 più art. 577 bis
+2026,gennaio-settembre,Italia,vittime_omicidio_e_femminicidio,vittime_donne_da_partner_o_ex,38,persone,art. 575 più art. 577 bis
+2025,gennaio-settembre,Italia,presunti_autori_noti,totale,570,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2025,gennaio-settembre,Italia,presunti_autori_noti,eta_meno_di_18,29,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2025,gennaio-settembre,Italia,presunti_autori_noti,eta_18_24,94,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2025,gennaio-settembre,Italia,presunti_autori_noti,eta_25_40,246,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2025,gennaio-settembre,Italia,presunti_autori_noti,eta_41_64,165,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2025,gennaio-settembre,Italia,presunti_autori_noti,eta_65_e_oltre,36,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,totale,517,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,eta_meno_di_18,26,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,eta_18_24,110,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,eta_25_40,186,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,eta_41_64,162,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"
+2026,gennaio-settembre,Italia,presunti_autori_noti,eta_65_e_oltre,33,denunce_e_arresti,"denunce e arresti a carico di presunti autori noti, artt. 575 e 577 bis; possono riferirsi anche ad anni precedenti; autori di omicidi con vittime di entrambi i sessi"

@@ -1,0 +1,56 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2020,anno,Italia,casi_monitorati,totale,126,persone,tutte le voci
+2020,anno,Italia,casi_monitorati,femminicidi,118,persone,"tipo omicidio, vittima donna"
+2020,anno,Italia,casi_monitorati,transcidi,6,persone,
+2020,anno,Italia,casi_monitorati,suicidi_indotti,1,persone,"donne, persone trans e uomini"
+2020,anno,Italia,casi_monitorati,in_accertamento,0,persone,
+2020,anno,Italia,casi_monitorati,altre_voci,1,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2020,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,9,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2021,anno,Italia,casi_monitorati,totale,125,persone,tutte le voci
+2021,anno,Italia,casi_monitorati,femminicidi,115,persone,"tipo omicidio, vittima donna"
+2021,anno,Italia,casi_monitorati,transcidi,2,persone,
+2021,anno,Italia,casi_monitorati,suicidi_indotti,6,persone,"donne, persone trans e uomini"
+2021,anno,Italia,casi_monitorati,in_accertamento,0,persone,
+2021,anno,Italia,casi_monitorati,altre_voci,2,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2021,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,14,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2022,anno,Italia,casi_monitorati,totale,121,persone,tutte le voci
+2022,anno,Italia,casi_monitorati,femminicidi,107,persone,"tipo omicidio, vittima donna"
+2022,anno,Italia,casi_monitorati,transcidi,4,persone,
+2022,anno,Italia,casi_monitorati,suicidi_indotti,10,persone,"donne, persone trans e uomini"
+2022,anno,Italia,casi_monitorati,in_accertamento,0,persone,
+2022,anno,Italia,casi_monitorati,altre_voci,0,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2022,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,10,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2023,anno,Italia,casi_monitorati,totale,123,persone,valore del sito; il file ne conta 122
+2023,anno,Italia,casi_monitorati,femminicidi,107,persone,valore del sito; il file ne conta 106
+2023,anno,Italia,casi_monitorati,transcidi,1,persone,
+2023,anno,Italia,casi_monitorati,suicidi_indotti,10,persone,"donne, persone trans e uomini"
+2023,anno,Italia,casi_monitorati,in_accertamento,5,persone,
+2023,anno,Italia,casi_monitorati,altre_voci,0,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2023,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,13,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2024,anno,Italia,casi_monitorati,totale,116,persone,tutte le voci
+2024,anno,Italia,casi_monitorati,femminicidi,99,persone,"tipo omicidio, vittima donna"
+2024,anno,Italia,casi_monitorati,transcidi,1,persone,
+2024,anno,Italia,casi_monitorati,suicidi_indotti,8,persone,"donne, persone trans e uomini"
+2024,anno,Italia,casi_monitorati,in_accertamento,7,persone,
+2024,anno,Italia,casi_monitorati,altre_voci,1,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2024,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,12,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2025,anno,Italia,casi_monitorati,totale,99,persone,tutte le voci
+2025,anno,Italia,casi_monitorati,femminicidi,84,persone,"tipo omicidio, vittima donna"
+2025,anno,Italia,casi_monitorati,transcidi,0,persone,
+2025,anno,Italia,casi_monitorati,suicidi_indotti,6,persone,"donne, persone trans e uomini"
+2025,anno,Italia,casi_monitorati,in_accertamento,8,persone,
+2025,anno,Italia,casi_monitorati,altre_voci,1,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2025,anno,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,16,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,totale,83,persone,tutte le voci
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,femminicidi,70,persone,"tipo omicidio, vittima donna"
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,transcidi,0,persone,
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,suicidi_indotti,6,persone,"donne, persone trans e uomini"
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,in_accertamento,6,persone,
+2026,1 gennaio-8 novembre,Italia,casi_monitorati,altre_voci,1,persone,"persone scomparse, uomini uccisi negli stessi contesti, altro"
+2026,1 gennaio-8 novembre,Italia,femminicidi_con_denunce_o_contatti_precedenti,totale,4,persone,almeno: denunce o contatti con centri antiviolenza o servizi sociali riportati dai media
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,totale,44,persone,
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,reato_estinto_autore_morto,12,persone,reato contestato secondo i media; può cambiare con le indagini
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,reato_femminicidio_art_577bis,11,persone,reato contestato secondo i media; può cambiare con le indagini
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,reato_non_indicato,2,persone,reato contestato secondo i media; può cambiare con le indagini
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,reato_omicidio_preterintenzionale_o_colposo,1,persone,reato contestato secondo i media; può cambiare con le indagini
+2026,1 gennaio-8 novembre,Italia,femminicidi_da_partner_o_ex,reato_omicidio_volontario,18,persone,reato contestato secondo i media; può cambiare con le indagini

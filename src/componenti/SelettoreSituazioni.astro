@@ -1,0 +1,99 @@
+---
+// Selettore di situazioni: a sinistra le situazioni, a destra come le tratta ciascuna fonte.
+// Senza JavaScript tutte le situazioni restano visibili una sotto l'altra.
+const { fonti, gruppi, riquadro, nota } = Astro.props;
+const situazioni = gruppi.flatMap((g) => g.situazioni);
+const prima = situazioni[0].id;
+---
+<div class="selettore" data-selettore>
+  <div class="scelte" role="group" aria-label="Situazioni" hidden data-scelte>
+    {gruppi.map((g) => (
+      <>
+        <p class="gruppo">{g.titolo}</p>
+        {g.situazioni.map((s) => (
+          <button type="button" data-scelta={s.id} aria-pressed={s.id === prima ? 'true' : 'false'} aria-controls={`situazione-${s.id}`}>
+            {s.etichetta}
+          </button>
+        ))}
+      </>
+    ))}
+  </div>
+
+  <div class="risposte">
+    {gruppi.map((g) => g.situazioni.map((s) => (
+      <div class="pannello" id={`situazione-${s.id}`} data-pannello={s.id} aria-live="polite">
+        <h3 class="titolo-pannello" data-titolo-pannello>{g.titolo} {s.etichetta}</h3>
+        <div class="schede">
+          {fonti.map((f) => {
+            const r = s.risposte[f.id];
+            return (
+              <div class="scheda-fonte">
+                <div class="nome-fonte">
+                  <span class="nome">{f.nome}</span>
+                  <span class="sotto">{f.sottotitolo}</span>
+                </div>
+                <span class={`esito esito-${r.tipo}`}>{r.esito}</span>
+                <p>{r.testo}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )))}
+    {riquadro && <p class="riquadro-accento">{riquadro}</p>}
+    {nota && <p class="nota">{nota}</p>}
+  </div>
+</div>
+
+<style>
+  .selettore { display: grid; grid-template-columns: minmax(240px, 1fr) 2fr; gap: 24px; align-items: start; }
+  .scelte { display: flex; flex-direction: column; gap: 8px; }
+  .scelte[hidden] { display: none; }
+  .gruppo { font-size: 13px; color: var(--testo-3); margin: 4px 0; }
+  .gruppo:not(:first-child) { margin-top: 12px; }
+  button {
+    text-align: left; font: inherit; font-size: 15px; padding: 14px 16px; min-height: 48px;
+    border-radius: 10px; border: 1px solid var(--bordo); background: var(--carta); color: var(--testo); cursor: pointer;
+  }
+  button:hover { border-color: var(--accento); }
+  button[aria-pressed='true'] {
+    border: 2px solid var(--accento); background: var(--accento-chiaro); color: var(--accento-scuro); font-weight: 600;
+    padding: 13px 15px;
+  }
+  .risposte { display: flex; flex-direction: column; gap: 16px; }
+  .pannello { display: flex; flex-direction: column; gap: 12px; }
+  .pannello[hidden] { display: none; }
+  .titolo-pannello { font-size: 20px; }
+  .titolo-pannello[hidden] { display: none; }
+  .schede { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .scheda-fonte {
+    background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 24px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .nome-fonte { display: flex; flex-direction: column; gap: 2px; }
+  .nome { font-size: 17px; font-weight: 600; }
+  .sotto { font-size: 13px; color: var(--testo-3); }
+  .scheda-fonte p { font-size: 15px; color: var(--testo-2); }
+  .esito { align-self: flex-start; font-size: 15px; font-weight: 600; padding: 5px 12px; border-radius: 999px; border: 2px solid transparent; }
+  .esito-si { background: var(--accento); color: #fff; }
+  .esito-parziale { border-color: var(--attenzione); color: var(--attenzione); }
+  .esito-no { background: var(--grigio); color: var(--testo-2); }
+  .esito-nonrilevabile { border-color: var(--testo-3); border-style: dashed; color: var(--testo-2); }
+  @media (max-width: 760px) { .selettore { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  for (const sel of document.querySelectorAll('[data-selettore]')) {
+    const scelte = sel.querySelector('[data-scelte]');
+    const pulsanti = [...sel.querySelectorAll('[data-scelta]')];
+    const pannelli = [...sel.querySelectorAll('[data-pannello]')];
+    scelte.hidden = false;
+    sel.querySelectorAll('[data-titolo-pannello]').forEach((t) => (t.hidden = true));
+    const mostra = (id) => {
+      pulsanti.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.scelta === id)));
+      pannelli.forEach((p) => (p.hidden = p.dataset.pannello !== id));
+    };
+    pulsanti.forEach((p) => p.addEventListener('click', () => mostra(p.dataset.scelta)));
+    mostra(pulsanti[0].dataset.scelta);
+  }
+</script>

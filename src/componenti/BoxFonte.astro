@@ -1,0 +1,22 @@
+---
+import { url } from '../lib/url.js';
+const { id, ente, nome, testo } = Astro.props;
+---
+<a class="box" href={url(`/fonti/${id}/`)}>
+  <span class="ente">{ente}</span>
+  <span class="nome">{nome}</span>
+  <span class="testo">{testo}</span>
+  <span class="apri">Apri la scheda della fonte</span>
+</a>
+
+<style>
+  .box {
+    text-decoration: none; color: var(--testo); background: var(--carta); border: 1px solid var(--bordo);
+    border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .box:hover { border-color: var(--accento); }
+  .ente { font-size: 12px; color: var(--testo-3); }
+  .nome { font-family: var(--titoli); font-size: 19px; font-weight: 600; }
+  .testo { font-size: 14px; line-height: 1.5; color: var(--testo-2); }
+  .apri { font-size: 14px; font-weight: 500; color: var(--link); }
+</style>

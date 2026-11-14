@@ -1,0 +1,41 @@
+id: nudm-osservatorio
+nome: "Osservatorio nazionale femminicidi, lesbicidi, transcidi"
+ente: "Non Una Di Meno"
+gruppo: femminicidi
+domanda: 4
+
+periodo_coperto: "2020-2026"
+ultimo_aggiornamento: 2026-11-08
+ultima_verifica: 2026-11-14
+cadenza: "mensile, l'8 di ogni mese"
+prossimo_aggiornamento: "8 dicembre 2026"
+
+numero_principale: "70"                # dal file del 13/11/2026; il sito riporta 71: da chiarire
+titolo_messaggio: "Dalle cronache, 70 femminicidi dall'inizio del 2026 all'8 novembre"
+componente: serie-tempo                 # femminicidi 2020-2026, con tabella delle altre voci
+componenti_secondari:
+  - "serie-tempo: femminicidi con denunce o contatti precedenti, 2020-2026"
+  - "barre-affiancate: donne uccise da partner o ex nel 2026, per reato contestato"
+
+chi_conta: "Un gruppo di attiviste del movimento Non Una Di Meno"
+da_dove_vengono_i_casi: "Dalle cronache di giornali nazionali e locali, siti e agenzie di stampa, con conferme sul territorio quando possibile"
+cosa_viene_contato: "Le morti legate alla violenza patriarcale e di genere: femminicidi, lesbicidi, transcidi e suicidi indotti, in voci separate. Qui si riporta come numero principale la voce 'femminicidi'. L'Osservatorio non pubblica una definizione formale delle singole categorie."
+
+limiti:
+  - "Dipende da ciò che i giornali raccontano: i casi di cui non si scrive non compaiono."
+  - "I casi che riguardano persone ai margini (trans, migranti, anziane, con disabilità, sex worker) possono essere sottostimati."
+  - "I criteri con cui un caso viene incluso o escluso non sono pubblicati."
+  - "I dati degli anni passati vengono ancora aggiornati."
+  - "Le denunce precedenti sono un minimo: si sanno solo se i giornali ne parlano."
+
+nuove_domande:
+  - "Potrebbe esistere un conteggio ufficiale aggiornato con la stessa frequenza?"
+  - "In almeno 16 casi del 2025 c'erano state denunce o contatti con centri antiviolenza o servizi sociali: che cosa sappiamo di quei percorsi?"
+
+link_fonte: "https://osservatorionazionale.nonunadimeno.net/"
+file_originali:
+  - "originali/I dati del 2020.csv … I dati del 2026.csv (non pubblicati: contengono nomi)"
+  - "pubblicabili/nudm_2020.csv … nudm_2026.csv (senza dati personali)"
+licenza: "CC BY-SA 4.0 (attribuzione e condivisione alle stesse condizioni)"
+
+stato: bozza

@@ -1,0 +1,113 @@
+# Domanda 4 — testi della pagina (versione 0.2, 14 novembre 2026)
+# I numeri delle sezioni "I numeri" e "Donne uccise da un partner o da un ex"
+# NON sono scritti qui: la pagina li legge dai file dati/<fonte>/dati.csv.
+# I numeri dentro le frasi (per esempio "15 casi su 38") sono testo: se cambiano i dati, vanno corretti anche qui.
+
+numero: 4
+indirizzo: quante-donne-vengono-uccise
+domanda: "Quante donne vengono uccise in Italia?"
+titolo: "Dipende da chi conta."
+attacco: "Tre fonti contano i femminicidi in Italia, ognuna con regole sue. Prima di guardare i numeri, guarda chi viene contato."
+
+fonti:
+  - id: istat
+    cartella: istat-omicidi
+    nome: "Istat"
+    sottotitolo: "stima un fenomeno"
+  - id: interno
+    cartella: interno-femminicidi
+    nome: "Ministero dell'Interno"
+    sottotitolo: "conta un reato"
+  - id: nudm
+    cartella: nudm-osservatorio
+    nome: "Non Una Di Meno"
+    sottotitolo: "documenta dei casi"
+
+regole:
+  etichetta: "1 · Le regole"
+  titolo: "Chi viene contato?"
+  sottotitolo: "Scegli una situazione e guarda come la tratta ciascuna fonte."
+  # tipo: si | parziale | no | nonrilevabile (decide il colore dell'etichetta)
+  gruppi:
+    - titolo: "Una donna viene uccisa…"
+      situazioni:
+        - id: partner
+          etichetta: "dal partner o dall'ex"
+          risposte:
+            istat: { tipo: si, esito: "Sì, sempre", testo: "Ogni donna uccisa da un partner o da un ex è contata come femminicidio." }
+            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio. Gennaio–settembre 2026: 15 casi su 38." }
+            nudm: { tipo: si, esito: "Sì", testo: "Contata fra i femminicidi." }
+        - id: familiare
+          etichetta: "dal figlio o da un altro familiare"
+          risposte:
+            istat: { tipo: si, esito: "Sì, sempre", testo: "Ogni donna uccisa da un familiare è contata come femminicidio." }
+            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio. Gennaio–settembre 2026: nessun caso." }
+            nudm: { tipo: si, esito: "Sì", testo: "Contata fra i femminicidi." }
+        - id: altri
+          etichetta: "da un conoscente o da uno sconosciuto"
+          risposte:
+            istat: { tipo: parziale, esito: "Solo in parte", testo: "Solo se il contesto indica un movente di genere, per esempio violenze precedenti, violenza sessuale o accanimento sul corpo. Nel 2024: 7 casi." }
+            interno: { tipo: parziale, esito: "Solo in parte", testo: "Solo se per il caso è aperto un procedimento per femminicidio." }
+            nudm: { tipo: parziale, esito: "Solo in parte", testo: "Se il caso è ritenuto legato alla violenza di genere." }
+        - id: suicidio-autore
+          etichetta: "e l'autore poi si toglie la vita"
+          risposte:
+            istat: { tipo: si, esito: "Sì", testo: "Conta la relazione con l'autore, come negli altri casi." }
+            interno: { tipo: parziale, esito: "Non chiaro", testo: "Secondo il ministero è possibile. Con la morte dell'autore però il reato si estingue e non c'è processo. Nel primo trimestre 2026 tre casi così non risultavano fra i femminicidi." }
+            nudm: { tipo: si, esito: "Sì", testo: "Fra le 44 donne uccise da partner o ex nel 2026, in 12 casi l'autore è morto." }
+    - titolo: "Oppure…"
+      situazioni:
+        - id: suicidio-indotto
+          etichetta: "si toglie la vita dopo anni di violenze"
+          risposte:
+            istat: { tipo: no, esito: "No", testo: "Non è un omicidio." }
+            interno: { tipo: no, esito: "No", testo: "Non è un omicidio." }
+            nudm: { tipo: si, esito: "Sì, a parte", testo: "Contata come suicidio indotto, in una voce separata." }
+        - id: trans
+          etichetta: "viene uccisa una persona trans"
+          risposte:
+            istat: { tipo: nonrilevabile, esito: "Non rilevabile", testo: "I dati di polizia registrano le vittime come maschio o femmina." }
+            interno: { tipo: nonrilevabile, esito: "Non rilevabile", testo: "Stessa banca dati." }
+            nudm: { tipo: si, esito: "Sì, a parte", testo: "Contata come transcidio, in una voce separata." }
+  riquadro: "Istat e Ministero partono dalla stessa banca dati delle forze di polizia. Cambia la regola, cambia il numero."
+  nota: "Per l'Osservatorio la decisione è presa caso per caso dal gruppo di lavoro. Per il Ministero, la qualificazione dipende dall'accusa e può cambiare durante il procedimento."
+
+numeri:
+  etichetta: "2 · I numeri"
+  titolo: "Ogni fonte, solo dove ha un dato"
+  sottotitolo: "Le colonne sono le stesse di sopra. Uno spazio vuoto significa che il dato non esiste ancora."
+  anno_chiuso:
+    anno: 2025
+    descrizione: "anno chiuso, il primo con tutte e tre le fonti"
+  anno_in_corso:
+    anno: 2026
+    descrizione: "anno in corso, dati parziali e periodi diversi"
+  nota: "Ogni numero dice che cosa conta: donne uccise o femminicidi. Non sono la stessa cosa, e i periodi del 2026 non coincidono."
+
+partner:
+  sopratitolo: "Primi nove mesi del 2026, secondo il Ministero dell'Interno"
+  spiegazione: "La qualificazione dipende dall'accusa e può cambiare durante il procedimento."
+  fonte: "Fonte: Ministero dell'Interno, Omicidi volontari e femminicidi, ottobre 2026. Dati operativi."
+
+limiti:
+  titolo: "Cosa i dati non dicono"
+  voci:
+    - titolo: "Il dato più completo arriva dopo un anno."
+      testo: "La stima di Istat su un anno esce il 25 novembre dell'anno successivo."
+    - titolo: "Il conteggio mensile viene dalle cronache."
+      testo: "L'unico aggiornato ogni mese è quello dell'Osservatorio, ricavato dai giornali."
+    - titolo: "Il dato ufficiale più recente segue il procedimento penale."
+      testo: "La qualificazione come femminicidio può cambiare nel corso delle indagini e del processo."
+    - titolo: "Mancano le informazioni sulla prevenzione."
+      testo: "I dati pubblici non dicono dove sono avvenuti gli omicidi né se le donne avevano misure di protezione. Se avevano già denunciato o chiesto aiuto lo rileva solo l'Osservatorio, dalle cronache: almeno 16 casi nel 2025."
+  collegamento: "Vai a: cosa non sappiamo ancora"
+
+box_fonti:
+  titolo: "Le fonti di questa risposta"
+  voci:
+    - id: istat-omicidi
+      testo: "Stima annuale, dal 2019."
+    - id: interno-femminicidi
+      testo: "Report periodico. Ultimo dato: gennaio–settembre 2026."
+    - id: nudm-osservatorio
+      testo: "Conteggio mensile dalle cronache, dal 2020. Ultimo dato: 8 novembre 2026."

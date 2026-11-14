@@ -1,0 +1,51 @@
+---
+import Layout from '../componenti/Layout.astro';
+import { url } from '../lib/url.js';
+
+const domande = [
+  { n: 1, testo: 'Quante donne subiscono violenza?' },
+  { n: 2, testo: 'Quante chiedono aiuto?' },
+  { n: 3, testo: 'Cosa succede dopo una denuncia?' },
+  { n: 4, testo: 'Quante donne vengono uccise?', indirizzo: '/domande/quante-donne-vengono-uccise/' },
+  { n: 5, testo: 'Cosa non sappiamo ancora?' },
+];
+---
+<Layout descrizione="Che cosa sappiamo sulla violenza di genere e sui femminicidi in Italia, e che cosa non sappiamo." sezione="domande">
+  <section class="apertura">
+    <h1>Che cosa sappiamo sulla violenza contro le donne in Italia?</h1>
+    <p class="attacco">Cinque domande. Per ognuna, i dati con cui oggi si prova a rispondere e le domande che quei dati lasciano aperte.</p>
+  </section>
+
+  <ol class="domande">
+    {domande.map((d) => (
+      <li>
+        {d.indirizzo ? (
+          <a href={url(d.indirizzo)} class="voce attiva">
+            <span class="n">{d.n}</span>
+            <span class="testo">{d.testo}</span>
+          </a>
+        ) : (
+          <div class="voce">
+            <span class="n">{d.n}</span>
+            <span class="testo">{d.testo}</span>
+            <span class="stato">In preparazione</span>
+          </div>
+        )}
+      </li>
+    ))}
+  </ol>
+</Layout>
+
+<style>
+  .domande { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .voce {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px 24px;
+    background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; color: var(--testo-3);
+  }
+  .attiva { text-decoration: none; color: var(--testo); }
+  .attiva:hover { border-color: var(--accento); }
+  .n { font-family: var(--titoli); font-size: 28px; font-weight: 600; min-width: 28px; }
+  .attiva .n { color: var(--accento); }
+  .testo { font-family: var(--titoli); font-size: 22px; flex: 1; }
+  .stato { font-size: 13px; }
+</style>

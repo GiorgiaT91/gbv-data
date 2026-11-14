@@ -1,0 +1,131 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2002,anno,Italia,donne_vittime_omicidio,totale,187,persone,
+2002,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,72,persone,ex partner non rilevati separatamente: possibile sottostima
+2002,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,26,persone,
+2002,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,89,persone,altro conoscente non rilevato: compreso fra gli altri gruppi
+2003,anno,Italia,donne_vittime_omicidio,totale,192,persone,
+2003,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,79,persone,ex partner non rilevati separatamente: possibile sottostima
+2003,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,24,persone,
+2003,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,89,persone,altro conoscente non rilevato: compreso fra gli altri gruppi
+2004,anno,Italia,donne_vittime_omicidio,totale,186,persone,
+2004,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,72,persone,
+2004,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,40,persone,
+2004,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,74,persone,
+2005,anno,Italia,donne_vittime_omicidio,totale,132,persone,
+2005,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,54,persone,
+2005,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,24,persone,
+2005,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,54,persone,
+2006,anno,Italia,donne_vittime_omicidio,totale,181,persone,
+2006,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,91,persone,
+2006,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,30,persone,
+2006,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,60,persone,
+2007,anno,Italia,donne_vittime_omicidio,totale,150,persone,
+2007,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,64,persone,
+2007,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,33,persone,
+2007,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,53,persone,
+2008,anno,Italia,donne_vittime_omicidio,totale,149,persone,
+2008,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,66,persone,
+2008,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,40,persone,
+2008,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,43,persone,
+2009,anno,Italia,donne_vittime_omicidio,totale,172,persone,
+2009,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,83,persone,
+2009,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,37,persone,
+2009,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,52,persone,
+2010,anno,Italia,donne_vittime_omicidio,totale,158,persone,
+2010,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,62,persone,
+2010,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,37,persone,
+2010,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,59,persone,
+2011,anno,Italia,donne_vittime_omicidio,totale,170,persone,
+2011,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,82,persone,
+2011,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,30,persone,
+2011,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,58,persone,
+2012,anno,Italia,donne_vittime_omicidio,totale,160,persone,
+2012,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,74,persone,
+2012,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,32,persone,
+2012,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,54,persone,
+2013,anno,Italia,donne_vittime_omicidio,totale,179,persone,
+2013,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,76,persone,
+2013,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,41,persone,
+2013,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,62,persone,
+2014,anno,Italia,donne_vittime_omicidio,totale,148,persone,
+2014,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,81,persone,
+2014,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,33,persone,
+2014,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,34,persone,
+2015,anno,Italia,donne_vittime_omicidio,totale,141,persone,
+2015,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,70,persone,
+2015,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,36,persone,
+2015,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,35,persone,
+2016,anno,Italia,donne_vittime_omicidio,totale,149,persone,
+2016,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,76,persone,
+2016,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,33,persone,
+2016,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,40,persone,
+2017,anno,Italia,donne_vittime_omicidio,totale,123,persone,
+2017,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,54,persone,
+2017,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,35,persone,
+2017,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,34,persone,
+2018,anno,Italia,donne_vittime_omicidio,totale,133,persone,
+2018,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,73,persone,
+2018,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,33,persone,
+2018,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,27,persone,
+2019,anno,Italia,donne_vittime_omicidio,totale,111,persone,
+2019,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,68,persone,
+2019,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,25,persone,
+2019,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,18,persone,
+2019,anno,Italia,femminicidi_stimati,totale,101,persone,stima
+2020,anno,Italia,donne_vittime_omicidio,totale,116,persone,
+2020,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,67,persone,
+2020,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,30,persone,
+2020,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,19,persone,
+2020,anno,Italia,femminicidi_stimati,totale,106,persone,stima
+2021,anno,Italia,donne_vittime_omicidio,totale,119,persone,
+2021,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,70,persone,
+2021,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,30,persone,
+2021,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,19,persone,
+2021,anno,Italia,femminicidi_stimati,totale,104,persone,stima
+2022,anno,Italia,donne_vittime_omicidio,totale,126,persone,
+2022,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,61,persone,partner ed ex non distinti nella fonte
+2022,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,43,persone,
+2022,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,22,persone,
+2022,anno,Italia,femminicidi_stimati,totale,105,persone,stima
+2023,anno,Italia,donne_vittime_omicidio,totale,117,persone,
+2023,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,63,persone,
+2023,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,31,persone,
+2023,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,23,persone,
+2023,anno,Italia,femminicidi_stimati,totale,96,persone,stima
+2024,anno,Italia,donne_vittime_omicidio,totale,116,persone,
+2024,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,62,persone,
+2024,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,37,persone,
+2024,anno,Italia,donne_vittime_omicidio,autore_altri_o_non_identificato,17,persone,
+2024,anno,Italia,femminicidi_stimati,totale,106,persone,stima
+2024,anno,Italia,femminicidi_stimati,autore_partner_o_ex,62,persone,stima
+2024,anno,Italia,femminicidi_stimati,autore_altro_familiare,37,persone,stima
+2024,anno,Italia,femminicidi_stimati,autore_altri,7,persone,stima; 3 conoscenti e 4 sconosciuti
+2024,anno,Italia,donne_vittime_omicidio,autore_partner_o_ex,62,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,donne_vittime_omicidio,autore_altro_familiare,37,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,donne_vittime_omicidio,autore_conoscente,8,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,donne_vittime_omicidio,autore_sconosciuto,9,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,donne_vittime_omicidio,autore_non_identificato,0,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,uomini_vittime_omicidio,totale,211,persone,grafico donne e uomini
+2024,anno,Italia,uomini_vittime_omicidio,autore_partner_o_ex,10,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,uomini_vittime_omicidio,autore_altro_familiare,43,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,uomini_vittime_omicidio,autore_conoscente,31,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,uomini_vittime_omicidio,autore_sconosciuto,98,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2024,anno,Italia,uomini_vittime_omicidio,autore_non_identificato,29,persone,"grafico donne e uomini; tavola A1, riga ITALIA"
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,totale,478,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_0_13,15,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_14_17,8,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_18_24,20,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_25_34,48,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_35_44,60,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_45_54,78,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_55_64,66,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,donne_vittime_omicidio,eta_65_e_oltre,183,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,totale,808,persone,somma 2021-2024; tavole A2 delle quattro appendici; 1 uomo di età non indicata (2022) incluso nel totale
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_0_13,25,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_14_17,16,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_18_24,73,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_25_34,158,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_35_44,148,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_45_54,151,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_55_64,112,persone,somma 2021-2024; tavole A2 delle quattro appendici
+2021-2024,quadriennio,Italia,uomini_vittime_omicidio,eta_65_e_oltre,124,persone,somma 2021-2024; tavole A2 delle quattro appendici

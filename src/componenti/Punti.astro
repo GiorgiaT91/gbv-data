@@ -1,0 +1,22 @@
+---
+// Un punto per persona: i primi "evidenziati" pieni, gli altri vuoti.
+const { totale, evidenziati, descrizione, perRiga = 19 } = Astro.props;
+const lato = 26;
+const righe = Math.ceil(totale / perRiga);
+const punti = Array.from({ length: totale }, (_, i) => ({
+  x: (i % perRiga) * lato + lato / 2,
+  y: Math.floor(i / perRiga) * lato + lato / 2,
+  pieno: i < evidenziati,
+}));
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${perRiga * lato} ${righe * lato}`} class="punti">
+  {punti.map((p) => p.pieno
+    ? <circle cx={p.x} cy={p.y} r="9" class="pieno" />
+    : <circle cx={p.x} cy={p.y} r="8" class="vuoto" />)}
+</svg>
+
+<style>
+  .punti { width: 100%; max-width: 640px; }
+  .pieno { fill: var(--accento); }
+  .vuoto { fill: none; stroke: #6B6E75; stroke-width: 2; }
+</style>

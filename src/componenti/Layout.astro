@@ -1,0 +1,50 @@
+---
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/space-grotesk/500.css';
+import '@fontsource/space-grotesk/600.css';
+import '../stili/globale.css';
+import { url } from '../lib/url.js';
+
+const { titolo, descrizione = '', sezione = '' } = Astro.props;
+const titoloPagina = titolo ? `${titolo} · GBV-Data` : 'GBV-Data';
+---
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{titoloPagina}</title>
+  {descrizione && <meta name="description" content={descrizione} />}
+  <meta name="robots" content="noindex" />
+</head>
+<body>
+  <a class="salta" href="#contenuto">Vai al contenuto</a>
+  <header class="testata">
+    <div class="contenitore">
+      <a class="logo" href={url('/')}>GBV-Data</a>
+      <nav class="menu" aria-label="Menu principale">
+        <a href={url('/')} aria-current={sezione === 'domande' ? 'page' : undefined}>Le domande</a>
+        <a href={url('/fonti/')} aria-current={sezione === 'fonti' ? 'page' : undefined}>Le fonti</a>
+        <a class="pulsante-1522" href="tel:1522">Chiedi aiuto: 1522</a>
+      </nav>
+    </div>
+  </header>
+  <main id="contenuto">
+    <div class="contenitore pagina">
+      <slot />
+      <section class="aiuto" aria-label="Numero antiviolenza e stalking">
+        <p>Se tu o qualcuno che conosci siete in pericolo, chiama il 1522. Gratuito, attivo 24 ore su 24.</p>
+        <a href="tel:1522">Chiama il 1522</a>
+      </section>
+    </div>
+  </main>
+  <footer class="piede">
+    <div class="contenitore">
+      <span>GBV-Data · dati e codice aperti</span>
+      <a href="https://github.com/GiorgiaT91/gbv-data">L'archivio su GitHub</a>
+    </div>
+  </footer>
+</body>
+</html>
