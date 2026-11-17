@@ -1,0 +1,34 @@
+---
+// Barre orizzontali raggruppate: per ogni voce, una barra per serie (es. donne/uomini, 2018/2023).
+// voci: [{ etichetta, valori: [numeri, uno per serie], segno? }]   serie: [{ nome, colore }]
+// "segno" aggiunge un testo dopo l'etichetta (es. "⚠").
+import Legenda from './Legenda.astro';
+import { percentuale } from '../../lib/colori.js';
+const { voci, serie, massimo = 100, decimali = 1, legenda = true } = Astro.props;
+---
+{legenda && <Legenda piccola voci={serie.map((s) => ({ etichetta: s.nome, colore: s.colore }))} />}
+<ul class="gruppi">
+  {voci.map((v) => (
+    <li>
+      <span class="voce">{v.etichetta}{v.segno && <span class="segno"> {v.segno}</span>}</span>
+      {v.valori.map((x, i) => (
+        <span class="riga">
+          <span class="visivamente-nascosto">{serie[i].nome}: </span>
+          <span class="binario" aria-hidden="true"><span class="pieno" style={`width:${(100 * x) / massimo}%;background:${serie[i].colore}`}></span></span>
+          <span class="valore">{percentuale(x, decimali)}%</span>
+        </span>
+      ))}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .gruppi { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  li { display: flex; flex-direction: column; gap: 3px; }
+  .voce { font-size: 14px; line-height: 1.35; margin-bottom: 2px; }
+  .segno { color: #8A4A12; font-weight: 600; }
+  .riga { display: flex; align-items: center; gap: 8px; }
+  .binario { flex: 1; height: 10px; background: #E6E6E1; border-radius: 5px; overflow: hidden; }
+  .pieno { display: block; height: 10px; }
+  .valore { min-width: 52px; text-align: right; font-size: 13px; font-weight: 600; white-space: nowrap; }
+</style>

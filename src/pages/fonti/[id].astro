@@ -4,8 +4,12 @@ import Layout from '../../componenti/Layout.astro';
 import IstatOmicidi from '../../componenti/infografiche/IstatOmicidi.astro';
 import InternoFemminicidi from '../../componenti/infografiche/InternoFemminicidi.astro';
 import NudmOsservatorio from '../../componenti/infografiche/NudmOsservatorio.astro';
+import Istat1522 from '../../componenti/infografiche/Istat1522.astro';
+import IstatCentri from '../../componenti/infografiche/IstatCentri.astro';
+import IstatStereotipi from '../../componenti/infografiche/IstatStereotipi.astro';
 import { scheda } from '../../lib/dati.js';
-import { fontiPronte, domanda as trovaDomanda, dataEstesa as data } from '../../lib/registro.js';
+import { fontiPronte, fonte, domanda as trovaDomanda, dataEstesa as data } from '../../lib/registro.js';
+import AvvisoVerifica from '../../componenti/AvvisoVerifica.astro';
 import { url } from '../../lib/url.js';
 
 export function getStaticPaths() {
@@ -13,15 +17,17 @@ export function getStaticPaths() {
 }
 
 const s = scheda(Astro.params.id);
-const infografiche = { 'istat-omicidi': IstatOmicidi, 'interno-femminicidi': InternoFemminicidi, 'nudm-osservatorio': NudmOsservatorio };
+const infografiche = { 'istat-omicidi': IstatOmicidi, 'interno-femminicidi': InternoFemminicidi, 'nudm-osservatorio': NudmOsservatorio, 'istat-1522': Istat1522, 'istat-centri-antiviolenza': IstatCentri, 'istat-stereotipi-adulti': IstatStereotipi };
 const Infografica = infografiche[s.id];
 const domanda = trovaDomanda(s.domanda);
+const inVerifica = fonte(s.id)?.in_verifica;
 ---
 <Layout titolo={`${s.ente} · ${s.nome}`} descrizione={s.titolo_messaggio} sezione="fonti">
   <section class="apertura">
     <a class="briciole" href={url('/fonti/')}>Le fonti / {s.ente}</a>
     <p class="meta">{s.ente} · {s.nome} · ultimo aggiornamento {data(s.ultimo_aggiornamento)}</p>
     <h1 class="titolo-fonte">{s.titolo_messaggio}</h1>
+    {inVerifica && <AvvisoVerifica />}
   </section>
 
   <div class="infografica">

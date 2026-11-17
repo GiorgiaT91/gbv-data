@@ -1,0 +1,40 @@
+id: istat-stereotipi-adulti
+nome: "Stereotipi sui ruoli di genere e immagine sociale della violenza"
+ente: "Istat"
+gruppo: contesto
+domanda: 6
+
+periodo_coperto: "2018 e 2023, persone di 18-74 anni"
+ultimo_dato: "anno 2023"
+ultimo_aggiornamento: 2024-10-31        # tavole per età; primi risultati 22/11/2023
+ultima_verifica: 2026-11-16
+cadenza: "ogni cinque anni circa"
+prossimo_aggiornamento: "terza rilevazione prevista nel 2026"
+
+numero_principale: "53,7%"
+titolo_messaggio: "Nel 2023 più di metà delle persone adulte condivide almeno uno stereotipo sui ruoli di genere"
+componente: mosaico
+
+chi_conta: "Istat, con il Dipartimento per le Pari Opportunità"
+da_dove_vengono_i_casi: "Da indagini campionarie: nel 2018 un modulo dentro l'indagine sulle forze di lavoro, nel 2023 un'indagine a sé su circa 15.000 persone"
+cosa_viene_contato: "Quanto le persone di 18-74 anni sono d'accordo con alcune affermazioni sui ruoli di genere e sulla violenza sessuale, e quanto ritengono accettabili alcuni comportamenti nella coppia."
+
+limiti:
+  - "Misura opinioni dichiarate, non comportamenti, e non dice quanto è diffusa la violenza."
+  - "Una rilevazione ogni cinque anni circa: 2018, 2023, la prossima nel 2026."
+  - "Il 2018 e il 2023 sono stati rilevati in modo diverso, con elenchi di domande diversi: si confrontano solo le singole affermazioni ripetute, non gli indicatori «almeno uno stereotipo»."
+  - "Del 2023 sono pubbliche solo le tavole per età; il dettaglio per sesso viene dai primi risultati, dichiarati provvisori. Mancano titolo di studio, regione, cause e consigli."
+  - "Il valore di «se il marito la obbliga non è violenza» triplica fra 2018 e 2023: va verificata la formulazione della domanda nei due questionari."
+
+nuove_domande:
+  - "Le opinioni dichiarate dicono qualcosa sui comportamenti?"
+  - "Perché le tavole del 2023 sono solo per età?"
+
+link_fonte: "https://www.istat.it/statistiche-per-temi/focus/violenza-sulle-donne/stereotipi-e-utilizzo-dei-social/stereotipi/"
+file_originali:
+  - "originali/2018/ (21 dataset IstatData, appendice, report 2019)"
+  - "originali/2023/Tavole-stereotipi-per-eta-2023.xlsx"
+  - "originali/2023/STAT_TODAY_Stereotipi.pdf"
+licenza: "DA VERIFICARE"
+
+stato: bozza

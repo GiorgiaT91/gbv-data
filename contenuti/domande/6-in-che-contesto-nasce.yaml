@@ -1,0 +1,36 @@
+# Domanda 6 — testi della pagina (versione 0.1, 17 novembre 2026). Pagina corta.
+# I numeri non sono scritti qui: la pagina li legge da dati/<fonte>/dati.csv con i filtri indicati.
+
+numero: 6
+indirizzo: in-che-contesto-nasce
+domanda: "In che contesto nasce la violenza?"
+
+numero_grande:
+  fonte: istat-stereotipi-adulti
+  filtro: { anno: 2023, indicatore: almeno_uno, categoria: TRGENROL }
+  testo: "delle persone fra 18 e 74 anni è **d'accordo con almeno uno stereotipo** sui ruoli di genere. Il {coppia} ritiene accettabile almeno un comportamento violento nella coppia."
+  valori:
+    coppia: { fonte: istat-stereotipi-adulti, filtro: { anno: 2023, indicatore: almeno_uno, categoria: ONEBEHP } }
+  nota: "Istat, stereotipi sui ruoli di genere e immagine sociale della violenza, 2023 (tavole per età, ottobre 2024). Sono opinioni dichiarate, non misure della violenza."
+
+fonti:
+  titolo: "I dati con cui si risponde"
+  sottotitolo: "Ogni fonte ha la sua infografica. Aprila per esplorare il dato."
+  voci:
+    - id: istat-stereotipi-adulti
+      etichetta: "Istat · Stereotipi di genere, adulti"
+      titolo: "Fra il 2018 e il 2023 quasi tutte le affermazioni ripetute sono in calo"
+      anteprima:
+        descrizione: "D'accordo: «per l'uomo è più importante avere successo nel lavoro»"
+        barre:
+          - { etichetta: "2018", filtro: { anno: 2018, indicatore: accordo, categoria: MISUCWOR } }
+          - { etichetta: "2023", filtro: { anno: 2023, indicatore: accordo, categoria: MISUCWOR } }
+        nota: "Persone di 18–74 anni."
+      piede: "Rilevazioni 2018, 2023"
+  in_lavorazione: "Stereotipi fra ragazze e ragazzi di 11–19 anni: in lavorazione (i dati esistono solo nei grafici di un comunicato)."
+
+nuove_domande:
+  titolo: "Le domande che restano"
+  voci:
+    - "Perché una rilevazione solo ogni cinque anni?"
+    - "Le opinioni dichiarate dicono qualcosa sui comportamenti?"

@@ -1,8 +1,10 @@
 # Le sei domande, nell'ordine in cui compaiono in home.
 # id: identificativo interno, usato nei nomi dei file; non cambia mai.
-# stato: pronta | in-lavorazione. Una domanda è "pronta" quando supera il
+# stato: pronta | in-verifica | in-lavorazione. Una domanda è "pronta" quando supera il
 #   criterio del Piano di progetto: numeri controllati, schede compilate,
-#   pagina leggibile su telefono, testi riletti.
+#   pagina leggibile su telefono, testi riletti. "in-verifica": pagina costruita,
+#   numeri da controllare sui siti originali (online con un avviso).
+# modello: corta (domande 1, 2, 3, 6: pagina generata da src/pages/domande/[indirizzo].astro).
 # indirizzo: solo per le domande pronte.
 # fonti: identificativi delle fonti (vedi contenuti/fonti.yaml).
 
@@ -13,12 +15,16 @@
 
 - id: 6
   testo: "In che contesto nasce?"
-  stato: in-lavorazione
+  stato: in-verifica
+  modello: corta
+  indirizzo: /domande/in-che-contesto-nasce/
   fonti: [istat-stereotipi-adulti, istat-stereotipi-ragazzi]
 
 - id: 2
   testo: "Quante chiedono aiuto?"
-  stato: in-lavorazione
+  stato: in-verifica
+  modello: corta
+  indirizzo: /domande/quante-chiedono-aiuto/
   fonti: [istat-1522, istat-centri-antiviolenza, istat-case-rifugio, salute-pronto-soccorso]
 
 - id: 3

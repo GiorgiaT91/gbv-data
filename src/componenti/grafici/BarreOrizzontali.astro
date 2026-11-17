@@ -1,0 +1,30 @@
+---
+// Barre orizzontali con etichetta sopra e valore a destra.
+// voci: [{ etichetta, valore (0-100), testo?, colore?, mancante? }]
+// "mancante" colora la barra di grigio: si usa per "non risponde" e "dato mancante".
+import { C, percentuale } from '../../lib/colori.js';
+const { voci, colore = C.accento, massimo = 100 } = Astro.props;
+---
+<ul class="barre">
+  {voci.map((v) => (
+    <li>
+      <span class="voce">{v.etichetta}</span>
+      <span class="riga">
+        <span class="binario" aria-hidden="true">
+          <span class="pieno" style={`width:${Math.min(100, (100 * v.valore) / massimo)}%;background:${v.mancante ? C.uomini : (v.colore ?? colore)}`}></span>
+        </span>
+        <span class="valore">{v.testo ?? `${percentuale(v.valore, 1)}%`}</span>
+      </span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .barre { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  li { display: flex; flex-direction: column; gap: 4px; }
+  .voce { font-size: 14px; line-height: 1.35; }
+  .riga { display: flex; align-items: center; gap: 8px; }
+  .binario { flex: 1; height: 12px; background: #E6E6E1; border-radius: 6px; overflow: hidden; }
+  .pieno { display: block; height: 12px; }
+  .valore { min-width: 60px; text-align: right; font-size: 14px; font-weight: 600; white-space: nowrap; }
+</style>

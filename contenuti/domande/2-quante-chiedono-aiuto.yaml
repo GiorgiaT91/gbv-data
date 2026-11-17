@@ -1,0 +1,50 @@
+# Domanda 2 — testi della pagina (versione 0.1, 17 novembre 2026). Pagina corta (modello delle domande 1, 2, 3 e 6).
+# I numeri non sono scritti qui: la pagina li legge da dati/<fonte>/dati.csv con i filtri indicati.
+
+numero: 2
+indirizzo: quante-chiedono-aiuto
+domanda: "Quante donne chiedono aiuto?"
+
+numero_grande:
+  fonte: istat-1522
+  filtro: { anno: 2025, periodo: anno, indicatore: chiamate_valide, categoria: totale }
+  testo: "**chiamate valide** al numero antiviolenza 1522 nel 2025. Nel 2024 i centri antiviolenza hanno seguito {centri} donne in un percorso di uscita dalla violenza."
+  valori:
+    centri: { fonte: istat-centri-antiviolenza, filtro: { anno: 2024, periodo: anno, territorio: Italia, indicatore: donne_in_percorso, categoria: totale } }
+  nota: "Le due fonti contano cose diverse, chiamate e donne, e non si sommano. Istat-DPO, numero 1522, anno 2025; centri antiviolenza, anno 2024."
+
+fonti:
+  titolo: "I dati con cui si risponde"
+  sottotitolo: "Ogni fonte ha la sua infografica. Aprila per esplorare il dato."
+  voci:
+    - id: istat-1522
+      etichetta: "Istat-DPO · Numero 1522"
+      titolo: "Le chiamate al 1522 sono più che raddoppiate dal 2018; il modo di registrarle è cambiato due volte"
+      anteprima:
+        descrizione: "Chiamate valide in un anno"
+        barre:
+          - { etichetta: "2018", filtro: { anno: 2018, periodo: anno, indicatore: chiamate_valide, categoria: totale } }
+          - { etichetta: "2022", filtro: { anno: 2022, periodo: anno, indicatore: chiamate_valide, categoria: totale } }
+          - { etichetta: "2024", filtro: { anno: 2024, periodo: anno, indicatore: chiamate_valide, categoria: totale } }
+          - { etichetta: "2025", filtro: { anno: 2025, periodo: anno, indicatore: chiamate_valide, categoria: totale } }
+        nota: "Dal 2023 e da aprile 2025 cambia il modo di registrare."
+      piede: "Chiamate 2018–2025, vittime 2023–2025"
+    - id: istat-centri-antiviolenza
+      etichetta: "Istat-DPO · Centri antiviolenza"
+      titolo: "409 centri antiviolenza, distribuiti in modo diseguale; ha risposto all'indagine l'89%"
+      anteprima:
+        descrizione: "Centri antiviolenza attivi"
+        barre:
+          - { etichetta: "2017", filtro: { anno: 2017, periodo: anno, territorio: Italia, indicatore: centri_attivi, categoria: totale } }
+          - { etichetta: "2020", filtro: { anno: 2020, periodo: anno, territorio: Italia, indicatore: centri_attivi, categoria: totale } }
+          - { etichetta: "2024", filtro: { anno: 2024, periodo: anno, territorio: Italia, indicatore: centri_attivi, categoria: totale } }
+        nota: "Il dato sul 2025 non è ancora pubblicato."
+      piede: "Centri 2017–2024, donne in percorso 2022–2024"
+  in_lavorazione: "Case rifugio e accessi al pronto soccorso: in lavorazione."
+
+nuove_domande:
+  titolo: "Le domande che restano"
+  voci:
+    - "Quante delle donne che subiscono violenza chiedono aiuto? Il confronto si può fare solo con l'indagine sulla sicurezza delle donne, che esce ogni dieci anni circa."
+    - "Quante donne, dopo una chiamata al 1522, arrivano a un centro antiviolenza? Le due fonti non sono collegate."
+    - "Chi resta fuori da questi numeri?"

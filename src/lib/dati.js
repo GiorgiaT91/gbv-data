@@ -72,6 +72,7 @@ export function contenuto(...parti) {
   return parse(leggiTesto('contenuti', ...parti));
 }
 
+// Separatore delle migliaia anche sui numeri di quattro cifre (9.935, non 9935).
 export function formatta(n) {
-  return new Intl.NumberFormat('it-IT').format(n);
+  return new Intl.NumberFormat('it-IT', { useGrouping: 'always' }).format(n);
 }

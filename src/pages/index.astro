@@ -7,9 +7,10 @@ import { domande, fonte } from '../lib/registro.js';
 const enteBreve = (e = '') => e.split(',')[0];
 const elenco = domande().map((d) => ({
   ...d,
-  enti: [...new Set(d.fonti.map((id) => enteBreve(fonte(id)?.ente)).filter(Boolean))],
+  enti: [...new Set(d.fonti.filter((id) => fonte(id)?.pronta).map((id) => enteBreve(fonte(id).ente)))],
 }));
 const pronte = elenco.filter((d) => d.stato === 'pronta').length;
+const online = (d) => d.stato === 'pronta' || d.stato === 'in-verifica';
 ---
 <Layout descrizione="Che cosa sappiamo sulla violenza di genere e sui femminicidi in Italia, e che cosa non sappiamo." sezione="domande">
   <section class="apertura">
@@ -22,10 +23,10 @@ const pronte = elenco.filter((d) => d.stato === 'pronta').length;
     <ul class="domande">
       {elenco.map((d) => (
         <li>
-          {d.stato === 'pronta' ? (
+          {online(d) ? (
             <a href={url(d.indirizzo)} class="voce pronta">
               <span class="testo">{d.testo}</span>
-              {d.enti.length > 0 && <span class="fonti">{d.enti.join(' · ')}</span>}
+              {d.enti.length > 0 && <span class="fonti">{d.enti.join(' · ')}{d.stato === 'in-verifica' && <span class="verifica"> · in verifica</span>}</span>}
               <span class="vai" aria-hidden="true">→</span>
             </a>
           ) : (
@@ -54,6 +55,7 @@ const pronte = elenco.filter((d) => d.stato === 'pronta').length;
   .testo { font-family: var(--titoli); font-size: 22px; font-weight: 500; line-height: 1.25; }
   .fonti { grid-column: 1; font-size: 14px; color: var(--testo-3); }
   .vai { grid-column: 2; grid-row: 1 / span 2; font-size: 24px; color: var(--accento); }
+  .verifica { color: var(--attenzione); font-weight: 500; }
   .stato {
     font-size: 13px; font-weight: 500; color: var(--testo-3); background: var(--grigio);
     padding: 4px 10px; border-radius: 999px; white-space: nowrap;

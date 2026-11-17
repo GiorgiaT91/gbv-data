@@ -22,3 +22,16 @@ export function testoSu(colore) {
 export function percentuale(n, decimali = 0) {
   return n.toLocaleString('it-IT', { minimumFractionDigits: decimali, maximumFractionDigits: decimali });
 }
+
+// Periodi di registrazione del 1522 (e, in generale, fasi di una serie con rotture).
+export const PERIODI = {
+  precedente: '#8A8A84',  // sistema precedente
+  riferimento: '#5A2D82', // periodo di riferimento
+  passaggio: '#B4651E',   // passaggio
+  nuovo: '#8A4A12',       // nuovo sistema
+};
+
+// "41,7%" a partire da una parte e un totale.
+export function quota(parte, totale, decimali = 1) {
+  return `${percentuale((100 * parte) / totale, decimali)}%`;
+}

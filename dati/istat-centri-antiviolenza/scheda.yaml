@@ -1,0 +1,41 @@
+id: istat-centri-antiviolenza
+nome: "I centri antiviolenza e le donne che hanno avviato il percorso di uscita dalla violenza"
+ente: "Istat e Dipartimento per le Pari Opportunità"
+gruppo: aiuto
+domanda: 2
+
+periodo_coperto: "centri 2017-2024; donne in percorso 2022-2024"
+ultimo_dato: "anno 2024"
+ultimo_aggiornamento: 2026-03-10
+ultima_verifica: 2026-11-16
+cadenza: "annuale"
+prossimo_aggiornamento: "anno 2025, data non annunciata"
+
+numero_principale: "409"
+titolo_messaggio: "409 centri antiviolenza, distribuiti in modo diseguale; ha risposto all'indagine l'89%"
+componente: mosaico
+
+chi_conta: "Istat, con il Dipartimento per le Pari Opportunità e le Regioni"
+da_dove_vengono_i_casi: "Dai questionari compilati dai centri antiviolenza: uno per ogni centro e uno per ogni donna in percorso"
+cosa_viene_contato: "I centri antiviolenza che rispettano i requisiti dell'Intesa Stato-Regioni, i loro servizi e il personale; le donne che nell'anno sono in un percorso di uscita dalla violenza e le violenze che hanno subito."
+
+limiti:
+  - "Ha risposto l'89% dei centri, con grandi differenze fra regioni: in Sicilia il 56%, in Basilicata il 50%. Tutte le percentuali sono calcolate sui centri che hanno risposto."
+  - "Conta le donne in percorso nell'anno, comprese quelle che lo avevano iniziato prima: non si possono sommare né confrontare con le chiamate al 1522."
+  - "Il contatto non è un percorso: 61.370 donne hanno contattato un centro, 36.408 hanno avviato un percorso. I dati su chi si ferma al primo contatto non sono pubblicati."
+  - "Mancano le informazioni su molte donne: alcune domande non sono obbligatorie."
+  - "Le tavole su autori, denunce e condanne non sono coerenti fra loro e per ora non sono usate."
+  - "Il dato arriva circa quindici mesi dopo la fine dell'anno: il 2024 è uscito a marzo 2026."
+
+nuove_domande:
+  - "Quante donne, dopo aver chiesto aiuto al 1522, arrivano a un centro? Le due fonti non sono collegate."
+  - "Perché in alcune regioni un centro su due non risponde all'indagine?"
+
+link_fonte: "https://www.istat.it/comunicato-stampa/i-centri-antiviolenza-e-le-donne-che-hanno-avviato-il-percorso-di-uscita-dalla-violenza-anno-2024/"
+file_originali:
+  - "originali/2024/Tavole-appendice-Centri-Antiviolenza_2024.xlsx"
+  - "originali/2024/Tavole_Appendice__UtenzaCav_2024.xlsx"
+  - "originali/2024/Centri-antiviolenza_Istat-DPO_Anno-2024.pdf"
+licenza: "DA VERIFICARE"
+
+stato: bozza

@@ -1,0 +1,55 @@
+---
+// Serie mensile spezzata in tratti (una linea per periodo), con fasce di sfondo,
+// linee verticali ai cambi e alcuni punti annotati.
+// tratti: [{ colore, sfondo, punti: [{ i, valore }] }]  (i = indice del mese dal primo)
+// cambi: [{ i, testo }]   annotazioni: [{ i, valore, testo }]
+// anni: [2018, ...]  (12 mesi ciascuno)
+import { C } from '../../lib/colori.js';
+
+const { tratti, cambi = [], annotazioni = [], anni, massimo, passo, descrizione, larghezza = 1080, altezza = 360, ogniAnni = 1 } = Astro.props;
+const x0 = 56, x1 = larghezza - 20, yTop = 40, yBase = altezza - 40;
+const n = anni.length * 12;
+const x = (i) => x0 + ((x1 - x0) * i) / (n - 1);
+const y = (v) => yBase - ((yBase - yTop) * v) / massimo;
+const griglia = [];
+for (let v = 0; v <= massimo; v += passo) griglia.push(v);
+const fmt = (v) => new Intl.NumberFormat('it-IT', { useGrouping: 'always' }).format(v);
+const fasce = tratti.map((t) => {
+  const a = t.punti[0].i, b = t.punti[t.punti.length - 1].i;
+  return { x: x(a) - 2, w: x(b) - x(a) + 4, colore: t.sfondo };
+});
+---
+<svg role="img" aria-label={descrizione} viewBox={`0 0 ${larghezza} ${altezza}`} class="grafico">
+  {fasce.map((f) => f.colore && <rect x={f.x} y={yTop} width={f.w} height={yBase - yTop} fill={f.colore} />)}
+  {griglia.map((v) => (
+    <>
+      <line x1={x0} x2={x1} y1={y(v)} y2={y(v)} stroke={C.griglia} />
+      <text x={x0 - 8} y={y(v) + 4} text-anchor="end" font-size="12" fill={C.testo3}>{fmt(v)}</text>
+    </>
+  ))}
+  {anni.slice(1).map((_, k) => (
+    <line x1={x((k + 1) * 12 - 0.5)} x2={x((k + 1) * 12 - 0.5)} y1={yBase} y2={yBase + 6} stroke={C.testo3} />
+  ))}
+  {anni.map((a, k) => k % ogniAnni === 0 && (
+    <text x={x(k * 12 + 5.5)} y={yBase + 24} text-anchor="middle" font-size="13" fill={C.testo}>{a}</text>
+  ))}
+  {cambi.map((c) => (
+    <>
+      <line x1={x(c.i) - 3} x2={x(c.i) - 3} y1={yTop - 22} y2={yBase} stroke={C.testo} stroke-dasharray="4 3" />
+      <text x={x(c.i) - 9} y={yTop - 26} text-anchor="end" font-size="12" font-weight="600" fill={C.testo}>{c.testo}</text>
+    </>
+  ))}
+  {tratti.map((t) => (
+    <polyline points={t.punti.map((p) => `${x(p.i).toFixed(1)},${y(p.valore).toFixed(1)}`).join(' ')} fill="none" stroke={t.colore} stroke-width="2.5" stroke-linejoin="round" />
+  ))}
+  {annotazioni.map((a) => (
+    <>
+      <circle cx={x(a.i)} cy={y(a.valore)} r="4" fill={C.testo} />
+      <text x={x(a.i) + (a.sinistra ? -8 : 8)} y={y(a.valore) + 4} text-anchor={a.sinistra ? 'end' : 'start'} font-size="12" fill={C.testo}>{a.testo}</text>
+    </>
+  ))}
+</svg>
+
+<style>
+  .grafico { width: 100%; height: auto; display: block; }
+</style>

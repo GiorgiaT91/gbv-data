@@ -1,0 +1,320 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2018,anno,Italia,almeno_uno,ONEBEHP|F,23.5,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|F,51.7,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|F,58.8,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|M,27.3,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|M,57.5,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|M,58.8,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP,25.4,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX,54.6,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL,58.8,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|Y18-29,35.6,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|Y18-29,47.6,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|Y18-29,45.3,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|Y30-44,28.5,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|Y30-44,53.7,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|Y30-44,60.9,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|Y45-59,21.6,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|Y45-59,53.6,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|Y45-59,59.1,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|Y60-74,20.0,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,STEVIOSEX|Y60-74,61.8,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,TRGENROL|Y60-74,65.7,percentuale,IstatData RUOLIGEN_1
+2018,anno,Italia,almeno_uno,ONEBEHP|CLF_ML,21.3,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,STEVIOSEX|CLF_ML,42.4,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,TRGENROL|CLF_ML,45.0,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,ONEBEHP|LSE,26.5,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,STEVIOSEX|LSE,60.4,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,TRGENROL|LSE,66.2,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,ONEBEHP|NP,25.6,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,STEVIOSEX|NP,64.1,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,TRGENROL|NP,79.6,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,ONEBEHP|USE_IF,26.1,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,STEVIOSEX|USE_IF,52.7,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,almeno_uno,TRGENROL|USE_IF,53.7,percentuale,IstatData RUOLIGEN_2
+2018,anno,Italia,accordo,MISUCWOR|F,34.7,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|F,32.3,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|F,24.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|F,7.1,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|F,16.7,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR|M,30.3,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|M,30.6,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|M,31.4,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|M,10.7,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|M,15.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR,32.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS,31.4,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM,27.9,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE,8.8,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN,16.1,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR|Y18-29,26.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|Y18-29,20.9,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|Y18-29,17.7,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|Y18-29,6.7,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|Y18-29,10.0,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR|Y30-44,34.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|Y30-44,29.0,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|Y30-44,28.9,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|Y30-44,8.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|Y30-44,16.1,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR|Y45-59,32.6,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|Y45-59,31.6,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|Y45-59,26.2,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|Y45-59,7.8,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|Y45-59,15.3,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MISUCWOR|Y60-74,34.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MLESHOUS|Y60-74,41.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MPRFAM|Y60-74,36.5,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,MTAKEDE|Y60-74,11.9,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,PRIOMEN|Y60-74,21.6,percentuale,"IstatData RUOLIGEN_4, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|F,1.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|F,7.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|F,5.3,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|F,36.7,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|F,5.4,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|F,23.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|F,14.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|M,1.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|M,12.7,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|M,7.2,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|M,41.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|M,9.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|M,23.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|M,15.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO,1.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF,10.3,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP,6.2,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO,39.3,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM,7.2,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX,23.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE,15.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|Y18-29,1.2,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|Y18-29,8.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|Y18-29,4.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|Y18-29,37.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|Y18-29,6.3,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|Y18-29,15.4,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|Y18-29,14.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|Y30-44,1.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|Y30-44,10.3,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|Y30-44,4.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|Y30-44,39.6,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|Y30-44,6.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|Y30-44,21.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|Y30-44,15.0,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|Y45-59,1.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|Y45-59,9.4,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|Y45-59,5.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|Y45-59,39.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|Y45-59,6.6,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|Y45-59,23.7,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|Y45-59,12.9,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,HUSFNVIO|Y60-74,3.2,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,OACVIF|Y60-74,12.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,SEWNRAP|Y60-74,9.7,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WABLAVO|Y60-74,40.8,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WOFSREM|Y60-74,9.5,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WPROVSEX|Y60-74,32.4,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accordo,WSVADRE|Y60-74,19.1,percentuale,"IstatData RUOLIGEN_7, somma di STRAGR + SOMAGR"
+2018,anno,Italia,accettabile,HABCONTR|F,18.0,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|F,4.2,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|F,5.7,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR|M,17.5,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|M,8.3,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|M,9.1,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR,17.7,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC,6.2,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC,7.4,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR|Y18-29,28.8,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|Y18-29,7.8,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|Y18-29,7.1,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR|Y30-44,22.3,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|Y30-44,5.8,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|Y30-44,6.7,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR|Y45-59,13.9,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|Y45-59,5.3,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|Y45-59,7.2,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,HABCONTR|Y60-74,10.5,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,NSMOCC|Y60-74,6.9,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,accettabile,SLGIROC|Y60-74,8.7,percentuale,"IstatData RUOLIGEN_10, somma di ALWACC + ACUNDCIR"
+2018,anno,Italia,diffusione,FAIRCOM|F,44.7,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NA|F,1.6,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOALCOM|F,0.6,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOKNOW|F,1.6,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOVERCOM|F,3.8,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,VERYCOM|F,47.7,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,FAIRCOM|M,51.0,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NA|M,1.6,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOALCOM|M,1.0,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOKNOW|M,3.9,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOVERCOM|M,11.7,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,VERYCOM|M,30.8,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,FAIRCOM,47.8,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NA,1.6,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOALCOM,0.8,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOKNOW,2.7,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,NOVERCOM,7.7,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,diffusione,VERYCOM,39.3,percentuale,IstatData RUOLIGEN_13
+2018,anno,Italia,cause,ABDRALC|F,77.0,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,CONWPR|F,84.9,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,DIFMAN|F,74.6,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEFESUP|F,81.3,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEGEXF|F,67.1,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NOSTWEM|F,69.9,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,RELREA|F,34.0,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,ABDRALC|M,74.0,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,CONWPR|M,70.4,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,DIFMAN|M,66.4,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEFESUP|M,68.5,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEGEXF|M,60.1,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NOSTWEM|M,55.2,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,RELREA|M,33.5,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,ABDRALC,75.5,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,CONWPR,77.7,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,DIFMAN,70.6,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEFESUP,75.0,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NEGEXF,63.7,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,NOSTWEM,62.6,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,cause,RELREA,33.8,percentuale,IstatData RUOLIGEN_16
+2018,anno,Italia,consigli,ADVLEPA,33.2,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,ANTVIOLCE,20.4,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,CAL1522,2.0,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,FILEREP,64.5,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,KNDOADV,2.6,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,NOANSW,3.0,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,NOINTFAM,1.1,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,OTHSER,18.2,percentuale,IstatData RUOLIGEN_19; più risposte
+2018,anno,Italia,consigli,TALKPAT,3.8,percentuale,IstatData RUOLIGEN_19; più risposte
+2023,anno,Italia,almeno_uno,TRGENROL|Y18-29,38.8,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,ONEBEHP|Y18-29,21.7,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,STEVIOSEX|Y18-29,40.5,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,TRGENROL|Y30-44,42.7,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,ONEBEHP|Y30-44,16.1,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,STEVIOSEX|Y30-44,46.8,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,TRGENROL|Y45-59,55.9,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,ONEBEHP|Y45-59,12.7,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,STEVIOSEX|Y45-59,45.7,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,TRGENROL|Y60-74,65.2,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,ONEBEHP|Y60-74,12.5,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,STEVIOSEX|Y60-74,56.6,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,TRGENROL,53.7,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,ONEBEHP,14.6,percentuale,tavola 1
+2023,anno,Italia,almeno_uno,STEVIOSEX,48.7,percentuale,tavola 1
+2023,anno,Italia,accordo,PRIOMEN|Y18-29,4.2,percentuale,tavola 2
+2023,anno,Italia,accordo,PRIOMEN|Y30-44,5.1,percentuale,tavola 2
+2023,anno,Italia,accordo,PRIOMEN|Y45-59,7.9,percentuale,tavola 2
+2023,anno,Italia,accordo,PRIOMEN|Y60-74,12.3,percentuale,tavola 2
+2023,anno,Italia,accordo,PRIOMEN,8.2,percentuale,tavola 2
+2023,anno,Italia,accordo,MPRFAM|Y18-29,10.4,percentuale,tavola 2
+2023,anno,Italia,accordo,MPRFAM|Y30-44,12.9,percentuale,tavola 2
+2023,anno,Italia,accordo,MPRFAM|Y45-59,17.1,percentuale,tavola 2
+2023,anno,Italia,accordo,MPRFAM|Y60-74,23.1,percentuale,tavola 2
+2023,anno,Italia,accordo,MPRFAM,17.2,percentuale,tavola 2
+2023,anno,Italia,accordo,MTAKEDE|Y18-29,3.1,percentuale,"tavola 2; valore scritto come «3,1 (a)» nella tavola"
+2023,anno,Italia,accordo,MTAKEDE|Y30-44,5.5,percentuale,tavola 2
+2023,anno,Italia,accordo,MTAKEDE|Y45-59,5.5,percentuale,tavola 2
+2023,anno,Italia,accordo,MTAKEDE|Y60-74,9.0,percentuale,tavola 2
+2023,anno,Italia,accordo,MTAKEDE,6.3,percentuale,tavola 2
+2023,anno,Italia,accordo,MLESHOUS|Y18-29,12.9,percentuale,tavola 2
+2023,anno,Italia,accordo,MLESHOUS|Y30-44,16.2,percentuale,tavola 2
+2023,anno,Italia,accordo,MLESHOUS|Y45-59,20.6,percentuale,tavola 2
+2023,anno,Italia,accordo,MLESHOUS|Y60-74,29.5,percentuale,tavola 2
+2023,anno,Italia,accordo,MLESHOUS,21.4,percentuale,tavola 2
+2023,anno,Italia,accordo,MISUCWOR|Y18-29,13.9,percentuale,tavola 2
+2023,anno,Italia,accordo,MISUCWOR|Y30-44,15.3,percentuale,tavola 2
+2023,anno,Italia,accordo,MISUCWOR|Y45-59,20.6,percentuale,tavola 2
+2023,anno,Italia,accordo,MISUCWOR|Y60-74,26.5,percentuale,tavola 2
+2023,anno,Italia,accordo,MISUCWOR,20.4,percentuale,tavola 2
+2023,anno,Italia,accordo,WCOMPFIG|Y18-29,9.1,percentuale,tavola 2
+2023,anno,Italia,accordo,WCOMPFIG|Y30-44,12.6,percentuale,tavola 2
+2023,anno,Italia,accordo,WCOMPFIG|Y45-59,22.1,percentuale,tavola 2
+2023,anno,Italia,accordo,WCOMPFIG|Y60-74,30.5,percentuale,tavola 2
+2023,anno,Italia,accordo,WCOMPFIG,20.9,percentuale,tavola 2
+2023,anno,Italia,accordo,GOODWIFE|Y18-29,4.3,percentuale,tavola 2
+2023,anno,Italia,accordo,GOODWIFE|Y30-44,4.3,percentuale,tavola 2
+2023,anno,Italia,accordo,GOODWIFE|Y45-59,6.6,percentuale,tavola 2
+2023,anno,Italia,accordo,GOODWIFE|Y60-74,8.8,percentuale,tavola 2
+2023,anno,Italia,accordo,GOODWIFE,6.5,percentuale,tavola 2
+2023,anno,Italia,accordo,BOYSSTEM|Y18-29,9.4,percentuale,tavola 2
+2023,anno,Italia,accordo,BOYSSTEM|Y30-44,7.2,percentuale,tavola 2
+2023,anno,Italia,accordo,BOYSSTEM|Y45-59,10.3,percentuale,tavola 2
+2023,anno,Italia,accordo,BOYSSTEM|Y60-74,16.4,percentuale,tavola 2
+2023,anno,Italia,accordo,BOYSSTEM,11.4,percentuale,tavola 2
+2023,anno,Italia,accordo,MOTHCARE|Y18-29,11.6,percentuale,tavola 2
+2023,anno,Italia,accordo,MOTHCARE|Y30-44,14.4,percentuale,tavola 2
+2023,anno,Italia,accordo,MOTHCARE|Y45-59,19.9,percentuale,tavola 2
+2023,anno,Italia,accordo,MOTHCARE|Y60-74,28.0,percentuale,tavola 2
+2023,anno,Italia,accordo,MOTHCARE,20.2,percentuale,tavola 2
+2023,anno,Italia,accettabile,SLGIROC|Y18-29,3.8,percentuale,tavola 3
+2023,anno,Italia,accettabile,SLGIROC|Y30-44,1.4,percentuale,tavola 3
+2023,anno,Italia,accettabile,SLGIROC|Y45-59,2.0,percentuale,tavola 3
+2023,anno,Italia,accettabile,SLGIROC|Y60-74,2.6,percentuale,tavola 3
+2023,anno,Italia,accettabile,SLGIROC,2.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,NSMOCC|Y18-29,5.1,percentuale,tavola 3
+2023,anno,Italia,accettabile,NSMOCC|Y30-44,4.4,percentuale,tavola 3
+2023,anno,Italia,accettabile,NSMOCC|Y45-59,3.0,percentuale,tavola 3
+2023,anno,Italia,accettabile,NSMOCC|Y60-74,5.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,NSMOCC,4.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,HABCONTR|Y18-29,16.1,percentuale,tavola 3
+2023,anno,Italia,accettabile,HABCONTR|Y30-44,13.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,HABCONTR|Y45-59,9.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,HABCONTR|Y60-74,6.3,percentuale,tavola 3
+2023,anno,Italia,accettabile,HABCONTR,10.1,percentuale,tavola 3
+2023,anno,Italia,accordo,WPROVSEX|Y18-29,9.9,percentuale,tavola 4
+2023,anno,Italia,accordo,WPROVSEX|Y30-44,13.7,percentuale,tavola 4
+2023,anno,Italia,accordo,WPROVSEX|Y45-59,16.9,percentuale,tavola 4
+2023,anno,Italia,accordo,WPROVSEX|Y60-74,22.9,percentuale,tavola 4
+2023,anno,Italia,accordo,WPROVSEX,17.2,percentuale,tavola 4
+2023,anno,Italia,accordo,WABLAVO|Y18-29,28.6,percentuale,tavola 4
+2023,anno,Italia,accordo,WABLAVO|Y30-44,34.0,percentuale,tavola 4
+2023,anno,Italia,accordo,WABLAVO|Y45-59,33.2,percentuale,tavola 4
+2023,anno,Italia,accordo,WABLAVO|Y60-74,38.7,percentuale,tavola 4
+2023,anno,Italia,accordo,WABLAVO,34.5,percentuale,tavola 4
+2023,anno,Italia,accordo,SEWNRAP|Y18-29,2.5,percentuale,tavola 4
+2023,anno,Italia,accordo,SEWNRAP|Y30-44,4.4,percentuale,tavola 4
+2023,anno,Italia,accordo,SEWNRAP|Y45-59,5.5,percentuale,tavola 4
+2023,anno,Italia,accordo,SEWNRAP|Y60-74,7.6,percentuale,tavola 4
+2023,anno,Italia,accordo,SEWNRAP,5.5,percentuale,tavola 4
+2023,anno,Italia,accordo,HUSFNVIO|Y18-29,3.9,percentuale,tavola 4
+2023,anno,Italia,accordo,HUSFNVIO|Y30-44,4.9,percentuale,tavola 4
+2023,anno,Italia,accordo,HUSFNVIO|Y45-59,5.3,percentuale,tavola 4
+2023,anno,Italia,accordo,HUSFNVIO|Y60-74,7.0,percentuale,tavola 4
+2023,anno,Italia,accordo,HUSFNVIO,5.6,percentuale,tavola 4
+2023,anno,Italia,accordo,WOFSREM|Y18-29,2.5,percentuale,tavola 4
+2023,anno,Italia,accordo,WOFSREM|Y30-44,3.5,percentuale,tavola 4
+2023,anno,Italia,accordo,WOFSREM|Y45-59,3.0,percentuale,tavola 4
+2023,anno,Italia,accordo,WOFSREM|Y60-74,7.5,percentuale,tavola 4
+2023,anno,Italia,accordo,WOFSREM,4.5,percentuale,tavola 4
+2023,anno,Italia,accordo,WSVADRE|Y18-29,7.5,percentuale,tavola 4
+2023,anno,Italia,accordo,WSVADRE|Y30-44,10.4,percentuale,tavola 4
+2023,anno,Italia,accordo,WSVADRE|Y45-59,8.8,percentuale,tavola 4
+2023,anno,Italia,accordo,WSVADRE|Y60-74,14.1,percentuale,tavola 4
+2023,anno,Italia,accordo,WSVADRE,10.7,percentuale,tavola 4
+2023,anno,Italia,accordo,OACVIF|Y18-29,4.9,percentuale,tavola 4
+2023,anno,Italia,accordo,OACVIF|Y30-44,5.6,percentuale,tavola 4
+2023,anno,Italia,accordo,OACVIF|Y45-59,7.4,percentuale,tavola 4
+2023,anno,Italia,accordo,OACVIF|Y60-74,11.3,percentuale,tavola 4
+2023,anno,Italia,accordo,OACVIF,7.9,percentuale,tavola 4
+2023,anno,Italia,accordo,PARTYINV|Y18-29,4.7,percentuale,tavola 4
+2023,anno,Italia,accordo,PARTYINV|Y30-44,6.4,percentuale,tavola 4
+2023,anno,Italia,accordo,PARTYINV|Y45-59,7.7,percentuale,tavola 4
+2023,anno,Italia,accordo,PARTYINV|Y60-74,15.7,percentuale,tavola 4
+2023,anno,Italia,accordo,PARTYINV,9.5,percentuale,tavola 4
+2023,anno,Italia,accordo,MLESHOUS|M,24.6,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MLESHOUS|F,18.3,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,WCOMPFIG|M,24.2,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,WCOMPFIG|F,17.7,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MISUCWOR|M,20.0,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MISUCWOR|F,20.7,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MOTHCARE|M,19.6,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MOTHCARE|F,20.7,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MPRFAM|M,23.0,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MPRFAM|F,11.5,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,BOYSSTEM|M,13.2,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,BOYSSTEM|F,9.8,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,PRIOMEN|M,10.5,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,PRIOMEN|F,6.0,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,GOODWIFE|M,8.1,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,GOODWIFE|F,4.9,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MTAKEDE|M,8.7,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"
+2023,anno,Italia,accordo,MTAKEDE|F,3.9,percentuale,"primi risultati 22/11/2023, prospetto 1, dati provvisori"

@@ -4,6 +4,11 @@
 # Questa lista alimenta anche il feed RSS (rss.xml).
 
 - data: 2026-11-17
+  titolo: "In verifica: «Quante chiedono aiuto?» e «In che contesto nasce?»"
+  testo: "Nuove pagine per il numero 1522, i centri antiviolenza e gli stereotipi di genere fra gli adulti. I numeri sono ricavati dai file originali e sono in corso di controllo."
+  indirizzo: /domande/quante-chiedono-aiuto/
+
+- data: 2026-11-17
   titolo: "Nuova pagina «Il progetto»"
   testo: "Perché esiste il progetto, gli otto principi che lo guidano, che cosa fa e che cosa non fa, chi lo cura e come segnalare un errore."
   indirizzo: /il-progetto/

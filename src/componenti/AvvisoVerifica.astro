@@ -1,0 +1,9 @@
+---
+// Avviso per le pagine i cui numeri non sono ancora stati controllati sui siti originali.
+const { testo = 'I numeri sono stati ricavati dai file originali e sono in corso di controllo sulle pubblicazioni della fonte.' } = Astro.props;
+---
+<p class="avviso-verifica" role="note"><strong>In verifica.</strong> {testo}</p>
+
+<style>
+  .avviso-verifica { padding: 12px 16px; border: 1px dashed var(--attenzione); border-radius: 10px; background: var(--limiti-fondo); color: var(--limiti-testo); font-size: 14px; max-width: 820px; }
+</style>

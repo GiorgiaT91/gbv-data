@@ -1,7 +1,8 @@
 # Le dodici fonti. L'ordine è quello delle domande in home.
 # id: nome della cartella in dati/ (per le fonti non ancora pronte, il nome previsto).
-# pronta: true quando dati/<id>/ contiene dati.csv e scheda.yaml controllati
-#   e la fonte ha la sua infografica nel sito.
+# pronta: true quando dati/<id>/ contiene dati.csv e scheda.yaml e la fonte ha la sua infografica nel sito.
+# in_verifica: true finché Giorgia non ha controllato i numeri sui siti originali:
+#   la pagina è online con un avviso. Prima del lancio va tolto (o la fonte torna pronta: false).
 # Per le fonti pronte nome ed ente vengono letti da scheda.yaml.
 
 - id: istat-sicurezza-donne
@@ -11,10 +12,9 @@
   pronta: false
 
 - id: istat-stereotipi-adulti
-  ente: "Istat"
-  nome: "Stereotipi di genere e immagine sociale della violenza, adulti"
   domanda: 6
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: istat-stereotipi-ragazzi
   ente: "Istat"
@@ -23,16 +23,14 @@
   pronta: false
 
 - id: istat-1522
-  ente: "Istat e Dipartimento per le Pari Opportunità"
-  nome: "Numero 1522"
   domanda: 2
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: istat-centri-antiviolenza
-  ente: "Istat e Dipartimento per le Pari Opportunità"
-  nome: "Centri antiviolenza"
   domanda: 2
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: istat-case-rifugio
   ente: "Istat e Dipartimento per le Pari Opportunità"

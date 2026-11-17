@@ -7,6 +7,8 @@ numero: 4
 indirizzo: quante-donne-vengono-uccise
 domanda: "Quante donne vengono uccise in Italia?"
 titolo: "Dipende da chi conta."
+# Frase fissa in apertura (Piano, rischio "i numeri sono inaffidabili"). Da approvare.
+punto_fermo: "I numeri delle tre fonti non coincidono, ma sono dello stesso ordine di grandezza: **circa cento donne uccise ogni anno**."
 attacco: "Tre fonti contano i femminicidi in Italia, ognuna con proprie regole. Prima di guardare i numeri, occorre comprendere le regole."
 
 fonti:
@@ -82,6 +84,9 @@ numeri:
   anno_in_corso:
     anno: 2026
     descrizione: "anno in corso, dati parziali e periodi diversi"
+  esplora:
+    titolo: "Ogni fonte ha la sua infografica."
+    invito: "Esplora il dato:"
   nota: "Ogni numero dice che cosa conta: donne uccise o femminicidi. Non sono la stessa cosa, e i periodi del 2026 non coincidono."
 
 partner:

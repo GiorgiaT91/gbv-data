@@ -1,0 +1,221 @@
+---
+// Infografica dei centri antiviolenza a mosaico, impostazione B "prima il territorio"
+// (mockup riga 13 della tela, scelta il 16/11/2026). Dati: dati/istat-centri-antiviolenza.
+import Riquadro from '../grafici/Riquadro.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import Cifre from '../grafici/Cifre.astro';
+import { leggiDati, richiesto, formatta } from '../../lib/dati.js';
+import { C, PERIODI, percentuale } from '../../lib/colori.js';
+
+const F = 'istat-centri-antiviolenza';
+const righe = leggiDati(F);
+const v = (indicatore, categoria, territorio = 'Italia', anno = 2024) => richiesto(F, { anno, periodo: 'anno', territorio, indicatore, categoria });
+const pc = (parte, tot) => (100 * parte) / tot;
+const p = (x) => `${percentuale(x, 1)}%`;
+
+const attivi = v('centri_attivi', 'totale');
+const rispondenti = v('centri_rispondenti', 'totale');
+const contatti = v('donne_che_contattano', 'totale');
+const donne = v('donne_in_percorso', 'totale');
+const risposta = pc(rispondenti, attivi);
+
+// Regioni, nell'ordine delle tavole
+const RIPARTIZIONI = ['Nord-ovest', 'Nord-est', 'Centro', 'Sud', 'Isole', 'Italia'];
+const regioni = [...new Set(righe.filter((r) => r.indicatore === 'centri_attivi' && r.anno === '2024' && !RIPARTIZIONI.includes(r.territorio)).map((r) => r.territorio))]
+  .map((nome) => ({
+    nome,
+    attivi: v('centri_attivi', 'totale', nome),
+    rispondenti: v('centri_rispondenti', 'totale', nome),
+    tasso: v('centri_attivi', 'per_10mila_donne', nome),
+  }));
+const tassoMax = Math.max(...regioni.map((r) => r.tasso));
+const tassoIt = v('centri_attivi', 'per_10mila_donne');
+const basse = regioni.filter((r) => r.rispondenti / r.attivi < 0.8);
+const minima = regioni.reduce((a, b) => (b.rispondenti / b.attivi < a.rispondenti / a.attivi ? b : a));
+const t2 = (x) => percentuale(x, 2);
+
+// Donne per centro
+const perCentro = ['Nord-ovest', 'Nord-est', 'Italia', 'Sud'].map((t) => ({
+  etichetta: t === 'Italia' ? 'Media Italia' : t, valore: v('donne_che_contattano', 'per_centro_rispondente', t),
+}));
+const maxPerCentro = Math.max(...perCentro.map((d) => d.valore));
+const volontario = pc(v('personale', 'solo_volontario'), v('personale', 'totale'));
+const volontario2017 = v('personale', 'quota_volontario', 'Italia', 2017);
+
+// Nel tempo
+const serie = (indicatore, categoria = 'totale') => righe
+  .filter((r) => r.indicatore === indicatore && r.categoria === categoria && r.territorio === 'Italia' && r.periodo === 'anno')
+  .map((r) => ({ anno: Number(r.anno), valore: r.valore }))
+  .sort((a, b) => a.anno - b.anno);
+const centriNelTempo = serie('centri_attivi');
+const rispNelTempo = Object.fromEntries(serie('centri_rispondenti').map((d) => [d.anno, d.valore]));
+const contattiNelTempo = serie('donne_che_contattano');
+const costanti = serie('donne_in_percorso', 'centri_costanti');
+const primoCentri = centriNelTempo[0];
+const aumentoCentri = pc(attivi - primoCentri.valore, primoCentri.valore);
+const aumentoDonne = pc(costanti[costanti.length - 1].valore - costanti[0].valore, costanti[0].valore);
+const migliaia = (n) => `${percentuale(n / 1000, 1)} mila`;
+
+// Le donne
+const prima = [
+  ['parenti_amici', 'Parenti, amici, conoscenti'], ['forze_ordine', "Forze dell'ordine"], ['servizi_sociali', 'Servizi sociali'],
+  ['pronto_soccorso', 'Pronto soccorso o ospedale'], ['avvocato', 'Avvocato'], ['psicologo', 'Psicologo o psichiatra'],
+  ['numero_1522', 'Numero 1522'], ['altri_centri', 'Altri centri antiviolenza'],
+].map(([c, etichetta]) => ({ etichetta, valore: pc(v('rivolta_prima_a', c), donne), colore: c === 'numero_1522' ? PERIODI.passaggio : undefined }));
+const durata = [
+  ['piu_5_anni', 'Più di 5 anni'], ['1_5_anni', 'Da 1 a 5 anni'], ['6_mesi_1_anno', 'Da 6 mesi a 1 anno'],
+  ['1_6_mesi', 'Fino a 6 mesi'], ['singolo_episodio', 'Un solo episodio'],
+].map(([c, etichetta]) => ({ etichetta, valore: v('durata_violenza', c) }));
+const violenze = [
+  ['psicologica', 'Psicologica'], ['fisica', 'Fisica'], ['minaccia', 'Minacce'], ['economica', 'Economica'],
+  ['stalking', 'Stalking'], ['altra_violenza_sessuale', 'Altra violenza sessuale'], ['stupro_tentato_stupro', 'Stupro o tentato stupro'],
+].map(([c, etichetta]) => ({ etichetta, valore: pc(v('violenza_subita', c), donne) }));
+const emergenza = pc(v('donne_in_percorso', 'in_emergenza'), donne);
+const fonteDonne = `Istat-DPO · utenza dei centri antiviolenza 2024 · % sulle ${formatta(donne)} donne in percorso`;
+---
+<div class="mosaico">
+  <section class="s12 chiave" aria-label="I numeri principali">
+    {[
+      [formatta(attivi), 'centri antiviolenza attivi', C.accento],
+      [`${percentuale(risposta, 0)}%`, `hanno risposto all'indagine (${rispondenti} centri)`, C.uomini],
+      [formatta(contatti), 'donne li hanno contattati', C.uomini],
+      [formatta(donne), 'donne in percorso di uscita dalla violenza', C.accento],
+    ].map(([n, t, col]) => (
+      <div class="tessera"><span class="n" style={`color:${col}`}>{n}</span><span>{t}</span></div>
+    ))}
+  </section>
+
+  <div class="s12 testata-periodo" style="border-top-color:#3A3D44">
+    <span class="bollino" style="background:#3A3D44">Il territorio</span>
+    <div>
+      <h2>Dove sono i centri, e quanti hanno risposto</h2>
+      <p>La copertura dell'indagine cambia da regione a regione</p>
+    </div>
+  </div>
+
+  <div class="s8">
+    <Riquadro titolo={`Al Sud più centri in rapporto alle donne residenti; in ${minima.nome} ha risposto il ${percentuale(pc(minima.rispondenti, minima.attivi), 0)}% dei centri`}
+      nota="Istat-DPO · centri antiviolenza 2024 · tavole 1 e 2">
+      <div class="regioni" role="table" aria-label="Centri antiviolenza per regione, 2024">
+        <div class="riga intest" role="row">
+          <span role="columnheader">Regione</span><span role="columnheader" class="dx">Centri</span>
+          <span role="columnheader">Ogni 10 mila donne</span><span role="columnheader" class="dx">Hanno risposto</span>
+        </div>
+        {regioni.map((r) => {
+          const bassa = r.rispondenti / r.attivi < 0.8;
+          return (
+            <div class="riga" role="row">
+              <span role="cell">{r.nome}</span>
+              <span role="cell" class="dx forte">{r.attivi}</span>
+              <span role="cell" class="tasso">
+                <span class="binario" aria-hidden="true"><span style={`width:${(100 * r.tasso) / tassoMax}%`}></span></span>
+                <span class="valore">{t2(r.tasso)}</span>
+              </span>
+              <span role="cell" class:list={['dx', { bassa }]}>{r.rispondenti} su {r.attivi}{bassa && ' ⚠'}</span>
+            </div>
+          );
+        })}
+        <div class="riga totale" role="row">
+          <span role="cell">Italia</span><span role="cell" class="dx forte">{attivi}</span>
+          <span role="cell" class="tasso"><span class="binario" aria-hidden="true"><span style={`width:${(100 * tassoIt) / tassoMax}%`}></span></span><span class="valore">{t2(tassoIt)}</span></span>
+          <span role="cell" class="dx">{rispondenti} su {attivi}</span>
+        </div>
+      </div>
+      <p class="piccola">⚠ meno di otto centri su dieci hanno risposto ({basse.map((r) => r.nome).join(', ')}): i dati sulle donne di queste regioni sono parziali.</p>
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Al Nord ogni centro è contattato in media da più del triplo delle donne di un centro del Sud`}
+      nota="Istat-DPO · report 2024 · donne che hanno contattato il centro, per centro rispondente; tavola 27 per il personale">
+      <BarreOrizzontali voci={perCentro.map((d) => ({ ...d, testo: String(d.valore) }))} massimo={maxPerCentro * 1.05} />
+      <Cifre voci={[{ numero: p(volontario), testo: `del personale è volontario (era il ${percentuale(volontario2017, 1)}% nel 2017)`, colore: C.uomini }]} />
+    </Riquadro>
+  </div>
+
+  <div class="s12">
+    <Riquadro titolo={`Dal ${primoCentri.anno} i centri sono aumentati del ${percentuale(aumentoCentri, 0)}%; dal ${costanti[0].anno} le donne in percorso del ${percentuale(aumentoDonne, 0)}%`}
+      nota="Istat-DPO · tavole e report delle edizioni 2018–2024; serie ricostruita in note.md">
+      <div class="tre">
+        <div>
+          <h3>Centri antiviolenza attivi</h3>
+          <BarreOrizzontali voci={centriNelTempo.map((d) => ({ etichetta: String(d.anno), valore: d.valore, testo: String(d.valore) }))} massimo={450} />
+        </div>
+        <div>
+          <h3>Donne che hanno contattato un centro</h3>
+          <BarreOrizzontali voci={contattiNelTempo.map((d) => ({
+            etichetta: rispNelTempo[d.anno] ? `${d.anno} · risposta ${percentuale(pc(rispNelTempo[d.anno], centriNelTempo.find((c) => c.anno === d.anno).valore), 0)}%` : String(d.anno),
+            valore: d.valore, testo: migliaia(d.valore),
+          }))} massimo={70000} />
+          <p class="piccola">Contano solo i centri che rispondono; la quota cambia ogni anno.</p>
+        </div>
+        <div>
+          <h3>Donne in percorso, negli stessi centri</h3>
+          <BarreOrizzontali voci={costanti.map((d) => ({ etichetta: String(d.anno), valore: d.valore, testo: migliaia(d.valore) }))} massimo={40000} />
+          <p class="piccola">Solo i centri attivi in tutti e tre gli anni. Il 2024 è ricavato dal totale meno 850 donne in centri nuovi o non rispondenti nel 2023.</p>
+        </div>
+      </div>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${C.accento}`}>
+    <span class="bollino" style={`background:${C.accento}`}>Le donne</span>
+    <div>
+      <h2>Chi arriva a un centro</h2>
+      <p>{formatta(donne)} donne in percorso nel 2024; il {p(emergenza)} lo ha iniziato in emergenza</p>
+    </div>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Prima del centro, il ${percentuale(prima[0].valore, 0)}% si era rivolta a parenti o amici`} sottotitolo="Più risposte possibili" nota={fonteDonne}>
+      <BarreOrizzontali voci={prima} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Il ${percentuale(durata[0].valore, 0)}% subiva violenza da più di cinque anni`} nota={`${fonteDonne} · tavole 8 e 10`}>
+      <h3>Da quanto tempo</h3>
+      <BarreOrizzontali voci={durata} />
+      <h3>Che violenza (più risposte)</h3>
+      <BarreOrizzontali voci={violenze} />
+    </Riquadro>
+  </div>
+
+  <div class="s12">
+    <Riquadro titolo="Autori, denunce, condanne: dati non utilizzati in questa versione" nota="Istat-DPO · utenza dei centri antiviolenza 2024 · tavole 13, 15, 20 e 22">
+      <p class="non-utilizzabile">Le tavole sugli autori non sono coerenti fra loro: due tavole descrivono gli stessi 37.808 autori con distribuzioni diverse, e il numero di autori denunciati cambia da una tavola all'altra (21.224 o 16.411). In attesa di un chiarimento di Istat questi dati non sono mostrati.</p>
+    </Riquadro>
+  </div>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div:not(.testata-periodo) > :global(.riquadro) { height: 100%; }
+  .s4 { grid-column: span 4; } .s6 { grid-column: span 6; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  .chiave { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tessera { background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  .tessera .n { font-family: var(--titoli); font-weight: 600; font-size: 34px; line-height: 1.1; }
+  .testata-periodo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
+  .testata-periodo h2 { font-size: 22px; }
+  .testata-periodo p { font-size: 14px; color: var(--testo-2); }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .regioni { display: flex; flex-direction: column; font-size: 14px; }
+  .riga { display: grid; grid-template-columns: minmax(120px, 1.3fr) 52px minmax(110px, 2fr) 104px; gap: 12px; align-items: center; padding: 4px 0; }
+  .intest { font-size: 12px; color: var(--testo-3); padding-bottom: 6px; }
+  .totale { border-top: 1px solid var(--bordo); margin-top: 4px; padding-top: 8px; font-weight: 600; }
+  .dx { text-align: right; }
+  .forte { font-weight: 600; }
+  .bassa { color: #8A4A12; font-weight: 600; }
+  .tasso { display: flex; align-items: center; gap: 8px; }
+  .binario { flex: 1; height: 10px; background: #E6E6E1; border-radius: 5px; overflow: hidden; }
+  .binario span { display: block; height: 10px; background: var(--accento); }
+  .valore { width: 36px; text-align: right; }
+  .tre { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  h3 { font-family: var(--corpo); font-size: 14px; font-weight: 600; margin: 4px 0 8px; }
+  .piccola { font-size: 13px; color: var(--testo-3); }
+  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.45; color: var(--testo-2); }
+  @media (max-width: 980px) { .s4, .s6, .s8 { grid-column: span 12; } }
+  @media (max-width: 640px) {
+    .mosaico { gap: 14px; }
+    .riga { grid-template-columns: minmax(96px, 1.2fr) 30px minmax(70px, 1.4fr) 64px; gap: 8px; font-size: 13px; }
+    .valore { width: 30px; }
+  }
+</style>

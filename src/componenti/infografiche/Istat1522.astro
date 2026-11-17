@@ -1,0 +1,291 @@
+---
+// Infografica del Numero 1522 a mosaico (mockup riga 12 della tela, approvato il 16/11/2026).
+// I dati sono divisi per periodo di registrazione: vedi dati/istat-1522/note.md.
+import Riquadro from '../grafici/Riquadro.astro';
+import Legenda from '../grafici/Legenda.astro';
+import LineaMensile from '../grafici/LineaMensile.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import Cifre from '../grafici/Cifre.astro';
+import { leggiDati, richiesto, formatta } from '../../lib/dati.js';
+import { C, PERIODI, percentuale, quota } from '../../lib/colori.js';
+
+const F = 'istat-1522';
+const righe = leggiDati(F);
+const v = (periodo, indicatore, categoria) => richiesto(F, { anno: 2025, periodo, indicatore, categoria });
+const pc = (parte, tot) => (100 * parte) / tot;
+
+// --- Chiamate mese per mese -------------------------------------------------------------
+const mensili = righe.filter((r) => r.indicatore === 'chiamate_valide' && r.periodo.startsWith('mese-'));
+const anni = [...new Set(mensili.map((r) => Number(r.anno)))].sort((a, b) => a - b);
+const serie = anni.flatMap((a) => Array.from({ length: 12 }, (_, m) =>
+  richiesto(F, { anno: a, periodo: `mese-${String(m + 1).padStart(2, '0')}`, indicatore: 'chiamate_valide', categoria: 'totale' })));
+const idx = (anno, mese) => (anno - anni[0]) * 12 + (mese - 1);
+const iPiattaforma = idx(2023, 1);
+const iGestore = idx(2025, 4);
+const punti = (da, a) => serie.slice(da, a).map((valore, k) => ({ i: da + k, valore }));
+const tratti = [
+  { colore: PERIODI.precedente, sfondo: '#F2F2EE', punti: punti(0, iPiattaforma) },
+  { colore: PERIODI.riferimento, sfondo: '#EFE9F5', punti: punti(iPiattaforma, iGestore) },
+  { colore: PERIODI.passaggio, sfondo: '#F6F1E8', punti: punti(iGestore, serie.length) },
+];
+const MESI = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+const etichettaMese = (i) => `${MESI[i % 12]} ${anni[0] + Math.floor(i / 12)}`;
+const massimoIn = (da, a) => { let m = da; for (let i = da; i < a; i++) if (serie[i] > serie[m]) m = i; return m; };
+const picchi = [massimoIn(0, iPiattaforma), massimoIn(iPiattaforma, serie.length)];
+const annotazioni = picchi.map((i) => ({ i, valore: serie[i], testo: `${etichettaMese(i)}: ${formatta(serie[i])}` }));
+const cambi = [
+  { i: iPiattaforma, testo: 'gen 2023 · cambia la piattaforma' },
+  { i: iGestore, testo: 'apr 2025 · cambia il gestore' },
+];
+const annuo = (a) => richiesto(F, { anno: a, periodo: 'anno', indicatore: 'chiamate_valide', categoria: 'totale' });
+const primo = anni[0], ultimo = anni[anni.length - 1];
+const descrLinea = `Chiamate valide al 1522 per mese, gennaio ${primo} – dicembre ${ultimo}. Da ${formatta(annuo(primo))} chiamate nel ${primo} a ${formatta(annuo(ultimo))} nel ${ultimo}. Picchi: ${annotazioni.map((a) => a.testo).join('; ')}. Il modo di registrare cambia a gennaio 2023 e ad aprile 2025.`;
+const migliaia = (n) => Math.round(n / 1000);
+
+// --- Novembre rispetto agli altri mesi --------------------------------------------------
+const esclusi = [2020, 2025];
+const novembre = anni.filter((a) => !esclusi.includes(a)).map((a) => {
+  const mesi = serie.slice(idx(a, 1), idx(a, 1) + 12);
+  const altri = mesi.filter((_, m) => m !== 10);
+  const media = altri.reduce((s, x) => s + x, 0) / altri.length;
+  return { etichetta: String(a), valore: pc(mesi[10] - media, media) };
+});
+
+// --- Periodo di riferimento: gen 2023 – mar 2025 ----------------------------------------
+const R = 'gen2023-mar2025';
+const N = 'lug-dic2025';
+const P = 'apr-giu2025';
+const vittimeR = v(R, 'vittime', 'totale');
+const vittimeN = v(N, 'vittime', 'totale');
+const partnerCat = ['marito', 'ex_marito', 'convivente', 'ex_convivente', 'partner', 'ex_partner'];
+const somma = (periodo, ind, cats) => cats.reduce((s, c) => s + v(periodo, ind, c), 0);
+const autore = (periodo, tot) => ({
+  partner: pc(somma(periodo, 'autore', partnerCat), tot),
+  famiglia: pc(somma(periodo, 'autore', ['genitore', 'figlio']), tot),
+});
+const autoreR = autore(R, vittimeR);
+const autoreN = autore(N, vittimeN);
+
+const denunciaR = [
+  { etichetta: 'Non hanno denunciato', valore: pc(v(R, 'denuncia', 'non_denunciano'), vittimeR) },
+  { etichetta: 'Hanno denunciato', valore: pc(v(R, 'denuncia', 'denunciano'), vittimeR) },
+  { etichetta: 'Hanno denunciato e poi ritirato', valore: pc(v(R, 'denuncia', 'denunciano_e_ritirano'), vittimeR) },
+  { etichetta: 'Non risponde o dato mancante', valore: pc(somma(R, 'denuncia', ['non_risponde', 'nd']), vittimeR), mancante: true },
+];
+const frequenzaR = [
+  { etichetta: 'Ripetuti episodi, da anni', valore: pc(v(R, 'frequenza', 'da_anni'), vittimeR) },
+  { etichetta: 'Ripetuti episodi, da mesi', valore: pc(v(R, 'frequenza', 'da_mesi'), vittimeR) },
+  { etichetta: 'Pochi episodi', valore: pc(v(R, 'frequenza', 'pochi_episodi'), vittimeR) },
+  { etichetta: 'Un unico episodio', valore: pc(v(R, 'frequenza', 'unico_episodio'), vittimeR) },
+  { etichetta: 'Non risponde o dato mancante', valore: pc(somma(R, 'frequenza', ['non_risponde', 'nd']), vittimeR), mancante: true },
+];
+const luogoNoti = ['casa', 'strada', 'online', 'non_risponde', 'nd'];
+const luogoR = [
+  { etichetta: 'La propria casa', valore: pc(v(R, 'luogo', 'casa'), vittimeR) },
+  { etichetta: 'La strada', valore: pc(v(R, 'luogo', 'strada'), vittimeR) },
+  { etichetta: 'Online', valore: pc(v(R, 'luogo', 'online'), vittimeR) },
+  { etichetta: 'Altri luoghi', valore: pc(v(R, 'luogo', 'totale') - somma(R, 'luogo', luogoNoti), vittimeR) },
+  { etichetta: 'Non risponde o dato mancante', valore: pc(somma(R, 'luogo', ['non_risponde', 'nd']), vittimeR), mancante: true },
+];
+const violenza = (periodo, tot, voci) => {
+  const elencate = voci.map(([c]) => c);
+  const altre = v(periodo, 'violenza_principale', 'totale') - somma(periodo, 'violenza_principale', [...elencate, 'nd']);
+  return [
+    ...voci.map(([c, etichetta]) => ({ etichetta, valore: pc(v(periodo, 'violenza_principale', c), tot) })),
+    { etichetta: 'Altre forme', valore: pc(altre, tot) },
+    { etichetta: 'Dato mancante', valore: pc(v(periodo, 'violenza_principale', 'nd'), tot), mancante: true },
+  ];
+};
+const violenzaR = violenza(R, vittimeR, [['fisica', 'Fisica'], ['psicologica', 'Psicologica'], ['atti_persecutori', 'Atti persecutori'], ['sessuale', 'Sessuale']]);
+const violenzaN = violenza(N, vittimeN, [['psicologica', 'Psicologica'], ['fisica', 'Fisica'], ['atti_persecutori', 'Atti persecutori'], ['minacce', 'Minacce'], ['sessuale', 'Sessuale']]);
+
+// --- Il passaggio: motivi della chiamata ------------------------------------------------
+// Confronto fra gen-mar 2025 (ultimo trimestre del vecchio gestore), apr-giu e lug-dic 2025.
+const motivo = (periodo, cat) => pc(v(periodo, 'chiamate_per_motivo', cat), v(periodo, 'chiamate_per_motivo', 'totale'));
+const passaggioPeriodi = [
+  ['gen-mar2025', 'gen–mar 2025', PERIODI.riferimento],
+  [P, 'apr–giu 2025', PERIODI.passaggio],
+  [N, 'lug–dic 2025', PERIODI.nuovo],
+];
+const passaggio = (cat) => passaggioPeriodi.map(([p, etichetta, colore]) => ({ etichetta, valore: motivo(p, cat), colore }));
+const info = passaggio('informazioni_servizio');
+const aiuto = passaggio('aiuto_vittima_violenza');
+
+// --- Nuovo sistema: dati non utilizzabili ----------------------------------------------
+const nonRispondeDenuncia = pc(v(N, 'denuncia', 'non_risponde'), vittimeN);
+const luogoMancanteN = pc(somma(N, 'luogo', ['non_risponde', 'nd']), vittimeN);
+const casaN = v(N, 'luogo', 'casa');
+const casaSuRisposte = pc(casaN, vittimeN - somma(N, 'luogo', ['non_risponde', 'nd']));
+
+const p = (x) => `${percentuale(x, 1)}%`;
+const fonteR = `Istat-DPO · gen 2023 – mar 2025 · % sulle ${formatta(vittimeR)} vittime`;
+const fonteN = `Istat-DPO · lug – dic 2025 · % sulle ${formatta(vittimeN)} vittime`;
+---
+<div class="mosaico">
+  <section class="s12 periodi" aria-label="I periodi di registrazione">
+    {[
+      ['2018–2022', 'Sistema precedente', 'Solo il totale delle chiamate, mese per mese', PERIODI.precedente],
+      ['gen 2023 – mar 2025', 'Piattaforma 2022', 'Tutto: nove trimestri confrontabili. Periodo di riferimento', PERIODI.riferimento],
+      ['apr – giu 2025', 'Passaggio di gestore', 'Tutto, ma a metà fra due sistemi', PERIODI.passaggio],
+      ['lug – dic 2025', 'Nuovo gestore', 'Tutto, confrontabile solo al suo interno', PERIODI.nuovo],
+    ].map(([quando, nome, cosa, colore]) => (
+      <div class="periodo" style={`border-top-color:${colore}`}>
+        <strong>{quando}</strong>
+        <span class="nome" style={`color:${colore}`}>{nome}</span>
+        <span>{cosa}</span>
+      </div>
+    ))}
+  </section>
+
+  <div class="s12">
+    <Riquadro
+      titolo={`Dal ${primo} al ${ultimo} le chiamate valide sono passate da circa ${migliaia(annuo(primo))} mila a ${migliaia(annuo(ultimo))} mila l'anno`}
+      sottotitolo="Chiamate valide (telefono e chat) per mese. La linea si interrompe dove cambia il modo di registrare."
+      nota={`Istat-DPO · tavola 5 · chiamate valide da utenti, gennaio ${primo} – dicembre ${ultimo}`}
+    >
+      <Legenda piccola voci={[
+        { etichetta: '2018–2022', colore: PERIODI.precedente },
+        { etichetta: 'gen 2023 – mar 2025', colore: PERIODI.riferimento },
+        { etichetta: 'apr – dic 2025', colore: PERIODI.passaggio },
+      ]} />
+      <div class="solo-computer">
+        <LineaMensile anni={anni} tratti={tratti} cambi={cambi} annotazioni={annotazioni} massimo={10000} passo={2000} descrizione={descrLinea} />
+      </div>
+      <div class="solo-telefono">
+        <LineaMensile anni={anni} tratti={tratti} cambi={cambi.map((c) => ({ ...c, testo: c.testo.split(' · ')[0] }))}
+          annotazioni={annotazioni.map((a) => ({ ...a, testo: formatta(a.valore), sinistra: a.i > serie.length / 2 }))}
+          massimo={10000} passo={2500} larghezza={420} altezza={320} ogniAnni={2} descrizione={descrLinea} />
+      </div>
+    </Riquadro>
+  </div>
+
+  <div class="s4">
+    <Riquadro titolo={`Nel ${ultimo}, in media, ${Math.round(annuo(ultimo) / 365)} chiamate valide al giorno`} nota="Istat-DPO · tavole 1 e 5 · il totale è sommabile anche nel 2025">
+      <Cifre voci={[
+        { numero: formatta(annuo(ultimo)), testo: `chiamate valide nel ${ultimo}` },
+        { numero: formatta(annuo(ultimo - 1)), testo: `nel ${ultimo - 1}` },
+        { numero: formatta(annuo(primo)), testo: `nel ${primo}` },
+      ]} />
+    </Riquadro>
+  </div>
+  <div class="s8">
+    <Riquadro titolo="Ogni anno le chiamate salgono a novembre, intorno al 25 novembre" sottotitolo="Chiamate valide di novembre rispetto alla media degli altri mesi dello stesso anno"
+      nota="Valori: % in più rispetto alla media. Il 2020 e il 2025 sono esclusi (lockdown; cambio di gestore). Istat-DPO · tavola 5 · elaborazione GBV-Data">
+      <BarreOrizzontali voci={novembre} />
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${PERIODI.riferimento}`}>
+    <span class="bollino" style={`background:${PERIODI.riferimento}`}>gen 2023 – mar 2025</span>
+    <div>
+      <h2>Chi chiede aiuto: il periodo di riferimento</h2>
+      <p>Nove trimestri registrati con lo stesso sistema, {formatta(vittimeR)} vittime</p>
+    </div>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Il ${percentuale(autoreR.partner, 0)}% delle vittime indica il partner o un ex`} nota={fonteR}>
+      <Cifre voci={[
+        { numero: p(autoreR.partner), testo: 'marito, convivente, partner o ex' },
+        { numero: p(autoreR.famiglia), testo: 'padre, madre, figlio o figlia' },
+      ]} />
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Il ${percentuale(denunciaR[0].valore, 0)}% delle vittime dice di non aver denunciato`} nota={fonteR}>
+      <BarreOrizzontali voci={denunciaR} />
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Per il ${percentuale(frequenzaR[0].valore, 0)}% delle vittime la violenza dura da anni`} nota={fonteR}>
+      <BarreOrizzontali voci={frequenzaR} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Nel ${percentuale(luogoR[0].valore, 0)}% dei casi la violenza avviene in casa`} nota={fonteR}>
+      <BarreOrizzontali voci={luogoR} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`La violenza principale è fisica nel ${percentuale(violenzaR[0].valore, 0)}% dei casi, psicologica nel ${percentuale(violenzaR[1].valore, 0)}%`} nota={fonteR}>
+      <BarreOrizzontali voci={violenzaR} />
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${PERIODI.passaggio}`}>
+    <span class="bollino" style={`background:${PERIODI.passaggio}`}>apr – giu 2025</span>
+    <div>
+      <h2>Il trimestre di passaggio</h2>
+      <p>Cambia il gestore del servizio: i motivi della chiamata cambiano peso da un trimestre all'altro</p>
+    </div>
+  </div>
+  <div class="s12">
+    <Riquadro titolo={`In sei mesi la quota di chiamate per informazioni passa dal ${percentuale(info[0].valore, 0)}% al ${percentuale(info[2].valore, 0)}%`}
+      sottotitolo="Quota sulle chiamate valide. Non cambia chi chiama: cambia come la chiamata viene classificata."
+      nota="Istat-DPO · tavola 1 · % sulle chiamate valide del periodo">
+      <div class="due">
+        <div><h3>Informazioni sul servizio 1522</h3><BarreOrizzontali voci={info} massimo={60} /></div>
+        <div><h3>Richiesta di aiuto di una vittima di violenza</h3><BarreOrizzontali voci={aiuto} massimo={60} /></div>
+      </div>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${PERIODI.nuovo}`}>
+    <span class="bollino" style={`background:${PERIODI.nuovo}`}>lug – dic 2025</span>
+    <div>
+      <h2>Il nuovo sistema</h2>
+      <p>{formatta(vittimeN)} vittime; più risposte possibili sull'autore; uomini esclusi dalle vittime</p>
+    </div>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Il ${percentuale(autoreN.partner, 0)}% delle vittime indica il partner o un ex`} nota={fonteN}>
+      <Cifre voci={[
+        { numero: p(autoreN.partner), testo: 'marito, convivente, partner o ex', colore: PERIODI.nuovo },
+        { numero: p(autoreN.famiglia), testo: 'padre, madre, figlio o figlia' },
+      ]} />
+      <p class="piccola">Dal 2025 una vittima può indicare più autori.</p>
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo="Denuncia: dato non utilizzabile in questo periodo" nota={fonteN}>
+      <p class="non-utilizzabile">Per il {p(nonRispondeDenuncia)} delle vittime la risposta è «non risponde». Con il nuovo sistema la domanda non viene posta o registrata nello stesso modo.</p>
+      <p class="piccola">Non hanno denunciato: {quota(v(N, 'denuncia', 'non_denunciano'), vittimeN)}. Hanno denunciato: {quota(v(N, 'denuncia', 'denunciano'), vittimeN)}.</p>
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo="Luogo: per metà delle vittime non è registrato" nota={fonteN}>
+      <p class="non-utilizzabile">Luogo non indicato (non risponde o dato mancante): {p(luogoMancanteN)}. In casa: {quota(casaN, vittimeN)} del totale, cioè il {percentuale(casaSuRisposte, 0)}% di chi ha una risposta.</p>
+    </Riquadro>
+  </div>
+  <div class="s12">
+    <Riquadro titolo="Con il nuovo sistema la violenza psicologica è la prima voce" nota={fonteN}>
+      <BarreOrizzontali voci={violenzaN} colore={PERIODI.nuovo} />
+      <p class="piccola">Voci e modo di registrare sono cambiati: le quote non si confrontano con il periodo gen 2023 – mar 2025.</p>
+    </Riquadro>
+  </div>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div:not(.testata-periodo) > :global(.riquadro) { height: 100%; }
+  .s4 { grid-column: span 4; } .s6 { grid-column: span 6; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  .periodi { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .periodo { border-top: 4px solid; background: var(--carta); border-radius: 0 0 12px 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--testo-2); }
+  .periodo strong { font-family: var(--titoli); font-size: 17px; color: var(--testo); }
+  .periodo .nome { font-size: 13px; font-weight: 600; }
+  .testata-periodo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
+  .testata-periodo h2 { font-size: 22px; }
+  .testata-periodo p { font-size: 14px; color: var(--testo-2); }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .due { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .due h3 { font-family: var(--corpo); font-size: 14px; margin-bottom: 8px; }
+  .piccola { font-size: 13px; color: var(--testo-3); }
+  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.45; color: var(--testo-2); }
+  .solo-telefono { display: none; }
+  @media (max-width: 980px) { .s4, .s6, .s8 { grid-column: span 12; } }
+  @media (max-width: 640px) {
+    .mosaico { gap: 14px; }
+    .solo-computer { display: none; }
+    .solo-telefono { display: block; }
+  }
+</style>

@@ -1,0 +1,214 @@
+---
+// Infografica degli stereotipi di genere, adulti 18-74 anni, a mosaico:
+// 2023 → cosa manca → confronto 2018-2023 → 2018 (mockup riga 10 della tela, scelta il 16/11/2026).
+// Dati: dati/istat-stereotipi-adulti (codici delle affermazioni in codici.csv).
+import Riquadro from '../grafici/Riquadro.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import BarreGruppi from '../grafici/BarreGruppi.astro';
+import Cifre from '../grafici/Cifre.astro';
+import { richiesto, valore } from '../../lib/dati.js';
+import { C, PERIODI, percentuale } from '../../lib/colori.js';
+
+const F = 'istat-stereotipi-adulti';
+const v = (anno, indicatore, categoria) => richiesto(F, { anno, indicatore, categoria });
+const p = (x) => `${percentuale(x, 1)}%`;
+const CHIARO = '#B9A6CC';
+
+const TESTI = {
+  MISUCWOR: "Per l'uomo è più importante il successo nel lavoro",
+  MLESHOUS: 'Gli uomini sono meno adatti alle faccende domestiche',
+  MPRFAM: "È l'uomo che deve provvedere alla famiglia",
+  PRIOMEN: 'Se il lavoro scarseggia, precedenza agli uomini',
+  MTAKEDE: "È l'uomo che prende le decisioni importanti",
+  WCOMPFIG: 'Una donna per essere completa deve avere figli',
+  MOTHCARE: 'È compito delle madri seguire i figli',
+  BOYSSTEM: 'I ragazzi sono più portati per le materie scientifiche',
+  GOODWIFE: 'Una buona moglie asseconda le idee del marito',
+  WABLAVO: 'Una donna che non vuole un rapporto riesce a evitarlo',
+  WPROVSEX: 'Le donne la provocano con il modo di vestire',
+  WSVADRE: 'Se è ubriaca o drogata è in parte responsabile',
+  OACVIF: 'Le accuse di violenza sessuale sono spesso false',
+  WOFSREM: 'Le donne dicono no ma intendono sì',
+  SEWNRAP: 'Le donne serie non vengono violentate',
+  HUSFNVIO: 'Se il marito la obbliga non è violenza',
+  HABCONTR: 'Un uomo controlla il cellulare della compagna',
+  SLGIROC: 'Schiaffo alla fidanzata perché ha flirtato',
+  NSMOCC: 'In una coppia ogni tanto ci scappa uno schiaffo',
+};
+const ETA = [['Y18-29', '18–29'], ['Y30-44', '30–44'], ['Y45-59', '45–59'], ['Y60-74', '60–74']];
+const TRE = [
+  { nome: 'Ruoli di genere', colore: C.accento, codice: 'TRGENROL' },
+  { nome: 'Violenza sessuale', colore: C.familiare, codice: 'STEVIOSEX' },
+  { nome: 'Violenza nella coppia', colore: PERIODI.passaggio, codice: 'ONEBEHP' },
+];
+
+// --- 2023 ---------------------------------------------------------------------------
+const almeno23 = TRE.map((s) => v(2023, 'almeno_uno', s.codice));
+const perEta23 = ETA.map(([c, e]) => ({ etichetta: `${e} anni`, valori: TRE.map((s) => v(2023, 'almeno_uno', `${s.codice}|${c}`)) }));
+const RUOLI23 = ['MLESHOUS', 'WCOMPFIG', 'MISUCWOR', 'MOTHCARE', 'MPRFAM', 'BOYSSTEM', 'PRIOMEN', 'GOODWIFE', 'MTAKEDE'];
+const ruoli23 = RUOLI23.map((c) => ({ etichetta: TESTI[c], valore: v(2023, 'accordo', c) })).sort((a, b) => b.valore - a.valore);
+const sesso23 = RUOLI23.map((c) => ({ c, d: v(2023, 'accordo', `${c}|F`), u: v(2023, 'accordo', `${c}|M`) }));
+const uominiPiu = sesso23.filter((s) => s.u > s.d).length;
+const scarti = [...sesso23].sort((a, b) => (b.u - b.d) - (a.u - a.d)).slice(0, 4);
+const NUMERI = ['zero', 'una', 'due', 'tre', 'quattro', 'cinque', 'sei', 'sette', 'otto', 'nove', 'dieci', 'undici', 'dodici', 'tredici', 'quattordici', 'quindici'];
+const cellulare = ETA.map(([c, e]) => ({ etichetta: `${e} anni`, valore: v(2023, 'accettabile', `HABCONTR|${c}`) }));
+const cellulareTot = v(2023, 'accettabile', 'HABCONTR');
+
+// --- Confronto 2018 → 2023 --------------------------------------------------------------
+const GRUPPI = [
+  ['Ruoli di genere', 'accordo', ['MISUCWOR', 'MLESHOUS', 'MPRFAM', 'PRIOMEN', 'MTAKEDE']],
+  ['Violenza sessuale', 'accordo', ['WABLAVO', 'WPROVSEX', 'WSVADRE', 'OACVIF', 'WOFSREM', 'SEWNRAP', 'HUSFNVIO']],
+  ['Violenza nella coppia', 'accettabile', ['HABCONTR', 'SLGIROC', 'NSMOCC']],
+];
+const DA_VERIFICARE = ['HUSFNVIO'];
+const confronto = GRUPPI.map(([titolo, ind, codici]) => ({
+  titolo,
+  voci: codici.map((c) => ({
+    etichetta: TESTI[c], segno: DA_VERIFICARE.includes(c) ? '⚠' : undefined,
+    valori: [v(2018, ind, c), v(2023, ind, c)],
+  })),
+}));
+const tutte = confronto.flatMap((g) => g.voci);
+const inCalo = tutte.filter((x) => x.valori[1] < x.valori[0]).length;
+
+// --- 2018 ---------------------------------------------------------------------------
+const almeno18 = TRE.map((s) => v(2018, 'almeno_uno', s.codice));
+const sesso18 = (c) => [v(2018, 'almeno_uno', `${c}|M`), v(2018, 'almeno_uno', `${c}|F`)];
+const TITOLI = [['NP', 'Elementare o nessuno'], ['LSE', 'Licenza media'], ['USE_IF', 'Diploma'], ['CLF_ML', 'Laurea']];
+const perTitolo = TITOLI.map(([c, e]) => ({ etichetta: e, valori: TRE.map((s) => v(2018, 'almeno_uno', `${s.codice}|${c}`)) }));
+const consigli = [['FILEREP', 'Denunciarlo'], ['ADVLEPA', 'Lasciarlo'], ['ANTVIOLCE', 'Rivolgersi a un centro antiviolenza'], ['OTHSER', 'Rivolgersi ad altri servizi o professionisti'], ['CAL1522', 'Chiamare il 1522']]
+  .map(([c, e]) => ({ etichetta: e, valore: v(2018, 'consigli', c), colore: c === 'CAL1522' ? PERIODI.passaggio : undefined }));
+const DONNE_UOMINI = [{ nome: 'Donne', colore: C.accento }, { nome: 'Uomini', colore: C.uomini }];
+const cause = [['CONWPR', 'Le donne sono considerate oggetti di proprietà'], ['NEFESUP', 'Bisogno di sentirsi superiori alla compagna'], ['NOSTWEM', "Gli uomini non sopportano l'emancipazione femminile"], ['ABDRALC', 'Abuso di alcol o sostanze']]
+  .map(([c, e]) => ({ etichetta: e, valori: [v(2018, 'cause', `${c}|F`), v(2018, 'cause', `${c}|M`)] }));
+const diff = (cats, s) => cats.reduce((t, c) => t + v(2018, 'diffusione', `${c}|${s}`), 0);
+const diffusione = [['Molto diffusa', ['VERYCOM']], ['Abbastanza diffusa', ['FAIRCOM']], ['Poco o per niente diffusa', ['NOVERCOM', 'NOALCOM']]]
+  .map(([e, cats]) => ({ etichetta: e, valori: [diff(cats, 'F'), diff(cats, 'M')] }));
+---
+<div class="mosaico">
+  <div class="s12 testata" style={`border-top-color:${C.accento}`}>
+    <span class="bollino" style={`background:${C.accento}`}>2023</span>
+    <div><h2>L'ultima rilevazione</h2><p>Tavole per età pubblicate a ottobre 2024; il dettaglio per sesso solo nei primi risultati provvisori</p></div>
+  </div>
+
+  <div class="s5">
+    <Riquadro titolo={`Nel 2023 il ${percentuale(almeno23[0], 1)}% delle persone adulte condivide almeno uno stereotipo sui ruoli di genere`} nota="Istat · tavole per età 2023 (ottobre 2024) · tavola 1 · % sulle persone di 18–74 anni">
+      <Cifre voci={[
+        { numero: p(almeno23[0]), testo: 'almeno uno stereotipo sui ruoli di genere (9 affermazioni)' },
+        { numero: p(almeno23[1]), testo: 'almeno uno stereotipo sulla violenza sessuale (8 affermazioni)' },
+        { numero: p(almeno23[2]), testo: 'accetta almeno un comportamento violento nella coppia (3)' },
+      ]} />
+    </Riquadro>
+  </div>
+  <div class="s7">
+    <Riquadro titolo="Gli stereotipi crescono con l'età; l'accettazione della violenza nella coppia è più alta fra i più giovani" sottotitolo="Persone con almeno uno stereotipo o che accettano almeno un comportamento violento, per età" nota="Istat · tavole per età 2023 · tavola 1">
+      <BarreGruppi voci={perEta23} serie={TRE} massimo={80} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo="Le affermazioni più condivise riguardano faccende domestiche, figli e lavoro" sottotitolo="Persone d'accordo con ciascuna affermazione sui ruoli di genere" nota="Istat · tavole per età 2023 · tavola 2 · % sulle persone di 18–74 anni">
+      <BarreOrizzontali voci={ruoli23} massimo={40} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Gli uomini sono più d'accordo delle donne su ${NUMERI[uominiPiu]} affermazioni su nove`} sottotitolo="Persone d'accordo, per sesso: le quattro affermazioni con la differenza più ampia" nota="Istat · primi risultati 2023, prospetto 1, dati provvisori">
+      <BarreGruppi voci={scarti.map((s) => ({ etichetta: TESTI[s.c], valori: [s.d, s.u] }))} serie={DONNE_UOMINI} massimo={40} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Fra i 18 e i 29 anni il ${percentuale(cellulare[0].valore, 1)}% accetta che un uomo controlli il cellulare della compagna`} sottotitolo="Persone che lo ritengono accettabile sempre o in alcune circostanze, per età" nota={`Totale: ${p(cellulareTot)}. Istat · tavole per età 2023 · tavola 3`}>
+      <BarreOrizzontali voci={cellulare} massimo={20} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo="Cosa manca nell'ultima rilevazione">
+      <ul class="manca">
+        <li>Le tavole del 2023 sono solo per età: niente titolo di studio, regioni, cause della violenza, consigli a una vittima.</li>
+        <li>Il confronto fra uomini e donne esiste solo nei primi risultati, dichiarati provvisori; Istat non indica se le tavole di ottobre 2024 siano definitive.</li>
+        <li>Le domande sono cambiate rispetto al 2018: si possono confrontare solo le singole affermazioni ripetute.</li>
+      </ul>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata" style="border-top-color:#3A3D44">
+    <span class="bollino" style="background:#3A3D44">2018 → 2023</span>
+    <div><h2>Cosa si può confrontare</h2><p>Solo le quindici affermazioni rilevate in entrambe le edizioni, che sono state condotte in modo diverso</p></div>
+  </div>
+  <div class="s12">
+    <Riquadro titolo={`Fra il 2018 e il 2023 ${NUMERI[inCalo]} affermazioni su ${NUMERI[tutte.length]} sono in calo`} sottotitolo="Persone d'accordo con l'affermazione, o che ritengono accettabile il comportamento" nota="⚠ valore da verificare sui questionari: la formulazione potrebbe essere cambiata. Istat · 2018 IstatData; 2023 tavole per età (ottobre 2024) · % sulle persone di 18–74 anni">
+      <div class="confronto">
+        {confronto.map((g, i) => (
+          <div>
+            <h3>{g.titolo}</h3>
+            <BarreGruppi voci={g.voci} serie={[{ nome: '2018', colore: CHIARO }, { nome: '2023', colore: C.accento }]} massimo={45} legenda={i === 0} />
+          </div>
+        ))}
+      </div>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata" style={`border-top-color:${CHIARO}`}>
+    <span class="bollino" style="background:#8E6BB3">2018</span>
+    <div><h2>La rilevazione più dettagliata</h2><p>Tutti i dati in tabella, per sesso, età, titolo di studio e regione</p></div>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Nel 2018 il ${percentuale(almeno18[0], 1)}% condivideva almeno uno stereotipo sui ruoli di genere`} nota="Istat · 2018 · IstatData RUOLIGEN_1">
+      <Cifre voci={[
+        { numero: p(almeno18[0]), testo: 'almeno uno stereotipo sui ruoli di genere (5 affermazioni)' },
+        { numero: p(almeno18[1]), testo: 'almeno uno stereotipo sulla violenza sessuale (7 affermazioni)' },
+        { numero: p(almeno18[2]), testo: 'accetta almeno un comportamento violento nella coppia (3)' },
+      ]} />
+      <p class="piccola">Uomini e donne: {p(sesso18('TRGENROL')[0])} e {p(sesso18('TRGENROL')[1])} sui ruoli; {p(sesso18('STEVIOSEX')[0])} e {p(sesso18('STEVIOSEX')[1])} sulla violenza sessuale.</p>
+    </Riquadro>
+  </div>
+  <div class="s8">
+    <Riquadro titolo="Nel 2018 gli stereotipi diminuivano al crescere del titolo di studio" sottotitolo="Persone con almeno uno stereotipo, per titolo di studio" nota="Istat · 2018 · IstatData RUOLIGEN_2">
+      <BarreGruppi voci={perTitolo} serie={TRE} massimo={85} />
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Nel 2018 il ${percentuale(consigli[4].valore, 1)}% avrebbe consigliato di chiamare il 1522`} sottotitolo="Cosa consiglierebbero a una donna che subisce violenza dal partner (più risposte)" nota="Istat · 2018 · IstatData RUOLIGEN_19">
+      <BarreOrizzontali voci={consigli} />
+    </Riquadro>
+  </div>
+  <div class="s4 solo-computer">
+    <Riquadro titolo="Le donne indicavano più spesso degli uomini cause legate al potere" sottotitolo="Persone che indicano ciascuna causa della violenza nella coppia" nota="Istat · 2018 · IstatData RUOLIGEN_16">
+      <BarreGruppi voci={cause} serie={DONNE_UOMINI} />
+    </Riquadro>
+  </div>
+  <div class="s4 solo-computer">
+    <Riquadro titolo={`Il ${percentuale(diffusione[0].valori[0], 1)}% delle donne considerava molto diffusa la violenza nella coppia; fra gli uomini il ${percentuale(diffusione[0].valori[1], 1)}%`} sottotitolo="Quanto si pensa sia diffusa in Italia la violenza fisica o sessuale dei partner" nota="Istat · 2018 · IstatData RUOLIGEN_13">
+      <BarreGruppi voci={diffusione} serie={DONNE_UOMINI} />
+    </Riquadro>
+  </div>
+
+  <section class="s12 chiusura">
+    <h2>Gli stereotipi stanno diminuendo?</h2>
+    <p>Delle {NUMERI[tutte.length]} affermazioni ripetute, {NUMERI[inCalo]} sono in calo. Per saperlo con più precisione servirebbero domande uguali nel tempo e tavole complete per sesso, titolo di studio e territorio.</p>
+    <p>La terza rilevazione è prevista nel 2026.</p>
+  </section>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div:not(.testata) > :global(.riquadro) { height: 100%; }
+  .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s6 { grid-column: span 6; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  .testata { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
+  .testata h2 { font-size: 22px; }
+  .testata p { font-size: 14px; color: var(--testo-2); }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .confronto { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+  h3 { font-family: var(--corpo); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--testo-3); margin-bottom: 10px; }
+  .manca { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--testo-2); }
+  .piccola { font-size: 13px; color: var(--testo-3); }
+  .chiusura { background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 14px; }
+  .chiusura h2 { font-size: 30px; }
+  .chiusura p { font-size: 17px; color: var(--testo-2); max-width: 820px; }
+  @media (max-width: 980px) { .s4, .s5, .s6, .s7, .s8 { grid-column: span 12; } }
+  @media (max-width: 640px) {
+    .mosaico { gap: 14px; }
+    .solo-computer { display: none; }
+    .chiusura { padding: 22px; } .chiusura h2 { font-size: 24px; }
+  }
+</style>

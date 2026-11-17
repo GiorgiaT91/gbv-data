@@ -1,0 +1,42 @@
+id: istat-1522
+nome: "Numero di pubblica utilità 1522"
+ente: "Istat e Dipartimento per le Pari Opportunità"
+gruppo: aiuto
+domanda: 2
+
+periodo_coperto: "chiamate 2018-2025; vittime gennaio 2023 - dicembre 2025"
+ultimo_dato: "anno 2025"
+ultimo_aggiornamento: 2026-10-19       # tavole riviste; prima pubblicazione 4 settembre 2026
+ultima_verifica: 2026-11-16
+cadenza: "trimestrale"
+prossimo_aggiornamento: "DA VERIFICARE"   # tavole trimestrali 2026
+
+numero_principale: "61.303"
+titolo_messaggio: "Dal 2018 le chiamate al 1522 sono più che raddoppiate; nello stesso periodo il modo di registrarle è cambiato due volte"
+componente: serie-tempo
+
+chi_conta: "Istat, sui dati del Dipartimento per le Pari Opportunità della Presidenza del Consiglio"
+da_dove_vengono_i_casi: "Dalle schede compilate dalle operatrici durante le chiamate e le chat al numero 1522"
+cosa_viene_contato: "Le chiamate valide al numero antiviolenza e stalking, i motivi per cui si chiama e ciò che le vittime dichiarano: autore, tipo di violenza, luogo, denuncia."
+
+limiti:
+  - "Conta chiamate, non persone: la stessa donna può chiamare più volte e il sistema non lo verifica."
+  - "Racconta solo chi chiama, non quanto è diffusa la violenza: per questo serve l'indagine Istat sulla sicurezza delle donne."
+  - "Segue l'attenzione pubblica: campagne, televisione e cronaca fanno salire le chiamate, ogni anno soprattutto a novembre."
+  - "Le informazioni sono dichiarate al telefono e non verificabili; per alcune domande i dati mancanti sono molti."
+  - "Il modo di registrare è cambiato due volte: a gennaio 2023 (nuova piattaforma) e ad aprile 2025 (nuovo gestore). I dati su vittime e autori si confrontano solo dentro lo stesso periodo."
+  - "Su autore e tipo di violenza sono possibili più risposte, soprattutto dal 2025: le somme possono superare il totale."
+  - "Dal 2025 gli uomini non sono contati fra le vittime."
+
+nuove_domande:
+  - "Quante delle donne che chiamano il 1522 arrivano poi a un centro antiviolenza o a una denuncia?"
+  - "Quanto dell'aumento delle chiamate dal 2023 dipende dal nuovo modo di registrarle?"
+
+link_fonte: "https://www.istat.it/tavole-di-dati/il-numero-verde-1522-chi-chiama-perche-e-cosa-racconta-anno-2025/"
+file_originali:
+  - "originali/2025/Tavole_ITA_REV-19ottobre2026.xlsx"
+  - "originali/2025/Nota-metodologica.pdf"
+  - "originali/2025/Glossario.pdf"
+licenza: "DA VERIFICARE"
+
+stato: bozza

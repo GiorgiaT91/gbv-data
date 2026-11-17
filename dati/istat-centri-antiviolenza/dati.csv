@@ -1,0 +1,158 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2024,anno,Piemonte,centri_attivi,totale,21,centri,tavola 1 centri
+2024,anno,Piemonte,centri_attivi,per_10mila_donne,0.0966,tasso,tavola 1 centri
+2024,anno,Valle d'Aosta,centri_attivi,totale,1,centri,tavola 1 centri
+2024,anno,Valle d'Aosta,centri_attivi,per_10mila_donne,0.16,tasso,tavola 1 centri
+2024,anno,Liguria,centri_attivi,totale,11,centri,tavola 1 centri
+2024,anno,Liguria,centri_attivi,per_10mila_donne,0.1412,tasso,tavola 1 centri
+2024,anno,Lombardia,centri_attivi,totale,57,centri,tavola 1 centri
+2024,anno,Lombardia,centri_attivi,per_10mila_donne,0.112,tasso,tavola 1 centri
+2024,anno,Trentino-Alto Adige,centri_attivi,totale,6,centri,tavola 1 centri
+2024,anno,Trentino-Alto Adige,centri_attivi,per_10mila_donne,0.1096,tasso,tavola 1 centri
+2024,anno,Veneto,centri_attivi,totale,25,centri,tavola 1 centri
+2024,anno,Veneto,centri_attivi,per_10mila_donne,0.1016,tasso,tavola 1 centri
+2024,anno,Friuli-Venezia Giulia,centri_attivi,totale,8,centri,tavola 1 centri
+2024,anno,Friuli-Venezia Giulia,centri_attivi,per_10mila_donne,0.1311,tasso,tavola 1 centri
+2024,anno,Emilia-Romagna,centri_attivi,totale,23,centri,tavola 1 centri
+2024,anno,Emilia-Romagna,centri_attivi,per_10mila_donne,0.1013,tasso,tavola 1 centri
+2024,anno,Toscana,centri_attivi,totale,24,centri,tavola 1 centri
+2024,anno,Toscana,centri_attivi,per_10mila_donne,0.1278,tasso,tavola 1 centri
+2024,anno,Umbria,centri_attivi,totale,12,centri,tavola 1 centri
+2024,anno,Umbria,centri_attivi,per_10mila_donne,0.2734,tasso,tavola 1 centri
+2024,anno,Marche,centri_attivi,totale,5,centri,tavola 1 centri
+2024,anno,Marche,centri_attivi,per_10mila_donne,0.0662,tasso,tavola 1 centri
+2024,anno,Lazio,centri_attivi,totale,45,centri,tavola 1 centri
+2024,anno,Lazio,centri_attivi,per_10mila_donne,0.153,tasso,tavola 1 centri
+2024,anno,Abruzzo,centri_attivi,totale,13,centri,tavola 1 centri
+2024,anno,Abruzzo,centri_attivi,per_10mila_donne,0.2011,tasso,tavola 1 centri
+2024,anno,Molise,centri_attivi,totale,4,centri,tavola 1 centri
+2024,anno,Molise,centri_attivi,per_10mila_donne,0.2751,tasso,tavola 1 centri
+2024,anno,Campania,centri_attivi,totale,64,centri,tavola 1 centri
+2024,anno,Campania,centri_attivi,per_10mila_donne,0.2242,tasso,tavola 1 centri
+2024,anno,Puglia,centri_attivi,totale,29,centri,tavola 1 centri
+2024,anno,Puglia,centri_attivi,per_10mila_donne,0.1459,tasso,tavola 1 centri
+2024,anno,Basilicata,centri_attivi,totale,2,centri,tavola 1 centri
+2024,anno,Basilicata,centri_attivi,per_10mila_donne,0.0745,tasso,tavola 1 centri
+2024,anno,Calabria,centri_attivi,totale,13,centri,tavola 1 centri
+2024,anno,Calabria,centri_attivi,per_10mila_donne,0.1391,tasso,tavola 1 centri
+2024,anno,Sicilia,centri_attivi,totale,34,centri,tavola 1 centri
+2024,anno,Sicilia,centri_attivi,per_10mila_donne,0.1387,tasso,tavola 1 centri
+2024,anno,Sardegna,centri_attivi,totale,12,centri,tavola 1 centri
+2024,anno,Sardegna,centri_attivi,per_10mila_donne,0.1507,tasso,tavola 1 centri
+2024,anno,Nord-ovest,centri_attivi,totale,90,centri,tavola 1 centri
+2024,anno,Nord-ovest,centri_attivi,per_10mila_donne,0.1111,tasso,tavola 1 centri
+2024,anno,Nord-est,centri_attivi,totale,62,centri,tavola 1 centri
+2024,anno,Nord-est,centri_attivi,per_10mila_donne,0.1053,tasso,tavola 1 centri
+2024,anno,Centro,centri_attivi,totale,86,centri,tavola 1 centri
+2024,anno,Centro,centri_attivi,per_10mila_donne,0.143,tasso,tavola 1 centri
+2024,anno,Sud,centri_attivi,totale,125,centri,tavola 1 centri
+2024,anno,Sud,centri_attivi,per_10mila_donne,0.1828,tasso,tavola 1 centri
+2024,anno,Isole,centri_attivi,totale,46,centri,tavola 1 centri
+2024,anno,Isole,centri_attivi,per_10mila_donne,0.1416,tasso,tavola 1 centri
+2024,anno,Italia,centri_attivi,totale,409,centri,tavola 1 centri
+2024,anno,Italia,centri_attivi,per_10mila_donne,0.1359,tasso,tavola 1 centri
+2024,anno,Piemonte,centri_rispondenti,totale,21,centri,tavola 2 centri
+2024,anno,Piemonte,centri_rispondenti,per_10mila_donne,0.0966,tasso,tavola 2 centri
+2024,anno,Valle d'Aosta,centri_rispondenti,totale,1,centri,tavola 2 centri
+2024,anno,Valle d'Aosta,centri_rispondenti,per_10mila_donne,0.16,tasso,tavola 2 centri
+2024,anno,Liguria,centri_rispondenti,totale,11,centri,tavola 2 centri
+2024,anno,Liguria,centri_rispondenti,per_10mila_donne,0.1412,tasso,tavola 2 centri
+2024,anno,Lombardia,centri_rispondenti,totale,53,centri,tavola 2 centri
+2024,anno,Lombardia,centri_rispondenti,per_10mila_donne,0.1042,tasso,tavola 2 centri
+2024,anno,Trentino-Alto Adige,centri_rispondenti,totale,6,centri,tavola 2 centri
+2024,anno,Trentino-Alto Adige,centri_rispondenti,per_10mila_donne,0.1096,tasso,tavola 2 centri
+2024,anno,Veneto,centri_rispondenti,totale,25,centri,tavola 2 centri
+2024,anno,Veneto,centri_rispondenti,per_10mila_donne,0.1016,tasso,tavola 2 centri
+2024,anno,Friuli-Venezia Giulia,centri_rispondenti,totale,8,centri,tavola 2 centri
+2024,anno,Friuli-Venezia Giulia,centri_rispondenti,per_10mila_donne,0.1311,tasso,tavola 2 centri
+2024,anno,Emilia-Romagna,centri_rispondenti,totale,23,centri,tavola 2 centri
+2024,anno,Emilia-Romagna,centri_rispondenti,per_10mila_donne,0.1013,tasso,tavola 2 centri
+2024,anno,Toscana,centri_rispondenti,totale,24,centri,tavola 2 centri
+2024,anno,Toscana,centri_rispondenti,per_10mila_donne,0.1278,tasso,tavola 2 centri
+2024,anno,Umbria,centri_rispondenti,totale,8,centri,tavola 2 centri
+2024,anno,Umbria,centri_rispondenti,per_10mila_donne,0.1823,tasso,tavola 2 centri
+2024,anno,Marche,centri_rispondenti,totale,5,centri,tavola 2 centri
+2024,anno,Marche,centri_rispondenti,per_10mila_donne,0.0662,tasso,tavola 2 centri
+2024,anno,Lazio,centri_rispondenti,totale,45,centri,tavola 2 centri
+2024,anno,Lazio,centri_rispondenti,per_10mila_donne,0.153,tasso,tavola 2 centri
+2024,anno,Abruzzo,centri_rispondenti,totale,13,centri,tavola 2 centri
+2024,anno,Abruzzo,centri_rispondenti,per_10mila_donne,0.2011,tasso,tavola 2 centri
+2024,anno,Molise,centri_rispondenti,totale,3,centri,tavola 2 centri
+2024,anno,Molise,centri_rispondenti,per_10mila_donne,0.2063,tasso,tavola 2 centri
+2024,anno,Campania,centri_rispondenti,totale,48,centri,tavola 2 centri
+2024,anno,Campania,centri_rispondenti,per_10mila_donne,0.1682,tasso,tavola 2 centri
+2024,anno,Puglia,centri_rispondenti,totale,25,centri,tavola 2 centri
+2024,anno,Puglia,centri_rispondenti,per_10mila_donne,0.1258,tasso,tavola 2 centri
+2024,anno,Basilicata,centri_rispondenti,totale,1,centri,tavola 2 centri
+2024,anno,Basilicata,centri_rispondenti,per_10mila_donne,0.0372,tasso,tavola 2 centri
+2024,anno,Calabria,centri_rispondenti,totale,13,centri,tavola 2 centri
+2024,anno,Calabria,centri_rispondenti,per_10mila_donne,0.1391,tasso,tavola 2 centri
+2024,anno,Sicilia,centri_rispondenti,totale,19,centri,tavola 2 centri
+2024,anno,Sicilia,centri_rispondenti,per_10mila_donne,0.0775,tasso,tavola 2 centri
+2024,anno,Sardegna,centri_rispondenti,totale,12,centri,tavola 2 centri
+2024,anno,Sardegna,centri_rispondenti,per_10mila_donne,0.1507,tasso,tavola 2 centri
+2024,anno,Nord-ovest,centri_rispondenti,totale,86,centri,tavola 2 centri
+2024,anno,Nord-ovest,centri_rispondenti,per_10mila_donne,0.1061,tasso,tavola 2 centri
+2024,anno,Nord-est,centri_rispondenti,totale,62,centri,tavola 2 centri
+2024,anno,Nord-est,centri_rispondenti,per_10mila_donne,0.1053,tasso,tavola 2 centri
+2024,anno,Centro,centri_rispondenti,totale,82,centri,tavola 2 centri
+2024,anno,Centro,centri_rispondenti,per_10mila_donne,0.1363,tasso,tavola 2 centri
+2024,anno,Sud,centri_rispondenti,totale,103,centri,tavola 2 centri
+2024,anno,Sud,centri_rispondenti,per_10mila_donne,0.1506,tasso,tavola 2 centri
+2024,anno,Isole,centri_rispondenti,totale,31,centri,tavola 2 centri
+2024,anno,Isole,centri_rispondenti,per_10mila_donne,0.0954,tasso,tavola 2 centri
+2024,anno,Italia,centri_rispondenti,totale,364,centri,tavola 2 centri
+2024,anno,Italia,centri_rispondenti,per_10mila_donne,0.121,tasso,tavola 2 centri
+2024,anno,Italia,personale,totale,6994,persone,tavola 27 centri
+2024,anno,Italia,personale,solo_volontario,3390,persone,tavola 27 centri
+2024,anno,Italia,donne_in_percorso,iniziato_nel_2024,27816,persone,tavola 1 utenza
+2024,anno,Italia,donne_in_percorso,totale,36408,persone,tavola 1 utenza
+2024,anno,Italia,donne_in_percorso,in_emergenza,5994,persone,"tavola 2 utenza, riga Totale"
+2024,anno,Italia,rivolta_prima_a,parenti_amici,20247,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,altri_centri,2273,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,numero_1522,3041,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,forze_ordine,14637,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,pronto_soccorso,7561,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,servizi_sociali,7820,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,avvocato,6202,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,rivolta_prima_a,psicologo,4748,persone,tavola 3 utenza; più risposte
+2024,anno,Italia,violenza_subita,fisica,23492,persone,tavola 8 utenza; colonna «Violenza fisica»; più risposte
+2024,anno,Italia,violenza_subita,minaccia,19029,persone,tavola 8 utenza; colonna «Minaccia»; più risposte
+2024,anno,Italia,violenza_subita,stupro_tentato_stupro,3788,persone,tavola 8 utenza; colonna «Stupro o tentato stupro»; più risposte
+2024,anno,Italia,violenza_subita,altra_violenza_sessuale,4957,persone,tavola 8 utenza; colonna «Altra violenza sessuale (ad es»; più risposte
+2024,anno,Italia,violenza_subita,stalking,8283,persone,tavola 8 utenza; colonna «Stalking (incluso cyberstalkin»; più risposte
+2024,anno,Italia,violenza_subita,psicologica,32429,persone,tavola 8 utenza; colonna «Violenza psicologica»; più risposte
+2024,anno,Italia,violenza_subita,economica,14456,persone,tavola 8 utenza; colonna «Violenza economica (includere »; più risposte
+2024,anno,Italia,durata_violenza,1_6_mesi,8.62,percentuale,tavola 10 utenza
+2024,anno,Italia,durata_violenza,6_mesi_1_anno,13.15,percentuale,tavola 10 utenza
+2024,anno,Italia,durata_violenza,1_5_anni,32.56,percentuale,tavola 10 utenza
+2024,anno,Italia,durata_violenza,piu_5_anni,41.75,percentuale,tavola 10 utenza
+2024,anno,Italia,durata_violenza,singolo_episodio,3.84,percentuale,tavola 10 utenza
+2024,anno,Italia,durata_violenza,non_indicato,0.07,percentuale,tavola 10 utenza
+2024,anno,Italia,donne_che_contattano,totale,61370,persone,"report 2024, testo"
+2024,anno,Italia,donne_che_contattano,per_centro_rispondente,169,persone,"report 2024, testo"
+2024,anno,Nord-ovest,donne_che_contattano,per_centro_rispondente,241,persone,"report 2024, testo"
+2024,anno,Nord-est,donne_che_contattano,per_centro_rispondente,238,persone,"report 2024, testo"
+2024,anno,Sud,donne_che_contattano,per_centro_rispondente,72,persone,"report 2024, testo"
+2017,anno,Italia,personale,quota_volontario,56.1,percentuale,"report 2024, testo"
+2017,anno,Italia,centri_attivi,totale,281,centri,"edizioni precedenti, vedi note.md"
+2018,anno,Italia,centri_attivi,totale,302,centri,"edizioni precedenti, vedi note.md"
+2018,anno,Italia,centri_rispondenti,totale,257,centri,"edizioni precedenti, vedi note.md"
+2018,anno,Italia,donne_che_contattano,totale,49394,persone,"edizioni precedenti, vedi note.md"
+2019,anno,Italia,centri_attivi,totale,340,centri,"edizioni precedenti, vedi note.md"
+2019,anno,Italia,centri_rispondenti,totale,281,centri,"edizioni precedenti, vedi note.md"
+2020,anno,Italia,centri_attivi,totale,350,centri,"edizioni precedenti, vedi note.md"
+2020,anno,Italia,centri_rispondenti,totale,263,centri,"edizioni precedenti, vedi note.md"
+2020,anno,Italia,donne_che_contattano,totale,54609,persone,"edizioni precedenti, vedi note.md"
+2021,anno,Italia,centri_attivi,totale,373,centri,"edizioni precedenti, vedi note.md"
+2021,anno,Italia,centri_rispondenti,totale,307,centri,"edizioni precedenti, vedi note.md"
+2021,anno,Italia,donne_che_contattano,totale,56349,persone,"edizioni precedenti, vedi note.md"
+2022,anno,Italia,centri_attivi,totale,385,centri,"edizioni precedenti, vedi note.md"
+2022,anno,Italia,centri_rispondenti,totale,349,centri,"edizioni precedenti, vedi note.md"
+2022,anno,Italia,donne_che_contattano,totale,60751,persone,"edizioni precedenti, vedi note.md"
+2023,anno,Italia,centri_attivi,totale,404,centri,"edizioni precedenti, vedi note.md"
+2023,anno,Italia,centri_rispondenti,totale,363,centri,"edizioni precedenti, vedi note.md"
+2023,anno,Italia,donne_che_contattano,totale,61514,persone,"edizioni precedenti, vedi note.md"
+2022,anno,Italia,donne_in_percorso,centri_costanti,26000,persone,"report 2024, pagina 9; valori arrotondati da Istat"
+2023,anno,Italia,donne_in_percorso,centri_costanti,31700,persone,"report 2024, pagina 9; valori arrotondati da Istat"
+2024,anno,Italia,donne_in_percorso,centri_costanti,35558,persone,"ricavato: 36.408 meno le 850 donne in centri nuovi o non rispondenti nel 2023 (report 2024, nota 8)"

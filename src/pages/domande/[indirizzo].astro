@@ -1,0 +1,110 @@
+---
+// Pagina corta di una domanda (modello delle domande 1, 2, 3 e 6; mockup riga 11 della tela):
+// la domanda, un numero grande con due righe, poi le infografiche delle fonti come riquadri grandi.
+// Testi in contenuti/domande/<numero>-<indirizzo>.yaml; la domanda deve avere modello "corta" in contenuti/domande.yaml.
+import fs from 'node:fs';
+import path from 'node:path';
+import Layout from '../../componenti/Layout.astro';
+import AvvisoVerifica from '../../componenti/AvvisoVerifica.astro';
+import { contenuto, richiesto, formatta } from '../../lib/dati.js';
+import { domande, fonte } from '../../lib/registro.js';
+import { url } from '../../lib/url.js';
+import { fmt } from '../../lib/testo.js';
+import { percentuale } from '../../lib/colori.js';
+
+export function getStaticPaths() {
+  const cartella = path.join(process.cwd(), 'contenuti', 'domande');
+  return domande()
+    .filter((d) => d.modello === 'corta' && d.stato !== 'in-lavorazione')
+    .map((d) => {
+      const file = fs.readdirSync(cartella).find((f) => f.startsWith(`${d.id}-`) && f.endsWith('.yaml'));
+      const t = contenuto('domande', file);
+      return { params: { indirizzo: t.indirizzo }, props: { file, d } };
+    });
+}
+
+const { file, d } = Astro.props;
+const t = contenuto('domande', file);
+const ng = t.numero_grande;
+const mostra = (x) => (Number.isInteger(x) ? formatta(x) : `${percentuale(x, 1)}%`);
+const grande = mostra(richiesto(ng.fonte, ng.filtro));
+let testoGrande = ng.testo;
+for (const [k, val] of Object.entries(ng.valori ?? {})) testoGrande = testoGrande.replace(`{${k}}`, mostra(richiesto(val.fonte, val.filtro)));
+
+const riquadri = t.fonti.voci.map((voce) => {
+  const barre = voce.anteprima.barre.map((b) => ({ ...b, valore: richiesto(voce.id, b.filtro) }));
+  const massimo = Math.max(...barre.map((b) => b.valore));
+  return { ...voce, barre, massimo, inVerifica: fonte(voce.id)?.in_verifica };
+});
+const inVerifica = riquadri.some((r) => r.inVerifica);
+---
+<Layout titolo={t.domanda} descrizione={`${grande} ${testoGrande.replace(/\*\*/g, '')}`} sezione="domande">
+  <section class="apertura">
+    <a class="briciole" href={url('/')}>Le domande</a>
+    <h1 class="domanda-titolo">{t.domanda}</h1>
+    <p class="grande">{grande}</p>
+    <p class="attacco" set:html={fmt(testoGrande)} />
+    <p class="nota">{ng.nota}</p>
+    {inVerifica && <AvvisoVerifica />}
+  </section>
+
+  <section class="sezione">
+    <div class="intestazione">
+      <h2>{t.fonti.titolo}</h2>
+      <p class="sottotitolo">{t.fonti.sottotitolo}</p>
+    </div>
+    <div class="riquadri">
+      {riquadri.map((r) => (
+        <a class="riquadro-fonte" href={url(`/fonti/${r.id}/`)}>
+          <span class="etichetta">{r.etichetta}</span>
+          <span class="titolo">{r.titolo}</span>
+          <div class="anteprima" role="img" aria-label={`${r.anteprima.descrizione}: ${r.barre.map((b) => `${b.etichetta} ${mostra(b.valore)}`).join(', ')}`}>
+            <span class="piccola">{r.anteprima.descrizione}</span>
+            {r.barre.map((b, i) => (
+              <div class="barra">
+                <span>{b.etichetta}</span>
+                <span class="traccia">
+                  <span class:list={['pieno', { ultimo: i === r.barre.length - 1 }]} style={`width:${(85 * b.valore) / r.massimo}%`}></span>
+                  <strong>{mostra(b.valore)}</strong>
+                </span>
+              </div>
+            ))}
+            {r.anteprima.nota && <span class="piccola">{r.anteprima.nota}</span>}
+          </div>
+          <span class="piede"><span>{r.piede}</span><strong>Apri l'infografica →</strong></span>
+        </a>
+      ))}
+    </div>
+    {t.fonti.in_lavorazione && <p class="nota">{t.fonti.in_lavorazione}</p>}
+  </section>
+
+  {t.nuove_domande && (
+    <section class="sezione">
+      <h2>{t.nuove_domande.titolo}</h2>
+      <ul class="nuove">{t.nuove_domande.voci.map((q) => <li set:html={fmt(q)} />)}</ul>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .domanda-titolo { font-size: clamp(30px, 5vw, 44px) !important; color: var(--testo-2); font-weight: 500; }
+  .grande { font-family: var(--titoli); font-weight: 600; font-size: clamp(72px, 14vw, 120px); line-height: 1; color: var(--accento); }
+  .riquadri { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; align-items: stretch; }
+  .riquadro-fonte {
+    text-decoration: none; color: var(--testo); background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px;
+    padding: 28px; display: flex; flex-direction: column; gap: 18px;
+  }
+  .riquadro-fonte:hover { border-color: var(--accento); color: var(--testo); }
+  .titolo { font-family: var(--titoli); font-size: 24px; font-weight: 600; line-height: 1.2; }
+  .anteprima { display: flex; flex-direction: column; gap: 10px; }
+  .piccola { font-size: 13px; color: var(--testo-3); }
+  .barra { display: grid; grid-template-columns: 48px 1fr; align-items: center; gap: 10px; font-size: 14px; }
+  .traccia { display: flex; align-items: center; gap: 8px; }
+  .pieno { height: 20px; background: #B9A6CC; border-radius: 4px; }
+  .pieno.ultimo { background: var(--accento); }
+  .piede { margin-top: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 16px; border-top: 1px solid var(--bordo); font-size: 14px; color: var(--testo-3); }
+  .piede strong { color: var(--link); font-size: 16px; }
+  .nuove { margin: 0; padding: 0; list-style: none; }
+  .nuove li { font-family: var(--titoli); font-size: 21px; padding: 16px 0; border-top: 1px solid var(--bordo); }
+  @media (max-width: 640px) { .riquadro-fonte { padding: 20px; } .titolo { font-size: 20px; } .nuove li { font-size: 18px; } }
+</style>

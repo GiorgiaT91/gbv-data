@@ -36,9 +36,10 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
 ---
 <Layout titolo={t.domanda} descrizione={t.attacco} sezione="domande">
   <section class="apertura">
-    <a class="briciole" href={url('/')}>Le domande / {t.numero} di 5</a>
+    <a class="briciole" href={url('/')}>Le domande</a>
     <p class="domanda">{t.domanda}</p>
     <h1>{t.titolo}</h1>
+    {t.punto_fermo && <p class="punto-fermo" set:html={fmt(t.punto_fermo)} />}
     <p class="attacco" set:html={fmt(t.attacco)} />
   </section>
 
@@ -113,6 +114,16 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
     </div>
 
     <p class="nota" set:html={fmt(t.numeri.nota)} />
+
+    <nav class="esplora" aria-label="Le infografiche delle fonti">
+      <strong>{t.numeri.esplora.titolo}</strong>
+      <span>{t.numeri.esplora.invito}</span>
+      <span class="collegamenti-fonti">
+        {[[ISTAT, fIstat], [INTERNO, fInterno], [NUDM, fNudm]].map(([id, nome]) => (
+          <a href={url(`/fonti/${id}/`)}>{nome} →</a>
+        ))}
+      </span>
+    </nav>
   </section>
 
 
@@ -157,4 +168,12 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
   .voci p { font-size: 15px; color: var(--limiti-testo); }
   .prossimamente { font-size: 15px; color: var(--limiti-titolo); font-weight: 600; }
   .titolo-fonti { font-size: 24px !important; }
+  .punto-fermo { font-family: var(--titoli); font-size: 22px; line-height: 1.4; padding: 16px 20px; border-left: 4px solid var(--accento); background: var(--accento-chiaro); border-radius: 0 12px 12px 0; color: var(--accento-scuro); }
+  .esplora { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; padding: 18px 22px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; }
+  .collegamenti-fonti { display: flex; flex-wrap: wrap; gap: 8px 20px; font-weight: 600; }
+  @media (max-width: 640px) {
+    .punto-fermo { font-size: 19px; }
+    .esplora { flex-direction: column; gap: 6px; }
+    .collegamenti-fonti { flex-direction: column; gap: 8px; }
+  }
 </style>
