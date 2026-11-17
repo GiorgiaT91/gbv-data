@@ -1,0 +1,69 @@
+# Domanda 5 — versione ridotta (0.1, 17 novembre 2026).
+# La colonna "oggi" è una lettura di GBV-Data basata sulle fonti già raccolte nel progetto: va verificata
+# prima del lancio (vedi "Numeri da verificare", sezione 5). Stati: pubblicato | in-parte | non-trovato.
+
+numero: 5
+indirizzo: cosa-non-sappiamo-ancora
+domanda: "Cosa non sappiamo ancora?"
+titolo: "I dati che la legge prevede, e quelli che si trovano oggi."
+attacco: "Dal 2022 una legge, la n. 53, stabilisce quali dati sulla violenza contro le donne devono essere raccolti e da chi. Questa pagina mette a confronto ciò che la legge prevede con ciò che oggi è pubblicato."
+
+legge:
+  titolo: "La legge 53/2022, punto per punto"
+  sottotitolo: "Ciò che prevede la legge, e ciò che GBV-Data ha trovato fra i dati pubblici a novembre 2026."
+  legenda:
+    pubblicato: "Pubblicato"
+    in-parte: "In parte"
+    non-trovato: "Non trovato fra i dati pubblici"
+  voci:
+    - articolo: "Art. 2"
+      chi: "Istat"
+      prevede: "Un'indagine campionaria sulla violenza contro le donne **ogni tre anni**, con stime fino al livello regionale."
+      stato: in-parte
+      oggi: "Le edizioni sono del 2006, del 2014 e del 2025. I primi risultati del 2025 non hanno dati per regione."
+      collegamento: /domande/quante-donne-subiscono-violenza/
+    - articolo: "Art. 2"
+      chi: "Istat"
+      prevede: "La relazione fra autore e vittima in almeno 15 categorie, dal coniuge allo sconosciuto."
+      stato: pubblicato
+      oggi: "L'indagine 2025 distingue partner, ex partner e diversi tipi di autore non partner."
+    - articolo: "Art. 4"
+      chi: "Ministero della Salute e strutture sanitarie"
+      prevede: "Dati dai pronto soccorso su relazione autore-vittima, tipo di violenza, presenza di figli e rischio di nuove violenze."
+      stato: in-parte
+      oggi: "Istat pubblica ogni anno gli accessi al pronto soccorso di donne con indicazione di violenza (2017–2024). Il dettaglio previsto dalla legge è da verificare."
+    - articolo: "Art. 5"
+      chi: "Ministero dell'Interno"
+      prevede: "Per i reati di violenza: relazione autore-vittima, età e genere, luogo del fatto, tipo di arma, presenza di figli, atti persecutori. Trasmissione a Istat almeno ogni sei mesi."
+      stato: in-parte
+      oggi: "Il report sugli omicidi indica se l'autore è partner, ex o familiare. Non indica luogo, arma, presenza di figli, denunce precedenti."
+      collegamento: /fonti/interno-femminicidi/
+    - articolo: "Art. 5"
+      chi: "Ministeri dell'Interno e della Giustizia"
+      prevede: "Una banca dati che registri, per ogni donna vittima, denunce, misure di protezione, archiviazioni e sentenze."
+      stato: non-trovato
+      oggi: "Non risultano dati pubblicati da questa banca dati. Se una donna uccisa avesse già denunciato lo rileva solo l'Osservatorio Non Una Di Meno, dalle cronache."
+      collegamento: /fonti/nudm-osservatorio/
+    - articolo: "Art. 6"
+      chi: "Ministero della Giustizia"
+      prevede: "Nei registri dei procedimenti: relazione autore-vittima, età, genere, presenza di figli, luogo, arma."
+      stato: in-parte
+      oggi: "Istat pubblica procedimenti e condanne per alcuni reati di violenza (fino al 2023). La relazione autore-vittima è da verificare."
+    - articolo: "Art. 7"
+      chi: "Istat"
+      prevede: "Indagini sui centri antiviolenza e sulle case rifugio, con dati per regione e sulle donne accolte."
+      stato: pubblicato
+      oggi: "Indagini annuali; l'ultima sui centri riguarda il 2024. Alcune tavole sugli autori non sono coerenti fra loro."
+      collegamento: /fonti/istat-centri-antiviolenza/
+  nota: "Fonte del testo: legge 5 maggio 2022, n. 53, «Disposizioni in materia di statistiche in tema di violenza di genere». La colonna «oggi» è una lettura di GBV-Data, aggiornata a novembre 2026."
+  link_legge: "https://www.gazzettaufficiale.it/eli/id/2022/05/24/22G00062/sg"
+
+domande_aperte:
+  titolo: "Le domande che restano, fonte per fonte"
+  sottotitolo: "Ogni fonte pubblicata nel sito lascia aperte alcune domande. Eccole tutte insieme."
+
+richieste:
+  titolo: "Chi chiede questi dati"
+  testo: "A febbraio 2026 l'associazione onData ha consegnato al governo una petizione per l'attuazione della legge 53/2022, insieme a una proposta di schema per pubblicare i dati sui femminicidi. GBV-Data non partecipa alla campagna e la cita come fonte."
+  link: "https://ondata.substack.com/p/associazione-ondata-newsletter-38"
+  link_testo: "onData, newsletter n. 38"

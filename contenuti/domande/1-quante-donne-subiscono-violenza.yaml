@@ -1,0 +1,35 @@
+# Domanda 1 — testi della pagina (versione 0.1, 17 novembre 2026). Pagina corta.
+# Proposta del 14/11 con le scelte prese per difetto: cittadinanza e regioni fuori (per il 2025 ci sono solo le italiane).
+
+numero: 1
+indirizzo: quante-donne-subiscono-violenza
+domanda: "Quante donne subiscono violenza?"
+
+numero_grande:
+  fonte: istat-sicurezza-donne
+  filtro: { anno: 2025, periodo: nella_vita, indicatore: violenza, categoria: fisica_o_sessuale }
+  testo: "delle donne italiane fra 16 e 75 anni ha subito **violenza fisica o sessuale almeno una volta nella vita**. Negli ultimi cinque anni è successo al {cinque} delle donne di 16–70 anni."
+  valori:
+    cinque: { fonte: istat-sicurezza-donne, filtro: { anno: 2025, periodo: ultimi_5_anni, indicatore: violenza_italiane, categoria: fisica_o_sessuale } }
+  nota: "Istat, indagine sulla sicurezza delle donne, primi risultati 2025. Per ora solo donne italiane; i risultati con le donne straniere sono attesi nel 2026."
+
+fonti:
+  titolo: "I dati con cui si risponde"
+  sottotitolo: "La fonte ha la sua infografica. Aprila per esplorare il dato."
+  voci:
+    - id: istat-sicurezza-donne
+      etichetta: "Istat · Sicurezza delle donne"
+      titolo: "Negli ultimi cinque anni la violenza è stabile nel complesso, ma cresce fra le più giovani"
+      anteprima:
+        descrizione: "Violenza fisica o sessuale negli ultimi 5 anni, ragazze di 16–24 anni (italiane)"
+        barre:
+          - { etichetta: "2014", filtro: { anno: 2014, periodo: ultimi_5_anni, indicatore: violenza_italiane, categoria: "fisica_o_sessuale|16-24" } }
+          - { etichetta: "2025", filtro: { anno: 2025, periodo: ultimi_5_anni, indicatore: violenza_italiane, categoria: "fisica_o_sessuale|16-24" } }
+        nota: "Totale donne 16–70: 11,2% nel 2014, 11,0% nel 2025."
+      piede: "Rilevazioni 2006, 2014, 2025"
+
+nuove_domande:
+  titolo: "Le domande che restano"
+  voci:
+    - "Perché lo sappiamo solo ogni dieci anni circa? Che cosa succede fra una rilevazione e l'altra?"
+    - "Quante delle donne che subiscono violenza chiedono aiuto? Lo racconta, in parte, la domanda «Quante chiedono aiuto?»."

@@ -1,0 +1,40 @@
+id: istat-sicurezza-donne
+nome: "La violenza contro le donne dentro e fuori la famiglia (indagine sulla sicurezza delle donne)"
+ente: "Istat"
+gruppo: sommerso
+domanda: 1
+
+periodo_coperto: "edizioni 2006, 2014, 2025 (2025: per ora solo donne italiane)"
+ultimo_dato: "anno 2025, primi risultati"
+ultimo_aggiornamento: 2025-11-21
+ultima_verifica: 2026-11-17
+cadenza: "ogni otto-dieci anni circa"
+prossimo_aggiornamento: "risultati completi 2025, con le donne straniere: attesi intorno al 25 novembre 2026"
+
+numero_principale: "31,9%"
+titolo_messaggio: "Il 31,9% delle donne italiane fra 16 e 75 anni ha subito violenza fisica o sessuale almeno una volta nella vita"
+componente: mosaico
+
+chi_conta: "Istat, con il Dipartimento per le Pari Opportunità"
+da_dove_vengono_i_casi: "Da interviste a un campione di donne (circa 17.500 italiane di 16-75 anni nel 2025, al telefono), che raccontano anche le violenze mai denunciate"
+cosa_viene_contato: "Le donne che hanno subito violenza fisica, sessuale, psicologica o economica, o stalking, nel corso della vita (dai 16 anni) e negli ultimi cinque anni, per autore."
+
+limiti:
+  - "È un'indagine campionaria: i valori sono stime, alcune con un errore ampio."
+  - "Esce ogni otto-dieci anni circa: fra un'edizione e l'altra il fenomeno non è misurato."
+  - "Nel 2025 sono pubblicati per ora solo i dati sulle donne italiane; quelli sulle straniere sono attesi nel 2026."
+  - "Le edizioni coprono fasce d'età diverse (16-70 nel 2014, 16-75 nel 2025): per i confronti si usano le donne di 16-70 anni."
+  - "Si basa su ciò che le donne riferiscono: le violenze che non si riescono a raccontare restano fuori."
+
+nuove_domande:
+  - "Perché lo sappiamo solo ogni dieci anni circa?"
+  - "Che cosa succede fra una rilevazione e l'altra?"
+
+link_fonte: "https://www.istat.it/comunicato-stampa/la-violenza-contro-le-donne-dentro-e-fuori-la-famiglia-primi-risultati-anno-2025/"
+file_originali:
+  - "originali/2025/La-violenza-contro-le-donne-dentro-e-fuori-la-famiglia_Anno-2025.pdf"
+  - "originali/2025/Allegato-tavole-statistiche.xlsx"
+  - "originali/2014/Violenze_contro_le_donne.pdf"
+licenza: "DA VERIFICARE"
+
+stato: bozza

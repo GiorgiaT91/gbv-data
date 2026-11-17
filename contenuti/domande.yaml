@@ -10,7 +10,9 @@
 
 - id: 1
   testo: "Quante donne subiscono violenza?"
-  stato: in-lavorazione
+  stato: in-verifica
+  modello: corta
+  indirizzo: /domande/quante-donne-subiscono-violenza/
   fonti: [istat-sicurezza-donne]
 
 - id: 6
@@ -40,5 +42,7 @@
 
 - id: 5
   testo: "Cosa non sappiamo ancora?"
-  stato: in-lavorazione
+  stato: in-verifica
+  modello: lista            # pagina propria: src/pages/domande/cosa-non-sappiamo-ancora.astro
+  indirizzo: /domande/cosa-non-sappiamo-ancora/
   fonti: []

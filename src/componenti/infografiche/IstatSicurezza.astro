@@ -1,0 +1,133 @@
+---
+// Infografica dell'indagine Istat sulla sicurezza delle donne, a mosaico (domanda 1).
+// Proposta del 14/11/2026: numero grande "nella vita"; serie degli ultimi 5 anni; età; quanta violenza resta nascosta.
+// Dati: dati/istat-sicurezza-donne. Per ora solo donne italiane per il 2025 (le straniere escono nel 2026).
+import Riquadro from '../grafici/Riquadro.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import BarreGruppi from '../grafici/BarreGruppi.astro';
+import Cifre from '../grafici/Cifre.astro';
+import { richiesto, formatta } from '../../lib/dati.js';
+import { C, PERIODI, percentuale } from '../../lib/colori.js';
+
+const F = 'istat-sicurezza-donne';
+const v = (anno, periodo, indicatore, categoria) => richiesto(F, { anno, periodo, indicatore, categoria });
+const p = (x) => `${percentuale(x, 1)}%`;
+const CHIARO = '#B9A6CC';
+
+const vita = (c) => v(2025, 'nella_vita', 'violenza', c);
+const vittime = v(2025, 'nella_vita', 'violenza', 'fisica_o_sessuale_vittime');
+const milioni = percentuale(vittime / 1e6, 1);
+const coppia = (c) => v(2025, 'nella_vita', 'violenza_da_partner_o_ex', c);
+
+const serieTutte = [2006, 2014].map((a) => ({ etichetta: `${a} · tutte le donne`, valore: v(a, 'ultimi_5_anni', 'violenza_tutte', 'fisica_o_sessuale'), colore: CHIARO }));
+const serieItaliane = [2014, 2025].map((a) => ({ etichetta: `${a} · solo italiane`, valore: v(a, 'ultimi_5_anni', 'violenza_italiane', 'fisica_o_sessuale') }));
+
+const ETA = ['16-24', '25-34', '35-44', '45-54', '55-64', '65-70'];
+const perEta = ETA.map((e) => ({ etichetta: `${e.replace('-', '–')} anni`, valori: [2014, 2025].map((a) => v(a, 'ultimi_5_anni', 'violenza_italiane', `fisica_o_sessuale|${e}`)) }));
+const giovani = perEta[0].valori;
+const sessGiovani = [2014, 2025].map((a) => v(a, 'ultimi_5_anni', 'violenza_italiane', 'sessuale|16-24'));
+
+const dopo = (autore, c) => [2014, 2025].map((a) => v(a, 'ultimi_5_anni', `dopo_la_violenza_${autore}`, c));
+const ANNI = [{ nome: '2014', colore: CHIARO }, { nome: '2025', colore: C.accento }];
+const dopoPartner = [
+  { etichetta: 'Hanno denunciato', valori: dopo('partner_o_ex', 'denuncia') },
+  { etichetta: 'Si sono rivolte a un centro antiviolenza', valori: dopo('partner_o_ex', 'centro_antiviolenza') },
+  { etichetta: 'Considerano un reato quanto subito', valori: dopo('partner_o_ex', 'considera_reato') },
+  { etichetta: 'Non ne hanno parlato con nessuno', valori: dopo('partner_o_ex', 'non_ne_ha_parlato') },
+];
+const denunciaVita = v(2025, 'nella_vita', 'hanno_denunciato', 'qualsiasi_autore');
+---
+<div class="mosaico">
+  <div class="s5">
+    <Riquadro titolo="Le forme della violenza, nel corso della vita"
+      nota="Istat · primi risultati 2025, prospetto 1 · donne italiane di 16–75 anni, violenze subite dai 16 anni">
+      <Cifre voci={[
+        { numero: p(vita('fisica_o_sessuale')), testo: `violenza fisica o sessuale: circa ${milioni} milioni di donne` },
+        { numero: p(vita('sessuale')), testo: 'violenza sessuale' },
+        { numero: p(vita('fisica')), testo: 'violenza fisica' },
+        { numero: p(vita('stupro_o_tentato')), testo: 'stupro o tentato stupro' },
+      ]} />
+    </Riquadro>
+  </div>
+  <div class="s7">
+    <Riquadro titolo={`Nella coppia: il ${p(coppia('fisica_o_sessuale'))} ha subito violenza fisica o sessuale, il ${p(coppia('psicologica'))} violenza psicologica`}
+      sottotitolo="Donne che hanno o hanno avuto un partner, violenza da partner o ex nella vita"
+      nota="Istat · primi risultati 2025, prospetto 1 · la violenza psicologica ed economica è rilevata solo nella coppia">
+      <BarreOrizzontali voci={[
+        { etichetta: 'Violenza psicologica', valore: coppia('psicologica') },
+        { etichetta: 'Violenza fisica o sessuale', valore: coppia('fisica_o_sessuale') },
+        { etichetta: 'Violenza economica', valore: coppia('economica') },
+      ]} massimo={40} />
+      <p class="piccola">Fuori dalla coppia (parenti, amici, colleghi, conoscenti, sconosciuti): {p(v(2025, 'nella_vita', 'violenza_da_non_partner', 'fisica_o_sessuale'))} delle donne. Stalking, da qualsiasi autore: {p(vita('stalking'))}.</p>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata" style={`border-top-color:${C.accento}`}>
+    <span class="bollino" style={`background:${C.accento}`}>Ultimi 5 anni</span>
+    <div><h2>Nel tempo</h2><p>Per confrontare le edizioni si guarda la violenza subita nei cinque anni prima dell'intervista, donne di 16–70 anni</p></div>
+  </div>
+  <div class="s5">
+    <Riquadro titolo={`Dal 2014 al 2025 la quota resta stabile, intorno all'${percentuale(serieItaliane[1].valore, 0)}%`}
+      sottotitolo="Donne che hanno subito violenza fisica o sessuale negli ultimi 5 anni"
+      nota="Istat · 2006 e 2014: report 2014, prospetto 8 (tutte le donne); 2014 e 2025: report 2025, prospetto 5 (solo italiane)">
+      <BarreOrizzontali voci={serieTutte} massimo={20} />
+      <BarreOrizzontali voci={serieItaliane} massimo={20} />
+      <p class="piccola">Le due coppie di barre non formano una serie unica: nel 2025, per ora, sono state intervistate solo le donne italiane.</p>
+    </Riquadro>
+  </div>
+  <div class="s7">
+    <Riquadro titolo={`Fra le ragazze di 16–24 anni la quota sale dal ${p(giovani[0])} al ${p(giovani[1])}`}
+      sottotitolo="Donne italiane che hanno subito violenza fisica o sessuale negli ultimi 5 anni, per età"
+      nota={`Istat · report 2025, prospetto 5. L'aumento fra le più giovani riguarda soprattutto la violenza sessuale: dal ${p(sessGiovani[0])} al ${p(sessGiovani[1])}.`}>
+      <BarreGruppi voci={perEta} serie={ANNI} massimo={40} />
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata" style="border-top-color:#3A3D44">
+    <span class="bollino" style="background:#3A3D44">Il sommerso</span>
+    <div><h2>Quanta violenza resta nascosta</h2><p>Che cosa fanno le donne dopo la violenza subita da un partner o da un ex</p></div>
+  </div>
+  <div class="s4">
+    <Riquadro titolo={`Il ${p(denunciaVita)} delle vittime ha denunciato almeno una violenza`} nota="Istat · report 2025, pagina 4 · vittime di violenza fisica o sessuale nella vita, italiane 16–75">
+      <Cifre voci={[
+        { numero: p(denunciaVita), testo: 'qualsiasi autore' },
+        { numero: p(v(2025, 'nella_vita', 'hanno_denunciato', 'ex_partner')), testo: 'violenze da un ex partner' },
+        { numero: p(v(2025, 'nella_vita', 'hanno_denunciato', 'partner_attuale')), testo: 'violenze dal partner attuale' },
+      ]} />
+    </Riquadro>
+  </div>
+  <div class="s8">
+    <Riquadro titolo="Più vittime si rivolgono a un centro antiviolenza; la denuncia resta stabile"
+      sottotitolo="Vittime di violenza da partner o ex negli ultimi 5 anni, italiane 16–70"
+      nota="Istat · allegato 2025, tavola 4 · per le violenze da partner i dati comprendono anche episodi precedenti l'ultimo">
+      <BarreGruppi voci={dopoPartner} serie={ANNI} massimo={40} />
+    </Riquadro>
+  </div>
+
+  <div class="s12">
+    <Riquadro titolo="Cosa manca in questa rilevazione">
+      <ul class="manca">
+        <li>Nel 2025, per ora, solo le donne italiane: i risultati con le donne straniere sono attesi nel 2026.</li>
+        <li>Un'indagine ogni otto–dieci anni circa (2006, 2014, 2025): fra un'edizione e l'altra non si sa come cambia il fenomeno.</li>
+        <li>Fasce d'età diverse: 16–70 anni nel 2014, 16–75 nel 2025. Per i confronti Istat usa 16–70.</li>
+        <li>Alcune forme di violenza psicologica ed economica sono rilevate per la prima volta nel 2025 e non hanno serie storica.</li>
+        <li>Nei primi risultati non ci sono dati per regione.</li>
+      </ul>
+    </Riquadro>
+  </div>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div:not(.testata) > :global(.riquadro) { height: 100%; }
+  .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  .testata { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
+  .testata h2 { font-size: 22px; }
+  .testata p { font-size: 14px; color: var(--testo-2); }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .piccola { font-size: 13px; color: var(--testo-3); }
+  .manca { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--testo-2); }
+  @media (max-width: 980px) { .s4, .s5, .s7, .s8 { grid-column: span 12; } }
+  @media (max-width: 640px) { .mosaico { gap: 14px; } }
+</style>

@@ -6,10 +6,9 @@
 # Per le fonti pronte nome ed ente vengono letti da scheda.yaml.
 
 - id: istat-sicurezza-donne
-  ente: "Istat"
-  nome: "Indagine sulla sicurezza delle donne"
   domanda: 1
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: istat-stereotipi-adulti
   domanda: 6

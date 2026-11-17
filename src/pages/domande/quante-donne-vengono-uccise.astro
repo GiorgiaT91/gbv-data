@@ -137,7 +137,7 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
         </div>
       ))}
     </div>
-    <p class="prossimamente">{t.limiti.collegamento.replace('Vai a: ', 'Prossimamente: ')}</p>
+    <a class="prossimamente" href={url('/domande/cosa-non-sappiamo-ancora/')}>{t.limiti.collegamento} →</a>
   </section>
 
   <section class="sezione" aria-labelledby="fonti">

@@ -1,0 +1,89 @@
+---
+// Domanda 5, versione ridotta: la legge 53/2022 punto per punto, e le domande aperte di tutte le fonti pubblicate.
+// Testi in contenuti/domande/5-cosa-non-sappiamo-ancora.yaml; le domande aperte vengono dalle schede delle fonti.
+import Layout from '../../componenti/Layout.astro';
+import AvvisoVerifica from '../../componenti/AvvisoVerifica.astro';
+import { contenuto } from '../../lib/dati.js';
+import { fontiPronte, domanda } from '../../lib/registro.js';
+import { url } from '../../lib/url.js';
+import { fmt } from '../../lib/testo.js';
+
+const t = contenuto('domande', '5-cosa-non-sappiamo-ancora.yaml');
+const d = domanda(5);
+const aperte = fontiPronte().filter((f) => f.nuove_domande?.length);
+---
+<Layout titolo={t.domanda} descrizione={t.attacco} sezione="domande">
+  <section class="apertura">
+    <a class="briciole" href={url('/')}>Le domande</a>
+    <p class="domanda">{t.domanda}</p>
+    <h1>{t.titolo}</h1>
+    <p class="attacco" set:html={fmt(t.attacco)} />
+    {d?.stato === 'in-verifica' && <AvvisoVerifica testo="La lettura dello stato di ciascun dato è in corso di verifica." />}
+  </section>
+
+  <section class="sezione">
+    <div class="intestazione">
+      <h2>{t.legge.titolo}</h2>
+      <p class="sottotitolo">{t.legge.sottotitolo}</p>
+    </div>
+    <ul class="legenda-stati">
+      {Object.entries(t.legge.legenda).map(([k, testo]) => <li><span class:list={['stato', k]}>{testo}</span></li>)}
+    </ul>
+    <ol class="voci">
+      {t.legge.voci.map((v) => (
+        <li class="voce">
+          <div class="testa"><span class="art">{v.articolo}</span><span class="chi">{v.chi}</span><span class:list={['stato', v.stato]}>{t.legge.legenda[v.stato]}</span></div>
+          <div class="corpo">
+            <div><span class="sopra">La legge prevede</span><p set:html={fmt(v.prevede)} /></div>
+            <div><span class="sopra">Oggi</span><p set:html={fmt(v.oggi)} />{v.collegamento && <a href={url(v.collegamento)}>Vai al dato →</a>}</div>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="nota">{t.legge.nota} <a href={t.legge.link_legge}>Il testo della legge</a>.</p>
+  </section>
+
+  <section class="sezione">
+    <div class="intestazione">
+      <h2>{t.domande_aperte.titolo}</h2>
+      <p class="sottotitolo">{t.domande_aperte.sottotitolo}</p>
+    </div>
+    <div class="aperte">
+      {aperte.map((f) => (
+        <div>
+          <a class="fonte" href={url(`/fonti/${f.id}/`)}>{f.ente.split(',')[0]} · {f.nome}</a>
+          <ul>{f.nuove_domande.map((q) => <li>{q}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sezione">
+    <h2>{t.richieste.titolo}</h2>
+    <p class="testo-lungo" set:html={fmt(t.richieste.testo)} />
+    <a href={t.richieste.link}>{t.richieste.link_testo}</a>
+  </section>
+</Layout>
+
+<style>
+  .legenda-stati { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .stato { display: inline-block; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .stato.pubblicato { background: #E6F0E8; color: #1E5631; }
+  .stato.in-parte { background: var(--limiti-fondo); color: var(--limiti-titolo); }
+  .stato.non-trovato { background: var(--grigio); color: var(--testo-2); border: 1px dashed var(--testo-3); }
+  .voci { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .voce { background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .testa { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .art { font-family: var(--titoli); font-weight: 600; font-size: 18px; }
+  .chi { color: var(--testo-3); font-size: 14px; flex: 1; }
+  .corpo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .corpo p { color: var(--testo-2); font-size: 15px; }
+  .corpo a { font-size: 14px; font-weight: 600; display: inline-block; margin-top: 6px; }
+  .sopra { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--testo-3); margin-bottom: 4px; }
+  .aperte { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .aperte > div { background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 20px; }
+  .fonte { font-weight: 600; font-size: 14px; }
+  .aperte ul { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-family: var(--titoli); font-size: 17px; }
+  .testo-lungo { max-width: 760px; font-size: 17px; color: var(--testo-2); }
+  @media (max-width: 640px) { .corpo { grid-template-columns: 1fr; gap: 12px; } .voce { padding: 16px 18px; } }
+</style>
