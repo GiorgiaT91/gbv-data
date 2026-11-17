@@ -1,0 +1,71 @@
+# Le dodici fonti. L'ordine è quello delle domande in home.
+# id: nome della cartella in dati/ (per le fonti non ancora pronte, il nome previsto).
+# pronta: true quando dati/<id>/ contiene dati.csv e scheda.yaml controllati
+#   e la fonte ha la sua infografica nel sito.
+# Per le fonti pronte nome ed ente vengono letti da scheda.yaml.
+
+- id: istat-sicurezza-donne
+  ente: "Istat"
+  nome: "Indagine sulla sicurezza delle donne"
+  domanda: 1
+  pronta: false
+
+- id: istat-stereotipi-adulti
+  ente: "Istat"
+  nome: "Stereotipi di genere e immagine sociale della violenza, adulti"
+  domanda: 6
+  pronta: false
+
+- id: istat-stereotipi-ragazzi
+  ente: "Istat"
+  nome: "Stereotipi di genere, ragazze e ragazzi"
+  domanda: 6
+  pronta: false
+
+- id: istat-1522
+  ente: "Istat e Dipartimento per le Pari Opportunità"
+  nome: "Numero 1522"
+  domanda: 2
+  pronta: false
+
+- id: istat-centri-antiviolenza
+  ente: "Istat e Dipartimento per le Pari Opportunità"
+  nome: "Centri antiviolenza"
+  domanda: 2
+  pronta: false
+
+- id: istat-case-rifugio
+  ente: "Istat e Dipartimento per le Pari Opportunità"
+  nome: "Case rifugio"
+  domanda: 2
+  pronta: false
+
+- id: salute-pronto-soccorso
+  ente: "Ministero della Salute e Istat"
+  nome: "Accessi al pronto soccorso"
+  domanda: 2
+  pronta: false
+
+- id: interno-reati-spia
+  ente: "Ministero dell'Interno e Istat"
+  nome: "Denunce dei reati spia"
+  domanda: 3
+  pronta: false
+
+- id: giustizia-processi-condanne
+  ente: "Ministero della Giustizia e Istat"
+  nome: "Processi e condanne"
+  domanda: 3
+  pronta: false
+
+- id: istat-omicidi
+  domanda: 4
+  pronta: true
+
+- id: interno-femminicidi
+  domanda: 4
+  pronta: true
+
+- id: nudm-osservatorio
+  domanda: 4
+  pronta: true

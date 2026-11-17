@@ -1,0 +1,38 @@
+# Le sei domande, nell'ordine in cui compaiono in home.
+# id: identificativo interno, usato nei nomi dei file; non cambia mai.
+# stato: pronta | in-lavorazione. Una domanda è "pronta" quando supera il
+#   criterio del Piano di progetto: numeri controllati, schede compilate,
+#   pagina leggibile su telefono, testi riletti.
+# indirizzo: solo per le domande pronte.
+# fonti: identificativi delle fonti (vedi contenuti/fonti.yaml).
+
+- id: 1
+  testo: "Quante donne subiscono violenza?"
+  stato: in-lavorazione
+  fonti: [istat-sicurezza-donne]
+
+- id: 6
+  testo: "In che contesto nasce?"
+  stato: in-lavorazione
+  fonti: [istat-stereotipi-adulti, istat-stereotipi-ragazzi]
+
+- id: 2
+  testo: "Quante chiedono aiuto?"
+  stato: in-lavorazione
+  fonti: [istat-1522, istat-centri-antiviolenza, istat-case-rifugio, salute-pronto-soccorso]
+
+- id: 3
+  testo: "Cosa succede dopo una denuncia?"
+  stato: in-lavorazione
+  fonti: [interno-reati-spia, giustizia-processi-condanne]
+
+- id: 4
+  testo: "Quante donne vengono uccise?"
+  stato: pronta
+  indirizzo: /domande/quante-donne-vengono-uccise/
+  fonti: [istat-omicidi, interno-femminicidi, nudm-osservatorio]
+
+- id: 5
+  testo: "Cosa non sappiamo ancora?"
+  stato: in-lavorazione
+  fonti: []

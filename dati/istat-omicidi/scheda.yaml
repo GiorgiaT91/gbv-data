@@ -5,6 +5,7 @@ gruppo: femminicidi
 domanda: 4
 
 periodo_coperto: "2002-2024 (donne uccise per autore); 2019-2024 (femminicidi stimati)"
+ultimo_dato: "anno 2024"  # il periodo a cui si riferisce il dato più recente
 ultimo_aggiornamento: 2025-11-25
 ultima_verifica: 2026-11-13
 cadenza: "annuale"

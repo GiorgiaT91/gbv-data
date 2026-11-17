@@ -5,21 +5,17 @@ import IstatOmicidi from '../../componenti/infografiche/IstatOmicidi.astro';
 import InternoFemminicidi from '../../componenti/infografiche/InternoFemminicidi.astro';
 import NudmOsservatorio from '../../componenti/infografiche/NudmOsservatorio.astro';
 import { scheda } from '../../lib/dati.js';
+import { fontiPronte, domanda as trovaDomanda, dataEstesa as data } from '../../lib/registro.js';
 import { url } from '../../lib/url.js';
 
 export function getStaticPaths() {
-  return ['istat-omicidi', 'interno-femminicidi', 'nudm-osservatorio'].map((id) => ({ params: { id } }));
+  return fontiPronte().map((f) => ({ params: { id: f.id } }));
 }
 
 const s = scheda(Astro.params.id);
 const infografiche = { 'istat-omicidi': IstatOmicidi, 'interno-femminicidi': InternoFemminicidi, 'nudm-osservatorio': NudmOsservatorio };
 const Infografica = infografiche[s.id];
-const domande = { 4: { testo: 'Quante donne vengono uccise?', indirizzo: '/domande/quante-donne-vengono-uccise/' } };
-const domanda = domande[s.domanda];
-const data = (d) => {
-  const iso = /^\d{4}-\d{2}-\d{2}$/.test(String(d));
-  return iso ? new Date(`${d}T12:00:00Z`).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }) : d;
-};
+const domanda = trovaDomanda(s.domanda);
 ---
 <Layout titolo={`${s.ente} · ${s.nome}`} descrizione={s.titolo_messaggio} sezione="fonti">
   <section class="apertura">
@@ -38,7 +34,7 @@ const data = (d) => {
       <div><dt>Chi conta</dt><dd>{s.chi_conta}</dd></div>
       <div><dt>Da dove vengono i casi</dt><dd>{s.da_dove_vengono_i_casi}</dd></div>
       <div><dt>Che cosa viene contato</dt><dd>{s.cosa_viene_contato}</dd></div>
-      <div><dt>Quando esce</dt><dd>{s.cadenza.charAt(0).toUpperCase() + s.cadenza.slice(1)}. Ultimo aggiornamento: {data(s.ultimo_aggiornamento)}. Prossimo: {s.prossimo_aggiornamento}.</dd></div>
+      <div><dt>Quando esce</dt><dd>{s.cadenza.charAt(0).toUpperCase() + s.cadenza.slice(1)}. Ultimo aggiornamento: {data(s.ultimo_aggiornamento)}. Prossimo: {data(s.prossimo_aggiornamento)}.</dd></div>
       <div><dt>Periodo coperto</dt><dd>{s.periodo_coperto}</dd></div>
       <div><dt>Licenza</dt><dd>{s.licenza}</dd></div>
     </dl>
@@ -55,7 +51,7 @@ const data = (d) => {
     <ul class="nuove">{s.nuove_domande.map((d) => <li>{d}</li>)}</ul>
   </section>
 
-  {domanda && <a class="ritorno" href={url(domanda.indirizzo)}>Torna alla domanda: {domanda.testo}</a>}
+  {domanda?.indirizzo && <a class="ritorno" href={url(domanda.indirizzo)}>Torna alla domanda: {domanda.testo}</a>}
 </Layout>
 
 <style>

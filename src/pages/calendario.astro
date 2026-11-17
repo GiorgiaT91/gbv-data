@@ -1,0 +1,67 @@
+---
+// Modulo 1 del Piano di progetto: quando è uscito l'ultimo dato di ogni fonte e quando è atteso il prossimo.
+import Layout from '../componenti/Layout.astro';
+import { domande, fonti, dataEstesa, mesiFa } from '../lib/registro.js';
+import { url } from '../lib/url.js';
+
+const oggi = new Date();
+const tutte = fonti();
+const gruppi = domande()
+  .map((d) => ({ ...d, elenco: tutte.filter((f) => f.domanda === d.id && f.pronta) }))
+  .filter((d) => d.elenco.length > 0);
+const inLavorazione = tutte.filter((f) => !f.pronta);
+const quantoFa = (n) => (n === null ? '' : n === 0 ? 'meno di un mese fa' : n === 1 ? '1 mese fa' : `${n} mesi fa`);
+const maiuscola = (s = '') => s.charAt(0).toUpperCase() + s.slice(1);
+---
+<Layout titolo="Calendario dei dati" descrizione="Per ogni fonte: a quando si riferisce l'ultimo dato, quando è stato pubblicato e quando è atteso il prossimo." sezione="fonti">
+  <section class="apertura">
+    <h1>Calendario dei dati</h1>
+    <p class="attacco">Per ogni fonte: a quale periodo si riferisce l'ultimo dato, quando è stato pubblicato e quando è atteso il prossimo.</p>
+    <p class="nota">I mesi trascorsi sono calcolati al {dataEstesa(oggi.toISOString().slice(0, 10))}, giorno dell'ultimo aggiornamento di questa pagina.</p>
+  </section>
+
+  {gruppi.map((g) => (
+    <section class="sezione">
+      <h2>{g.indirizzo ? <a href={url(g.indirizzo)}>{g.testo}</a> : g.testo}</h2>
+      <div class="griglia-3">
+        {g.elenco.map((f) => (
+          <article class="scheda voce-calendario">
+            <p class="ente">{f.ente.split(',')[0]}</p>
+            <h3><a href={url(`/fonti/${f.id}/`)}>{f.nome}</a></h3>
+            <dl>
+              <div><dt>Ultimo dato</dt><dd class="forte">{f.ultimo_dato ?? f.periodo_coperto}</dd></div>
+              <div><dt>Pubblicato</dt><dd>{dataEstesa(f.ultimo_aggiornamento)} <span class="fa">· {quantoFa(mesiFa(f.ultimo_aggiornamento, oggi))}</span></dd></div>
+              <div><dt>Prossimo atteso</dt><dd>{dataEstesa(f.prossimo_aggiornamento)}</dd></div>
+              <div><dt>Cadenza</dt><dd>{maiuscola(f.cadenza)}</dd></div>
+              <div><dt>Ultima verifica</dt><dd>{dataEstesa(f.ultima_verifica)}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  {inLavorazione.length > 0 && (
+    <section class="sezione">
+      <h2>Fonti in lavorazione</h2>
+      <p class="sottotitolo">Entrano nel calendario quando la loro pagina viene pubblicata.</p>
+      <ul class="in-lavorazione">
+        {inLavorazione.map((f) => <li>{f.ente} · {f.nome}</li>)}
+      </ul>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .sezione h2 a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .voce-calendario h3 { font-size: 20px; }
+  .voce-calendario h3 a { color: var(--testo); text-decoration: none; }
+  .voce-calendario h3 a:hover { color: var(--accento); text-decoration: underline; }
+  .ente { font-size: 13px; color: var(--testo-3); }
+  dl { margin: 8px 0 0; display: flex; flex-direction: column; gap: 10px; }
+  dt { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--testo-3); }
+  dd { margin: 0; color: var(--testo-2); font-size: 15px; }
+  .forte { font-family: var(--titoli); font-size: 20px; font-weight: 600; color: var(--testo); }
+  .fa { color: var(--attenzione); font-weight: 500; }
+  .in-lavorazione { margin: 0; padding-left: 20px; color: var(--testo-2); display: flex; flex-direction: column; gap: 6px; }
+</style>

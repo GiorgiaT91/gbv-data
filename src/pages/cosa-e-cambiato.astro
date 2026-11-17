@@ -1,0 +1,40 @@
+---
+// Modulo 6 del Piano di progetto: elenco datato degli aggiornamenti, letto da contenuti/cambiamenti.yaml.
+import Layout from '../componenti/Layout.astro';
+import { contenuto } from '../lib/dati.js';
+import { dataEstesa, dataIso } from '../lib/registro.js';
+import { url } from '../lib/url.js';
+
+const voci = contenuto('cambiamenti.yaml')
+  .map((v) => ({ ...v, iso: dataIso(v.data) }))
+  .sort((a, b) => b.iso.localeCompare(a.iso));
+---
+<Layout titolo="Cosa è cambiato" descrizione="Gli aggiornamenti di GBV-Data, in ordine di data." sezione="">
+  <section class="apertura">
+    <h1>Cosa è cambiato</h1>
+    <p class="attacco">Ogni aggiornamento del sito: nuove pagine, nuovi dati, correzioni. Il più recente è in alto.</p>
+    <p class="nota">Per ricevere gli aggiornamenti: <a href={url('/rss.xml')}>feed RSS</a>.</p>
+  </section>
+
+  <ol class="registro">
+    {voci.map((v) => (
+      <li>
+        <time datetime={v.iso}>{dataEstesa(v.iso)}</time>
+        <div>
+          <h2>{v.indirizzo ? <a href={url(v.indirizzo)}>{v.titolo}</a> : v.titolo}</h2>
+          {v.testo && <p>{v.testo}</p>}
+        </div>
+      </li>
+    ))}
+  </ol>
+</Layout>
+
+<style>
+  .registro { list-style: none; margin: 0; padding: 0; }
+  .registro li { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 24px 0; border-top: 1px solid var(--bordo); }
+  time { font-size: 14px; font-weight: 600; color: var(--testo-3); padding-top: 4px; }
+  .registro h2 { font-size: 22px; margin-bottom: 8px; }
+  .registro h2 a { color: var(--testo); }
+  .registro p { color: var(--testo-2); max-width: 680px; }
+  @media (max-width: 640px) { .registro li { grid-template-columns: 1fr; gap: 6px; } }
+</style>

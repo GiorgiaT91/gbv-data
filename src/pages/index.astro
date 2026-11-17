@@ -1,51 +1,65 @@
 ---
 import Layout from '../componenti/Layout.astro';
 import { url } from '../lib/url.js';
+import { domande, fonte } from '../lib/registro.js';
 
-const domande = [
-  { n: 1, testo: 'Quante donne subiscono violenza?' },
-  { n: 2, testo: 'Quante chiedono aiuto?' },
-  { n: 3, testo: 'Cosa succede dopo una denuncia?' },
-  { n: 4, testo: 'Quante donne vengono uccise?', indirizzo: '/domande/quante-donne-vengono-uccise/' },
-  { n: 5, testo: 'Cosa non sappiamo ancora?' },
-];
+// Nome breve dell'ente: la parte prima della virgola ("Ministero dell'Interno, Servizio…").
+const enteBreve = (e = '') => e.split(',')[0];
+const elenco = domande().map((d) => ({
+  ...d,
+  enti: [...new Set(d.fonti.map((id) => enteBreve(fonte(id)?.ente)).filter(Boolean))],
+}));
+const pronte = elenco.filter((d) => d.stato === 'pronta').length;
 ---
 <Layout descrizione="Che cosa sappiamo sulla violenza di genere e sui femminicidi in Italia, e che cosa non sappiamo." sezione="domande">
   <section class="apertura">
     <h1>Che cosa sappiamo sulla violenza contro le donne in Italia?</h1>
-    <p class="attacco">Cinque domande. Per ognuna, i dati con cui oggi si prova a rispondere e le domande che quei dati lasciano aperte.</p>
+    <p class="attacco">Sei domande. Per ognuna, i dati con cui oggi si prova a rispondere e le domande che quei dati lasciano aperte.</p>
   </section>
 
-  <ol class="domande">
-    {domande.map((d) => (
-      <li>
-        {d.indirizzo ? (
-          <a href={url(d.indirizzo)} class="voce attiva">
-            <span class="n">{d.n}</span>
-            <span class="testo">{d.testo}</span>
-          </a>
-        ) : (
-          <div class="voce">
-            <span class="n">{d.n}</span>
-            <span class="testo">{d.testo}</span>
-            <span class="stato">In preparazione</span>
-          </div>
-        )}
-      </li>
-    ))}
-  </ol>
+  <section class="sezione" aria-labelledby="titolo-domande">
+    <h2 id="titolo-domande" class="visivamente-nascosto">Le domande</h2>
+    <ul class="domande">
+      {elenco.map((d) => (
+        <li>
+          {d.stato === 'pronta' ? (
+            <a href={url(d.indirizzo)} class="voce pronta">
+              <span class="testo">{d.testo}</span>
+              {d.enti.length > 0 && <span class="fonti">{d.enti.join(' · ')}</span>}
+              <span class="vai" aria-hidden="true">→</span>
+            </a>
+          ) : (
+            <div class="voce">
+              <span class="testo">{d.testo}</span>
+              <span class="stato">In lavorazione</span>
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+    {pronte < elenco.length && (
+      <p class="nota">Le domande in lavorazione vengono pubblicate quando i loro dati sono stati controllati sugli originali. Ogni novità è registrata in <a href={url('/cosa-e-cambiato/')}>Cosa è cambiato</a>.</p>
+    )}
+  </section>
 </Layout>
 
 <style>
   .domande { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   .voce {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px 24px;
-    background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; color: var(--testo-3);
+    display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 16px; row-gap: 4px;
+    padding: 20px 24px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; color: var(--testo-3);
   }
-  .attiva { text-decoration: none; color: var(--testo); }
-  .attiva:hover { border-color: var(--accento); }
-  .n { font-family: var(--titoli); font-size: 28px; font-weight: 600; min-width: 28px; }
-  .attiva .n { color: var(--accento); }
-  .testo { font-family: var(--titoli); font-size: 22px; flex: 1; }
-  .stato { font-size: 13px; }
+  .pronta { text-decoration: none; color: var(--testo); }
+  .pronta:hover { border-color: var(--accento); color: var(--testo); }
+  .testo { font-family: var(--titoli); font-size: 22px; font-weight: 500; line-height: 1.25; }
+  .fonti { grid-column: 1; font-size: 14px; color: var(--testo-3); }
+  .vai { grid-column: 2; grid-row: 1 / span 2; font-size: 24px; color: var(--accento); }
+  .stato {
+    font-size: 13px; font-weight: 500; color: var(--testo-3); background: var(--grigio);
+    padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .voce { padding: 16px 18px; }
+    .testo { font-size: 19px; }
+  }
 </style>

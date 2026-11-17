@@ -1,39 +1,45 @@
 ---
 import Layout from '../../componenti/Layout.astro';
 import BoxFonte from '../../componenti/BoxFonte.astro';
-import { scheda } from '../../lib/dati.js';
+import { domande, fonti } from '../../lib/registro.js';
+import { url } from '../../lib/url.js';
 
-const pronte = ['istat-omicidi', 'interno-femminicidi', 'nudm-osservatorio'].map(scheda);
-const gruppi = [
-  { titolo: 'Il sommerso', fonti: ['Indagine Istat sulla sicurezza delle donne', 'Stereotipi di genere, adulti', 'Stereotipi di genere, ragazze e ragazzi'] },
-  { titolo: 'Le richieste di aiuto', fonti: ['Numero 1522', 'Centri antiviolenza', 'Case rifugio', 'Accessi al pronto soccorso'] },
-  { titolo: 'La giustizia', fonti: ['Denunce dei reati spia', 'Processi e condanne'] },
-];
+const tutte = fonti();
+// Le fonti raggruppate per domanda, nell'ordine della home.
+const gruppi = domande()
+  .map((d) => ({ ...d, elenco: tutte.filter((f) => f.domanda === d.id) }))
+  .filter((d) => d.elenco.length > 0);
 ---
 <Layout titolo="Le fonti" descrizione="Le fonti dei dati sulla violenza di genere e sui femminicidi in Italia." sezione="fonti">
   <section class="apertura">
     <h1>Le fonti</h1>
-    <p class="attacco">Dodici fonti in quattro gruppi. Per ognuna: chi conta, che cosa conta, quando esce, e che cosa il dato non dice.</p>
-  </section>
-
-  <section class="sezione">
-    <h2>I femminicidi</h2>
-    <div class="griglia-3">
-      {pronte.map((s) => <BoxFonte id={s.id} ente={s.ente} nome={s.nome} testo={`Aggiornamento: ${s.cadenza}.`} />)}
-    </div>
+    <p class="attacco">{tutte.length} fonti, raggruppate per la domanda a cui rispondono. Per ognuna: chi conta, che cosa conta, quando esce, e che cosa il dato non dice.</p>
+    <p class="nota">Quando esce ciascun dato: <a href={url('/calendario/')}>il calendario dei dati</a>. I numeri in CSV: <a href={url('/dati/')}>i dati scaricabili</a>.</p>
   </section>
 
   {gruppi.map((g) => (
     <section class="sezione">
-      <h2>{g.titolo}</h2>
-      <ul class="in-preparazione">
-        {g.fonti.map((f) => <li>{f} <span>· in preparazione</span></li>)}
-      </ul>
+      <h2>
+        {g.indirizzo ? <a href={url(g.indirizzo)}>{g.testo}</a> : g.testo}
+      </h2>
+      {g.elenco.some((f) => f.pronta) && (
+        <div class="griglia-3">
+          {g.elenco.filter((f) => f.pronta).map((s) => (
+            <BoxFonte id={s.id} ente={s.ente} nome={s.nome} testo={`Aggiornamento: ${s.cadenza}.`} />
+          ))}
+        </div>
+      )}
+      {g.elenco.some((f) => !f.pronta) && (
+        <ul class="in-lavorazione">
+          {g.elenco.filter((f) => !f.pronta).map((f) => <li>{f.ente} · {f.nome} <span>in lavorazione</span></li>)}
+        </ul>
+      )}
     </section>
   ))}
 </Layout>
 
 <style>
-  .in-preparazione { margin: 0; padding-left: 20px; color: var(--testo-2); display: flex; flex-direction: column; gap: 6px; }
-  .in-preparazione span { color: var(--testo-3); font-size: 14px; }
+  .sezione h2 a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .in-lavorazione { margin: 0; padding-left: 20px; color: var(--testo-2); display: flex; flex-direction: column; gap: 6px; }
+  .in-lavorazione span { color: var(--testo-3); font-size: 13px; background: var(--grigio); padding: 2px 8px; border-radius: 999px; margin-left: 4px; }
 </style>

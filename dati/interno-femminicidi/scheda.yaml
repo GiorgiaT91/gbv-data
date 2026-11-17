@@ -5,6 +5,7 @@ gruppo: femminicidi
 domanda: 4
 
 periodo_coperto: "2023-2025 e gennaio-settembre 2026"
+ultimo_dato: "gennaio–settembre 2026"  # il periodo a cui si riferisce il dato più recente
 ultimo_aggiornamento: 2026-10-08        # data di creazione del PDF; il report è datato "ottobre 2026"
 ultima_verifica: 2026-11-12
 cadenza: "trimestrale (da confermare)"

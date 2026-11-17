@@ -1,0 +1,13 @@
+# "Cosa è cambiato": un elemento per ogni aggiornamento del sito, il più recente in alto.
+# data: AAAA-MM-GG · titolo: una riga · testo: facoltativo, due o tre frasi al massimo
+# indirizzo: facoltativo, la pagina interessata (es. /domande/quante-donne-vengono-uccise/)
+# Questa lista alimenta anche il feed RSS (rss.xml).
+
+- data: 2026-11-17
+  titolo: "Home con le sei domande, calendario dei dati e dati scaricabili"
+  testo: "La home mostra tutte le domande del progetto; quelle non ancora pronte sono segnate come in lavorazione. Nuove pagine: il calendario delle fonti e i dati scaricabili in CSV."
+
+- data: 2026-11-14
+  titolo: "Online la domanda «Quante donne vengono uccise?»"
+  testo: "Le regole con cui contano Istat, Ministero dell'Interno e Osservatorio Non Una Di Meno, i numeri del 2025 e del 2026, e l'infografica di ciascuna fonte."
+  indirizzo: /domande/quante-donne-vengono-uccise/

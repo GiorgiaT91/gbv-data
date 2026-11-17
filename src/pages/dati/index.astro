@@ -1,0 +1,86 @@
+---
+// Modulo 5 del Piano di progetto: i dati.csv di ogni fonte, con la descrizione delle colonne.
+import Layout from '../../componenti/Layout.astro';
+import { leggiDati } from '../../lib/dati.js';
+import { fontiPronte } from '../../lib/registro.js';
+import { url } from '../../lib/url.js';
+
+const archivio = 'https://github.com/GiorgiaT91/gbv-data/blob/main/dati';
+const elenco = fontiPronte().map((f) => {
+  const righe = leggiDati(f.id);
+  const anni = righe.map((r) => Number(r.anno)).filter(Number.isFinite);
+  return { ...f, righe: righe.length, da: Math.min(...anni), a: Math.max(...anni) };
+});
+const colonne = [
+  ['anno', 'Anno di riferimento del dato', '2024'],
+  ['periodo', 'Anno intero, semestre, trimestre o periodo parziale', 'anno'],
+  ['territorio', 'Italia, regione o provincia', 'Italia'],
+  ['indicatore', 'Che cosa si misura', 'femminicidi_stimati'],
+  ['categoria', 'Eventuale suddivisione: autore, età, tipo di violenza', 'totale'],
+  ['valore', 'Il numero', '106'],
+  ['unita', 'Persone, percentuale, chiamate, accessi', 'persone'],
+  ['nota', 'Avvertenze sul singolo valore', 'stima'],
+];
+---
+<Layout titolo="Dati scaricabili" descrizione="I dati usati da GBV-Data, fonte per fonte, in formato CSV." sezione="fonti">
+  <section class="apertura">
+    <h1>Dati scaricabili</h1>
+    <p class="attacco">I numeri mostrati nel sito, fonte per fonte, in file CSV con le stesse colonne per tutte le fonti. Ogni valore si può ritrovare nel documento originale: le note di ciascuna fonte indicano tavola e pagina.</p>
+  </section>
+
+  <section class="sezione">
+    <h2>I file</h2>
+    <div class="tabella-scorrevole">
+      <table class="tabella tabella-file">
+        <thead><tr><th scope="col">Fonte</th><th scope="col">Anni</th><th scope="col">Righe</th><th scope="col">File</th></tr></thead>
+        <tbody>
+          {elenco.map((f) => (
+            <tr>
+              <td><a href={url(`/fonti/${f.id}/`)}>{f.ente.split(',')[0]} · {f.nome}</a></td>
+              <td class="numero" data-etichetta="Anni">{f.da === f.a ? f.da : `${f.da}–${f.a}`}</td>
+              <td class="numero" data-etichetta="Righe">{f.righe}</td>
+              <td class="numero">
+                <a href={url(`/dati/${f.id}.csv`)} download={`gbv-data_${f.id}.csv`}>Scarica CSV</a><br />
+                <a href={`${archivio}/${f.id}/note.md`}>Come sono stati ricavati</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="nota">Dell'Osservatorio Non Una Di Meno si pubblicano solo i totali. I file caso per caso restano fuori: anche senza nomi, data, comune ed età permettono di riconoscere le persone.</p>
+  </section>
+
+  <section class="sezione">
+    <h2>Le colonne</h2>
+    <p class="sottotitolo">Una riga per ogni valore. I file sono in UTF-8 con BOM, così Excel legge correttamente le lettere accentate; il separatore è la virgola.</p>
+    <div class="tabella-scorrevole">
+      <table class="tabella">
+        <thead><tr><th scope="col">Colonna</th><th scope="col">Significato</th><th scope="col">Esempio</th></tr></thead>
+        <tbody>
+          {colonne.map(([nome, significato, esempio]) => (
+            <tr><td><code>{nome}</code></td><td>{significato}</td><td><code>{esempio}</code></td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sezione">
+    <h2>Come citarli</h2>
+    <p class="riquadro-accento">GBV-Data, elaborazione su dati [ente], «[nome della fonte]», [anno]. https://giorgiat91.github.io/gbv-data/</p>
+    <p class="nota">Citare sempre anche la fonte originale. I totali dell'Osservatorio Non Una Di Meno sono distribuiti con licenza CC BY-SA 4.0. La licenza degli altri file è in via di definizione.</p>
+  </section>
+</Layout>
+
+<style>
+  /* Su telefono la tabella dei file diventa una scheda per fonte */
+  @media (max-width: 640px) {
+    .tabella-file thead { display: none; }
+    .tabella-file tr { display: block; padding: 12px 16px; border-top: 1px solid var(--bordo-chiaro); }
+    .tabella-file tr:first-child { border-top: 0; }
+    .tabella-file td { display: block; border: 0; padding: 4px 0; }
+    .tabella-file td[data-etichetta]::before { content: attr(data-etichetta) ': '; color: var(--testo-3); }
+  }
+  code { font-size: 14px; background: var(--grigio); padding: 1px 6px; border-radius: 4px; }
+</style>

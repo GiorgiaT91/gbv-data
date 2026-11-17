@@ -5,6 +5,7 @@ gruppo: femminicidi
 domanda: 4
 
 periodo_coperto: "2020-2026"
+ultimo_dato: "1 gennaio – 8 novembre 2026"  # il periodo a cui si riferisce il dato più recente
 ultimo_aggiornamento: 2026-11-08
 ultima_verifica: 2026-11-14
 cadenza: "mensile, l'8 di ogni mese"

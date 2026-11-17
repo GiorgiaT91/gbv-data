@@ -9,6 +9,8 @@ import { url } from '../lib/url.js';
 
 const { titolo, descrizione = '', sezione = '' } = Astro.props;
 const titoloPagina = titolo ? `${titolo} · GBV-Data` : 'GBV-Data';
+// Uscita rapida: sito neutro su cui si atterra premendo "Esci" o il tasto Esc.
+const sitoNeutro = 'https://www.google.com/';
 ---
 <!doctype html>
 <html lang="it">
@@ -18,9 +20,13 @@ const titoloPagina = titolo ? `${titolo} · GBV-Data` : 'GBV-Data';
   <title>{titoloPagina}</title>
   {descrizione && <meta name="description" content={descrizione} />}
   <meta name="robots" content="noindex" />
+  <link rel="alternate" type="application/rss+xml" title="GBV-Data · Cosa è cambiato" href={url('/rss.xml')} />
 </head>
 <body>
   <a class="salta" href="#contenuto">Vai al contenuto</a>
+  <a class="uscita-rapida" href={sitoNeutro} rel="noreferrer" data-uscita>
+    Esci subito <span class="tasto">Esc</span>
+  </a>
   <header class="testata">
     <div class="contenitore">
       <a class="logo" href={url('/')}>GBV-Data</a>
@@ -42,9 +48,23 @@ const titoloPagina = titolo ? `${titolo} · GBV-Data` : 'GBV-Data';
   </main>
   <footer class="piede">
     <div class="contenitore">
+      <nav class="piede-menu" aria-label="Altre pagine">
+        <a href={url('/calendario/')}>Calendario dei dati</a>
+        <a href={url('/dati/')}>Dati scaricabili</a>
+        <a href={url('/cosa-e-cambiato/')}>Cosa è cambiato</a>
+        <a href="https://github.com/GiorgiaT91/gbv-data">L'archivio su GitHub</a>
+      </nav>
+      <p class="avviso-uscita">Il pulsante «Esci subito» e il tasto Esc aprono Google al posto di questa pagina. Non cancellano la cronologia del browser: se temi che qualcuno controlli il tuo dispositivo, usa la navigazione in incognito o cancella la cronologia dopo la visita.</p>
       <span>GBV-Data · dati e codice aperti</span>
-      <a href="https://github.com/GiorgiaT91/gbv-data">L'archivio su GitHub</a>
     </div>
   </footer>
+  <script define:vars={{ sitoNeutro }}>
+    // Sostituisce la pagina nella cronologia, così il tasto "indietro" non riporta qui.
+    const esci = () => window.location.replace(sitoNeutro);
+    document.querySelectorAll('[data-uscita]').forEach((a) =>
+      a.addEventListener('click', (e) => { e.preventDefault(); esci(); }),
+    );
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') esci(); });
+  </script>
 </body>
 </html>
