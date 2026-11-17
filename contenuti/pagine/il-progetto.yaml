@@ -1,0 +1,73 @@
+# Testi della pagina "Il progetto".
+# Bozza di lavoro: WebApp/contenuti/pagine/il-progetto.md (versione 0.1, 17/11/2026).
+# Questo file è la versione pubblicata. **testo** = grassetto.
+
+etichetta: "Il progetto"
+titolo: "Mettere in ordine i numeri, e mostrare quelli che mancano."
+attacco: "GBV-Data raccoglie i dati pubblici sulla violenza contro le donne e sui femminicidi in Italia. Per ogni dato dice chi lo produce, che cosa conta e che cosa lascia fuori. Non produce numeri propri."
+
+perche:
+  titolo: "Perché esiste"
+  paragrafi:
+    - "I dati sulla violenza di genere in Italia ci sono, ma sono sparsi fra enti diversi, in tavole e documenti pensati per chi li sa leggere. Escono con tempi diversi: alcuni ogni mese, altri una volta l'anno, altri ogni dieci anni. Sui femminicidi tre fonti danno tre numeri diversi per lo stesso anno, perché contano cose diverse."
+    - "Chi cerca un numero, per capire o per scriverne, deve ricostruire da sé da dove viene e che cosa misura. GBV-Data lo fa una volta, fonte per fonte, e lo rende leggibile a tutti."
+
+manifesto:
+  etichetta: "Il manifesto"
+  titolo: "Otto principi"
+  attacco: "Guidano il lavoro e valgono per ogni pagina del sito."
+  principi:
+    - titolo: "Ogni numero ha una fonte, un periodo, una definizione."
+      testo: "Nessun dato compare da solo. Accanto a ogni numero ci sono chi lo ha prodotto, a quale periodo si riferisce e che cosa conta esattamente."
+    - titolo: "Prima il dato, poi la domanda."
+      testo: "I numeri sono presentati senza commento. Solo dopo il sito chiede se quel dato basta: quanto è aggiornato, chi esclude, con che cosa non si può confrontare."
+    - titolo: "Numeri diversi non sono numeri sbagliati."
+      testo: "Quando due fonti non coincidono, il sito spiega perché: regole diverse, periodi diversi, persone contate in modo diverso. Numeri costruiti con definizioni diverse non vengono mai confrontati senza dirlo."
+    - titolo: "Anche ciò che manca è un dato."
+      testo: "Ritardi, cambi di metodo e informazioni non raccolte sono mostrati come parte del contenuto, non nascosti in una nota."
+    - titolo: "Le vittime sono persone."
+      testo: "Nessun nome, nessun dettaglio di cronaca, nessun contatore. Il sito lavora solo su dati aggregati."
+    - titolo: "Dati aperti, a partire dai propri."
+      testo: "Un progetto che chiede dati pubblici più completi pubblica i suoi: codice, tabelle e metodo sono liberamente consultabili e riutilizzabili. Ogni valore si può ritrovare nel documento originale."
+    - titolo: "Solo ciò che si può mantenere."
+      testo: "Il progetto è curato da una persona. Pubblica soltanto ciò che può tenere aggiornato, e su ogni pagina indica la data dell'ultima verifica."
+    - titolo: "L'aiuto viene prima di tutto."
+      testo: "Il numero 1522 è presente in ogni pagina. Chi ne ha bisogno può lasciare il sito in un attimo con il pulsante «Esci subito»."
+
+obiettivi:
+  titolo: "Che cosa vuole essere"
+  voci:
+    - etichetta: "La missione"
+      testo: "Rendere comprensibile a chiunque che cosa i dati pubblici dicono, e che cosa non dicono, sulla violenza di genere in Italia: fonte per fonte, con definizioni, periodi e limiti sempre dichiarati."
+    - etichetta: "L'obiettivo"
+      testo: "Essere un punto di riferimento affidabile per chi cerca i numeri sulla violenza di genere in Italia e vuole capirli: un luogo dove le fonti sono in ordine, aggiornate e spiegate, e dove i dati che mancano sono messi in evidenza."
+  chiusura: "Il progetto non si propone di cambiare da solo il modo in cui lo Stato produce i dati. Si propone di rendere chiaro, a chi legge e a chi scrive, che cosa manca. Dati più completi sono una condizione per politiche più efficaci."
+
+perimetro:
+  titolo: "Che cosa fa e che cosa non fa"
+  fa:
+    titolo: "Il sito"
+    voci:
+      - "raccoglie in un solo luogo i dati di Istat, dei ministeri e dell'Osservatorio nazionale di Non Una Di Meno;"
+      - "organizza i dati intorno a sei domande, dal fenomeno nascosto ai femminicidi;"
+      - "per ogni fonte spiega chi conta, che cosa conta, quando esce e che cosa il dato non dice;"
+      - "segnala quando escono nuovi dati, nel calendario e in «Cosa è cambiato»;"
+      - "mette a disposizione i dati in formato aperto."
+  non_fa:
+    titolo: "Il sito non"
+    voci:
+      - "tiene un proprio conteggio dei femminicidi: riporta quelli delle fonti, ciascuno con la sua data;"
+      - "pubblica l'elenco dei casi, i nomi o le storie delle vittime: per questo rimanda all'Osservatorio di Non Una Di Meno;"
+      - "spiega le cause della violenza né valuta le politiche pubbliche: mostra i dati che servirebbero per farlo;"
+      - "mostra, per ora, la mappa dei centri antiviolenza: per trovarne uno, si può chiamare il 1522 o consultare la mappatura ufficiale sul sito del 1522."
+
+chi:
+  titolo: "Chi lo cura"
+  paragrafi:
+    - "GBV-Data è curato da Giorgia Tagliaferri, data analyst. Nasce nel 2024 come progetto conclusivo del Master in Big Data della Sapienza Università di Roma e dal 2026 è stato ripensato da capo."
+    - "Il progetto è indipendente: non riceve finanziamenti e non è legato a enti, partiti o associazioni. Le fonti esterne sono citate e collegate."
+
+correzioni:
+  titolo: "Errori e correzioni"
+  email: "giorgiatagliaferri91@gmail.com"
+  testo: "Chi trova un errore può scrivere all'indirizzo qui sotto o aprire una segnalazione sull'archivio GitHub. Ogni correzione è datata e resta visibile in «Cosa è cambiato»."

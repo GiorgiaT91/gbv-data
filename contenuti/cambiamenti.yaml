@@ -4,6 +4,11 @@
 # Questa lista alimenta anche il feed RSS (rss.xml).
 
 - data: 2026-11-17
+  titolo: "Nuova pagina «Il progetto»"
+  testo: "Perché esiste il progetto, gli otto principi che lo guidano, che cosa fa e che cosa non fa, chi lo cura e come segnalare un errore."
+  indirizzo: /il-progetto/
+
+- data: 2026-11-17
   titolo: "Home con le sei domande, calendario dei dati e dati scaricabili"
   testo: "La home mostra tutte le domande del progetto; quelle non ancora pronte sono segnate come in lavorazione. Nuove pagine: il calendario delle fonti e i dati scaricabili in CSV."
 

@@ -1,0 +1,128 @@
+---
+// Pagina "Il progetto": manifesto, mission e vision, perimetro, chi lo cura.
+// Testi in contenuti/pagine/il-progetto.yaml.
+import Layout from '../componenti/Layout.astro';
+import { contenuto } from '../lib/dati.js';
+import { url } from '../lib/url.js';
+import { fmt } from '../lib/testo.js';
+
+const t = contenuto('pagine', 'il-progetto.yaml');
+const archivio = 'https://github.com/GiorgiaT91/gbv-data';
+const collegamenti = [
+  ['Calendario dei dati', url('/calendario/')],
+  ['Dati scaricabili', url('/dati/')],
+  ['Cosa è cambiato', url('/cosa-e-cambiato/')],
+  ["L'archivio su GitHub", archivio],
+];
+---
+<Layout titolo={t.etichetta} descrizione={t.attacco} sezione="progetto">
+  <section class="apertura">
+    <p class="etichetta">{t.etichetta}</p>
+    <h1>{t.titolo}</h1>
+    <p class="attacco">{t.attacco}</p>
+  </section>
+
+  <section class="sezione">
+    <h2>{t.perche.titolo}</h2>
+    <div class="testo-lungo">
+      {t.perche.paragrafi.map((p) => <p set:html={fmt(p)} />)}
+    </div>
+  </section>
+
+  <section class="sezione manifesto" aria-labelledby="titolo-manifesto">
+    <div class="intestazione">
+      <p class="etichetta">{t.manifesto.etichetta}</p>
+      <h2 id="titolo-manifesto">{t.manifesto.titolo}</h2>
+      <p class="sottotitolo">{t.manifesto.attacco}</p>
+    </div>
+    <ol class="principi">
+      {t.manifesto.principi.map((p, i) => (
+        <li>
+          <span class="numero" aria-hidden="true">{i + 1}</span>
+          <h3>{p.titolo}</h3>
+          <p set:html={fmt(p.testo)} />
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="sezione">
+    <h2>{t.obiettivi.titolo}</h2>
+    <div class="obiettivi">
+      {t.obiettivi.voci.map((v) => (
+        <div class="obiettivo">
+          <p class="etichetta">{v.etichetta}</p>
+          <p class="obiettivo-testo" set:html={fmt(v.testo)} />
+        </div>
+      ))}
+    </div>
+    <p class="riquadro-accento" set:html={fmt(t.obiettivi.chiusura)} />
+  </section>
+
+  <section class="sezione">
+    <h2>{t.perimetro.titolo}</h2>
+    <div class="perimetro">
+      {[t.perimetro.fa, t.perimetro.non_fa].map((g, i) => (
+        <div class:list={['scheda', i === 1 && 'non-fa']}>
+          <h3>{g.titolo}</h3>
+          <ul>{g.voci.map((v) => <li set:html={fmt(v)} />)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sezione">
+    <h2>{t.chi.titolo}</h2>
+    <div class="testo-lungo">
+      {t.chi.paragrafi.map((p) => <p set:html={fmt(p)} />)}
+    </div>
+  </section>
+
+  <section class="sezione">
+    <h2>{t.correzioni.titolo}</h2>
+    <div class="testo-lungo">
+      <p set:html={fmt(t.correzioni.testo)} />
+      <p class="contatti">
+        <a href={`mailto:${t.correzioni.email}`}>{t.correzioni.email}</a>
+        <a href={`${archivio}/issues`}>Apri una segnalazione su GitHub</a>
+      </p>
+    </div>
+    <nav class="collegamenti" aria-label="Pagine collegate">
+      {collegamenti.map(([testo, href]) => <a href={href}>{testo}</a>)}
+    </nav>
+  </section>
+</Layout>
+
+<style>
+  .testo-lungo { display: flex; flex-direction: column; gap: 16px; max-width: 760px; font-size: 18px; line-height: 1.7; color: var(--testo-2); }
+
+  .principi {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .principi li {
+    background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .principi .numero { font-family: var(--titoli); font-size: 32px; font-weight: 600; line-height: 1; color: var(--accento); }
+  .principi h3 { font-size: 21px; line-height: 1.25; }
+  .principi p { color: var(--testo-2); }
+
+  .obiettivi { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .obiettivo { display: flex; flex-direction: column; gap: 8px; border-left: 3px solid var(--accento); padding-left: 20px; }
+  .obiettivo-testo { font-family: var(--titoli); font-size: 22px; line-height: 1.35; color: var(--testo); }
+
+  .perimetro { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .perimetro h3 { font-size: 20px; }
+  .perimetro ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--testo-2); }
+  .non-fa { background: var(--grigio); }
+
+  .contatti { display: flex; flex-wrap: wrap; gap: 8px 24px; font-weight: 500; }
+  .collegamenti { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-top: 16px; border-top: 1px solid var(--bordo); font-size: 15px; }
+
+  @media (max-width: 760px) {
+    .principi, .obiettivi, .perimetro { grid-template-columns: 1fr; }
+    .obiettivo-testo { font-size: 19px; }
+    .testo-lungo { font-size: 17px; }
+  }
+</style>

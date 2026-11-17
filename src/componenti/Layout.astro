@@ -33,6 +33,7 @@ const sitoNeutro = 'https://www.google.com/';
       <nav class="menu" aria-label="Menu principale">
         <a href={url('/')} aria-current={sezione === 'domande' ? 'page' : undefined}>Le domande</a>
         <a href={url('/fonti/')} aria-current={sezione === 'fonti' ? 'page' : undefined}>Le fonti</a>
+        <a href={url('/il-progetto/')} aria-current={sezione === 'progetto' ? 'page' : undefined}>Il progetto</a>
         <a class="pulsante-1522" href="tel:1522">Chiedi aiuto: 1522</a>
       </nav>
     </div>
@@ -49,6 +50,7 @@ const sitoNeutro = 'https://www.google.com/';
   <footer class="piede">
     <div class="contenitore">
       <nav class="piede-menu" aria-label="Altre pagine">
+        <a href={url('/il-progetto/')}>Il progetto</a>
         <a href={url('/calendario/')}>Calendario dei dati</a>
         <a href={url('/dati/')}>Dati scaricabili</a>
         <a href={url('/cosa-e-cambiato/')}>Cosa è cambiato</a>
