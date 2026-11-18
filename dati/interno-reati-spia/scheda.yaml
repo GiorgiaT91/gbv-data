@@ -1,0 +1,42 @@
+id: interno-reati-spia
+nome: "Denunce dei reati spia"
+ente: "Ministero dell'Interno e Istat"
+gruppo: giustizia
+domanda: 3
+
+periodo_coperto: "delitti e persone denunciate 2014-2023; vittime donne 2023-2024"
+ultimo_dato: "anno 2023 (vittime donne: anno 2024)"
+ultimo_aggiornamento: "DA VERIFICARE"
+ultima_verifica: 2026-11-18
+cadenza: "annuale"
+prossimo_aggiornamento: "data non annunciata"
+
+numero_principale: "25.260"
+titolo_messaggio: "Le denunce per maltrattamenti in famiglia sono quasi raddoppiate in dieci anni; quattro vittime su cinque sono donne"
+componente: mosaico
+
+chi_conta: "Il Ministero dell'Interno, con la banca dati delle forze di polizia (SDI-SSD); Istat diffonde le tavole"
+da_dove_vengono_i_casi: "Dalle denunce raccolte da Polizia di Stato, Carabinieri e Guardia di Finanza, e dagli arresti"
+cosa_viene_contato: "I delitti denunciati per i reati considerati spia della violenza di genere (maltrattamenti in famiglia, stalking, percosse, violenze sessuali e i reati introdotti dal Codice rosso nel 2019), la quota di vittime donne e le persone denunciate o arrestate."
+
+limiti:
+  - "Conta i delitti denunciati, non le donne che hanno subito violenza: la maggior parte delle violenze non viene denunciata."
+  - "Un aumento delle denunce può voler dire più violenza o una maggiore disponibilità a denunciare: il dato da solo non permette di distinguerli."
+  - "Per i delitti si conosce solo la quota di vittime donne, non il loro numero. Il numero di vittime donne è in una tavola diversa (IstatData), che non comprende i maltrattamenti in famiglia."
+  - "La serie delle persone denunciate ha salti improvvisi (violenze sessuali nel 2017, maltrattamenti e stalking nel 2021) non spiegati dalla fonte: per ora non è mostrata."
+  - "Nelle righe delle regioni 2014-2016 le percentuali per cittadinanza di maltrattamenti e stalking risultano scambiate: i dati regionali non sono usati."
+  - "Non dice chi è l'autore rispetto alla vittima (partner, ex, familiare)."
+
+nuove_domande:
+  - "Le denunce crescono perché aumenta la violenza o perché si denuncia di più?"
+  - "Quante delle donne che denunciano sono vittime di un partner o di un ex?"
+  - "Perché nel 2021 le persone denunciate per maltrattamenti calano mentre i delitti aumentano?"
+
+link_fonte: "https://www.istat.it/statistiche-per-temi/focus/violenza-sulle-donne/il-percorso-giudiziario/"
+file_originali:
+  - "originali/denunce-fonte-SDI-SSD-2014-2023.xlsx"
+  - "originali/indice-tavole-denunce-SDI-SSD-2014-2023.docx.pdf"
+  - "originali/Delitti violenti, sesso, età - reg. (IT1,73_230_DF_DCCV_AUTVITTPS_6,1.0).csv"
+licenza: "DA VERIFICARE"
+
+stato: bozza

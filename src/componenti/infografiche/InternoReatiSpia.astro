@@ -1,0 +1,117 @@
+---
+// Infografica delle denunce dei reati spia, a mosaico (domanda 3, sottodomanda "Quante denunce, e per quali reati?").
+// Dati: dati/interno-reati-spia (Ministero dell'Interno, banca dati SDI-SSD, diffusa da Istat; IstatData per il 2024).
+import Riquadro from '../grafici/Riquadro.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import SerieAnni from '../grafici/SerieAnni.astro';
+import Cifre from '../grafici/Cifre.astro';
+import { leggiDati, richiesto, formatta } from '../../lib/dati.js';
+import { C, percentuale } from '../../lib/colori.js';
+
+const F = 'interno-reati-spia';
+const righe = leggiDati(F);
+const v = (anno, indicatore, categoria) => richiesto(F, { anno, periodo: 'anno', territorio: 'Italia', indicatore, categoria });
+const p = (x) => `${percentuale(x, 1)}%`;
+const ULTIMO = 2023;
+const REATI = [
+  ['maltrattamenti', 'Maltrattamenti in famiglia'],
+  ['stalking', 'Stalking (atti persecutori)'],
+  ['percosse', 'Percosse'],
+  ['violenze_sessuali', 'Violenze sessuali'],
+];
+const serie = (indicatore, categoria) => righe
+  .filter((r) => r.indicatore === indicatore && r.categoria === categoria)
+  .map((r) => ({ anno: Number(r.anno), valore: r.valore }))
+  .sort((a, b) => a.anno - b.anno);
+
+const delitti = REATI.map(([c, nome]) => ({ c, nome, serie: serie('delitti_denunciati', c), ultimo: v(ULTIMO, 'delitti_denunciati', c) }));
+const malt = delitti[0];
+const aumentoMalt = (100 * (malt.ultimo - malt.serie[0].valore)) / malt.serie[0].valore;
+
+const NOMI_DONNE = [...REATI,
+  ['diffusione_immagini', 'Diffusione di immagini sessuali senza consenso'],
+  ['matrimonio_forzato', 'Matrimonio forzato'],
+  ['sfregio_viso', 'Sfregio permanente del viso'],
+];
+const donne = NOMI_DONNE
+  .map(([c, etichetta]) => ({ etichetta: `${etichetta} (${formatta(v(ULTIMO, 'delitti_denunciati', c))} delitti)`, valore: v(ULTIMO, 'quota_vittime_donne', c) }))
+  .sort((a, b) => b.valore - a.valore);
+
+const AUTORI = [...REATI, ['omicidi', 'Omicidi volontari']];
+const uomini = AUTORI.map(([c, etichetta]) => {
+  const tot = v(ULTIMO, 'persone_denunciate', c);
+  return { etichetta, valore: (100 * (tot - v(ULTIMO, 'persone_denunciate', `${c}_femmine`))) / tot, tot };
+}).sort((a, b) => b.valore - a.valore);
+
+// Rotture di serie nelle persone denunciate
+const pers = (anno, c) => v(anno, 'persone_denunciate', c);
+const del = (anno, c) => v(anno, 'delitti_denunciati', c);
+
+const immagini = serie('delitti_denunciati', 'diffusione_immagini');
+const IMG0 = immagini[0];
+const vittime2024 = [
+  ['stalking', 'Stalking'], ['percosse', 'Percosse'], ['violenze_sessuali', 'Violenze sessuali'], ['omicidi', 'Omicidi volontari'],
+].map(([c, etichetta]) => ({ etichetta, valore: v(2024, 'vittime_donne', c), prima: v(2023, 'vittime_donne', c) }));
+const maxVittime = Math.max(...vittime2024.map((d) => d.valore));
+const fonteSdi = 'Ministero dell\'Interno · banca dati SDI-SSD · diffusa da Istat';
+---
+<div class="mosaico">
+  <section class="s12 chiave" aria-label={`Delitti denunciati nel ${ULTIMO}`}>
+    {delitti.map((d, i) => (
+      <div class="tessera"><span class="n" style={`color:${i === 0 ? C.accento : C.uomini}`}>{formatta(d.ultimo)}</span><span>{d.nome.toLowerCase().replace('stalking (atti persecutori)', 'stalking')}, delitti denunciati nel {ULTIMO}</span></div>
+    ))}
+  </section>
+
+  <div class="s12">
+    <Riquadro titolo={`Dal ${malt.serie[0].anno} al ${ULTIMO} le denunce per maltrattamenti in famiglia sono aumentate del ${percentuale(aumentoMalt, 0)}%`}
+      sottotitolo="Delitti denunciati alle forze di polizia, ogni anno"
+      nota={`${fonteSdi} · tavola 1. Un aumento delle denunce non vuol dire per forza più violenza: può voler dire che si denuncia di più.`}>
+      <div class="quattro">
+        {delitti.map((d, i) => <SerieAnni titolo={d.nome} valori={d.serie} colore={i === 0 ? C.accento : C.familiare} massimo={26000} />)}
+      </div>
+    </Riquadro>
+  </div>
+
+  <div class="s6">
+    <Riquadro titolo={`Nove vittime di violenza sessuale su dieci sono donne; nelle percosse meno della metà`}
+      sottotitolo={`Quota di donne fra le vittime dei delitti denunciati, ${ULTIMO}`}
+      nota={`${fonteSdi} · tavola 1`}>
+      <BarreOrizzontali voci={donne} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo="Chi viene denunciato è quasi sempre un uomo"
+      sottotitolo={`Quota di uomini fra le persone denunciate o arrestate, ${ULTIMO}`}
+      nota={`${fonteSdi} · tavola 2`}>
+      <BarreOrizzontali voci={uomini.map((d) => ({ ...d, colore: C.uomini, etichetta: `${d.etichetta} (${formatta(d.tot)} persone)` }))} />
+      <Cifre voci={[{ numero: formatta(immagini[immagini.length - 1].valore), testo: `delitti di diffusione di immagini sessuali senza consenso denunciati nel ${ULTIMO}: il reato esiste dall'agosto ${IMG0.anno} (${formatta(IMG0.valore)} denunce quell'anno)` }]} />
+    </Riquadro>
+  </div>
+
+  <div class="s6">
+    <Riquadro titolo={`Il 2024, l'ultimo anno: ${formatta(vittime2024[0].valore)} donne vittime di stalking`}
+      sottotitolo="Donne vittime dei delitti denunciati (persone, non delitti)"
+      nota="Istat, IstatData · delitti violenti, vittime per sesso (DCCV_AUTVITTPS_6). Questa tavola non comprende i maltrattamenti in famiglia.">
+      <BarreOrizzontali voci={vittime2024.map((d) => ({ etichetta: `${d.etichetta} (${formatta(d.prima)} nel 2023)`, valore: d.valore, testo: formatta(d.valore) }))} massimo={maxVittime * 1.05} />
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo="Persone denunciate: una serie da maneggiare con cura" nota={`${fonteSdi} · tavole 1 e 2`}>
+      <p class="non-utilizzabile">Il numero di persone denunciate cambia di colpo in alcuni anni, mentre i delitti continuano a crescere. Violenze sessuali: {formatta(pers(2016, 'violenze_sessuali'))} persone nel 2016, {formatta(pers(2017, 'violenze_sessuali'))} nel 2017. Maltrattamenti: {formatta(pers(2020, 'maltrattamenti'))} nel 2020, {formatta(pers(2021, 'maltrattamenti'))} nel 2021, con i delitti passati da {formatta(del(2020, 'maltrattamenti'))} a {formatta(del(2021, 'maltrattamenti'))}. È probabile un cambio nel modo di contare: finché non è chiarito, la serie delle persone denunciate non è mostrata.</p>
+    </Riquadro>
+  </div>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div > :global(.riquadro) { height: 100%; }
+  .s6 { grid-column: span 6; } .s12 { grid-column: span 12; }
+  .chiave { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tessera { background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  .tessera .n { font-family: var(--titoli); font-weight: 600; font-size: 34px; line-height: 1.1; }
+  .quattro { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.5; color: var(--testo-2); margin: 0; }
+  @media (max-width: 980px) { .s6 { grid-column: span 12; } }
+  @media (max-width: 640px) { .mosaico { gap: 14px; } .quattro { grid-template-columns: 1fr; gap: 16px; } }
+</style>

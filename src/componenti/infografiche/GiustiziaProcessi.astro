@@ -1,0 +1,182 @@
+---
+// Infografica del percorso giudiziario, a mosaico (domanda 3, sottodomande 2-4:
+// quante arrivano a un processo, come finiscono i processi, quante condanne e quanti detenuti).
+// Dati: dati/giustizia-processi-condanne. Ogni passo conta un'unità diversa e copre anni diversi.
+import Riquadro from '../grafici/Riquadro.astro';
+import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
+import SerieAnni from '../grafici/SerieAnni.astro';
+import Legenda from '../grafici/Legenda.astro';
+import { leggiDati, richiesto, formatta } from '../../lib/dati.js';
+import { C, percentuale } from '../../lib/colori.js';
+
+const F = 'giustizia-processi-condanne';
+const righe = leggiDati(F);
+const v = (anno, indicatore, categoria) => richiesto(F, { anno, periodo: 'anno', territorio: 'Italia', indicatore, categoria });
+const pc = (parte, tot) => (100 * parte) / tot;
+const p0 = (x) => `${percentuale(x, 0)}%`;
+const serie = (indicatore, categoria) => righe
+  .filter((r) => r.indicatore === indicatore && r.categoria === categoria)
+  .map((r) => ({ anno: Number(r.anno), valore: r.valore, provvisorio: r.nota.includes('provvisorio') }))
+  .sort((a, b) => a.anno - b.anno);
+const REATI = [['maltrattamenti', 'Maltrattamenti'], ['stalking', 'Stalking'], ['violenze_sessuali', 'Violenza sessuale']];
+
+// Procure, 2018
+const procura = (c, anno = 2018) => {
+  const az = v(anno, 'indagati_azione_penale', c), ar = v(anno, 'indagati_archiviati', c);
+  return { az, ar, tot: az + ar, quota: pc(az, az + ar) };
+};
+const pm = procura('maltrattamenti');
+const righeProcura = REATI.map(([c, etichetta]) => {
+  const d = procura(c);
+  return { etichetta, parti: [
+    { valore: d.az, colore: C.accento, testo: p0(d.quota) },
+    { valore: d.ar, colore: C.grigioChiaro, testo: p0(100 - d.quota) },
+  ] };
+});
+const partner = procura('stalking_partner_ex');
+const MOTIVI = [['archiviati_nel_merito', 'Richiesta di archiviazione nel merito'], ['archiviati_improcedibilita', 'Mancanza delle condizioni di procedibilità'], ['archiviati_altri_motivi', 'Altri motivi'], ['archiviati_prescrizione', 'Prescrizione']];
+const motivi = MOTIVI.map(([ind, etichetta]) => ({ etichetta, valore: pc(v(2018, ind, 'maltrattamenti'), pm.ar) }));
+const quote2012 = REATI.map(([c, nome]) => ({ nome, da: procura(c, 2012).quota, a: procura(c, 2018).quota }));
+
+// Tribunali, 2023
+const TRIB = [...REATI, ['violenza_sessuale_aggravata', 'Violenza sessuale aggravata']];
+const tribunale = (c, anno = 2023) => ({
+  cond: v(anno, 'definiti_condanna', c), ass: v(anno, 'definiti_assoluzione', c), altro: v(anno, 'definiti_altro', c), def: v(anno, 'procedimenti_definiti', c),
+});
+const tm = tribunale('maltrattamenti');
+const righeTribunale = TRIB.map(([c, etichetta]) => {
+  const d = tribunale(c);
+  return { etichetta: etichetta, parti: [
+    { valore: d.cond, colore: C.accento, testo: p0(pc(d.cond, d.def)) },
+    { valore: d.ass, colore: C.lilla, testo: p0(pc(d.ass, d.def)) },
+    { valore: d.altro, colore: C.grigioChiaro, testo: p0(pc(d.altro, d.def)) },
+  ] };
+});
+const iscritti = [2021, 2022, 2023].map((a) => ({ a, isc: v(a, 'procedimenti_iscritti', 'maltrattamenti'), def: v(a, 'procedimenti_definiti', 'maltrattamenti') }));
+
+// Condanne definitive e detenuti
+const condanne = REATI.map(([c, nome]) => ({ nome, serie: serie('condannati_definitivi', c) }));
+const detenuti = REATI.map(([c, nome]) => ({ nome, serie: serie('detenuti', c) }));
+const cm = condanne[0].serie, dm = detenuti[0].serie;
+const ultimoDet = dm[dm.length - 1];
+
+const passi = [
+  { passo: 'In procura', anno: 2018, numero: formatta(pm.tot), cosa: 'persone indagate', dettaglio: `per il ${p0(pm.quota)} il pubblico ministero chiede il processo` },
+  { passo: 'In tribunale', anno: 2023, numero: formatta(tm.def), cosa: 'procedimenti chiusi', dettaglio: `il ${p0(pc(tm.cond, tm.def))} con una condanna` },
+  { passo: 'Condanna definitiva', anno: 2018, numero: formatta(cm[cm.length - 1].valore), cosa: 'persone condannate', dettaglio: 'con sentenza irrevocabile (dato provvisorio)' },
+  { passo: 'In carcere', anno: ultimoDet.anno, numero: formatta(ultimoDet.valore), cosa: 'detenuti presenti', dettaglio: 'adulti, in un giorno dell\'anno' },
+];
+const fonteProcure = 'Istat · autori indagati presso le procure per gli adulti, 2012–2018';
+const fonteTribunali = 'Ministero della Giustizia, DIT · sezioni dibattimentali dei tribunali ordinari';
+---
+<div class="mosaico">
+  <section class="s12 percorso" aria-label="Il percorso, maltrattamenti in famiglia">
+    <p class="avvertenza"><strong>Maltrattamenti in famiglia, un passo alla volta.</strong> Ogni passo conta una cosa diversa e si riferisce a un anno diverso: non sono le stesse persone che passano da un gradino all'altro.</p>
+    <ol>
+      {passi.map((s, i) => (
+        <li>
+          <span class="passo">{i + 1}. {s.passo} · {s.anno}</span>
+          <span class="n">{s.numero}</span>
+          <span class="cosa">{s.cosa}</span>
+          <span class="dettaglio">{s.dettaglio}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${C.accento}`}>
+    <span class="bollino" style={`background:${C.accento}`}>In procura</span>
+    <div><h2>Quante denunce arrivano a un processo?</h2><p>Il pubblico ministero chiede di procedere (azione penale) oppure archivia</p></div>
+  </div>
+  <div class="s6">
+    <Riquadro titolo={`Nel 2018 la procura ha archiviato il ${p0(100 - pm.quota)} degli indagati per maltrattamenti`}
+      sottotitolo="Persone indagate, per esito della fase di indagine, 2018" nota={`${fonteProcure} · tavola 1`}>
+      <Legenda piccola voci={[{ etichetta: 'Azione penale', colore: C.accento }, { etichetta: 'Archiviazione', colore: C.grigioChiaro }]} />
+      <ul class="composte" aria-label={`Quota di indagati con azione penale nel 2018: ${righeProcura.map((r) => `${r.etichetta} ${r.parti[0].testo}`).join(', ')}`}>{righeProcura.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? "#fff" : "#16181D"}`}>{x.testo}</span>)}</span></li>)}</ul>
+      <p class="piccola">Quando lo stalking è commesso da un partner o da un ex, la procura chiede il processo nel {p0(partner.quota)} dei casi ({formatta(partner.tot)} indagati). Dal 2012 la quota con azione penale è cambiata poco: {quote2012.map((q) => `${q.nome.toLowerCase()} dal ${p0(q.da)} al ${p0(q.a)}`).join(', ')}.</p>
+    </Riquadro>
+  </div>
+  <div class="s6">
+    <Riquadro titolo="Più di metà delle archiviazioni sono decise nel merito"
+      sottotitolo={`Perché si archivia: ${formatta(pm.ar)} indagati per maltrattamenti, 2018`} nota={`${fonteProcure} · tavola 4`}>
+      <BarreOrizzontali voci={motivi} />
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style={`border-top-color:${C.familiare}`}>
+    <span class="bollino" style={`background:${C.familiare}`}>In tribunale</span>
+    <div><h2>Come finiscono i processi?</h2><p>Procedimenti chiusi nelle sezioni dibattimentali dei tribunali, 2023</p></div>
+  </div>
+  <div class="s8">
+    <Riquadro titolo={`Meno di un processo su due per maltrattamenti si chiude con una condanna`}
+      sottotitolo="Procedimenti definiti nel 2023, per esito" nota={`${fonteTribunali} · tab. 2. La condanna comprende i patteggiamenti. «Altro» raccoglie gli esiti diversi da condanna e assoluzione, che la tavola non distingue. Uno stesso procedimento può contenere più reati: le righe non si sommano.`}>
+      <Legenda piccola voci={[{ etichetta: 'Condanna', colore: C.accento }, { etichetta: 'Assoluzione', colore: C.lilla }, { etichetta: 'Altro', colore: C.grigioChiaro }]} />
+      <ul class="composte" aria-label={`Esito dei procedimenti definiti nel 2023: ${righeTribunale.map((r) => `${r.etichetta} condanna ${r.parti[0].testo}, assoluzione ${r.parti[1].testo}`).join('; ')}`}>{righeTribunale.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? "#fff" : "#16181D"}`}>{x.testo}</span>)}</span></li>)}</ul>
+    </Riquadro>
+  </div>
+  <div class="s4">
+    <Riquadro titolo="I tribunali chiudono più processi per maltrattamenti di quanti ne arrivino" nota={`${fonteTribunali} · tab. 1`}>
+      <table class="mini">
+        <thead><tr><th scope="col">Anno</th><th scope="col">Iscritti</th><th scope="col">Chiusi</th></tr></thead>
+        <tbody>{iscritti.map((r) => <tr><th scope="row">{r.a}</th><td>{formatta(r.isc)}</td><td>{formatta(r.def)}</td></tr>)}</tbody>
+      </table>
+      <p class="piccola">Solo tre anni pubblicati: non si sa come andava prima del 2021.</p>
+    </Riquadro>
+  </div>
+
+  <div class="s12 testata-periodo" style="border-top-color:#3A3D44">
+    <span class="bollino" style="background:#3A3D44">Dopo la sentenza</span>
+    <div><h2>Quante condanne e quanti detenuti?</h2><p>Condanne definitive fino al 2018; detenuti fino al {ultimoDet.anno}</p></div>
+  </div>
+  <div class="s12">
+    <Riquadro titolo={`Le condanne definitive per stalking sono passate da ${formatta(condanne[1].serie[0].valore)} a ${formatta(condanne[1].serie[condanne[1].serie.length - 1].valore)} in nove anni`}
+      sottotitolo="Persone condannate con sentenza irrevocabile, per il reato più grave" nota="Istat · condannati con sentenza irrevocabile, 2010–2018. * 2018: dato provvisorio. Lo stalking è reato dal febbraio 2009.">
+      <div class="tre">{condanne.map((d, i) => <SerieAnni titolo={d.nome} valori={d.serie} colore={i === 0 ? C.accento : C.familiare} massimo={3600} />)}</div>
+    </Riquadro>
+  </div>
+  <div class="s12">
+    <Riquadro titolo={`In carcere per maltrattamenti: da ${formatta(dm[0].valore)} detenuti nel ${dm[0].anno} a ${formatta(ultimoDet.valore)} nel ${ultimoDet.anno}`}
+      sottotitolo="Detenuti adulti presenti, per tipo di reato" nota="Ministero della Giustizia, DAP · detenuti adulti presenti, 2010–2024. Una persona può essere detenuta per più reati.">
+      <div class="tre">{detenuti.map((d, i) => <SerieAnni titolo={d.nome} valori={d.serie} colore={i === 0 ? C.accento : C.familiare} massimo={6800} />)}</div>
+    </Riquadro>
+  </div>
+
+  <div class="s12">
+    <Riquadro titolo="Quante denunce finiscono in una condanna? Non si può calcolare">
+      <p class="non-utilizzabile">Le denunce contano i delitti, le procure le persone indagate, i tribunali i procedimenti, le condanne le persone condannate per il reato più grave. I passi coprono anni diversi (procure e condanne si fermano al 2018, i tribunali partono dal 2021) e non esiste un codice che permetta di seguire lo stesso caso dalla denuncia alla sentenza. Si possono confrontare solo gli ordini di grandezza.</p>
+    </Riquadro>
+  </div>
+</div>
+
+<style>
+  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+  .mosaico > * { min-width: 0; }
+  .mosaico > div:not(.testata-periodo) > :global(.riquadro) { height: 100%; }
+  .s4 { grid-column: span 4; } .s6 { grid-column: span 6; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
+  .percorso { display: flex; flex-direction: column; gap: 12px; }
+  .avvertenza { font-size: 15px; color: var(--testo-2); margin: 0; }
+  .percorso ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .percorso li { background: var(--carta); border: 1px solid var(--bordo); border-top: 4px solid var(--accento); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+  .passo { font-size: 13px; color: var(--testo-3); font-weight: 600; }
+  .percorso .n { font-family: var(--titoli); font-weight: 600; font-size: 34px; line-height: 1.15; color: var(--accento); }
+  .cosa { font-weight: 600; }
+  .dettaglio { color: var(--testo-2); }
+  .testata-periodo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
+  .testata-periodo h2 { font-size: 22px; }
+  .testata-periodo p { font-size: 14px; color: var(--testo-2); }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .tre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  @media (max-width: 640px) { .tre { grid-template-columns: 1fr; gap: 16px; } }
+  .composte { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .composte li { display: flex; flex-direction: column; gap: 4px; }
+  .composte .voce { font-size: 14px; font-weight: 600; }
+  .barra-c { display: flex; height: 30px; border-radius: 4px; overflow: hidden; }
+  .barra-c span { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; border-right: 1px solid #fff; }
+  .piccola { font-size: 13px; color: var(--testo-3); margin: 0; }
+  .mini { border-collapse: collapse; font-size: 15px; width: 100%; }
+  .mini th, .mini td { padding: 6px 4px; border-bottom: 1px solid var(--bordo-chiaro, #E6E6E1); text-align: right; }
+  .mini th:first-child { text-align: left; }
+  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.5; color: var(--testo-2); margin: 0; }
+  @media (max-width: 980px) { .s4, .s6, .s8 { grid-column: span 12; } .percorso ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .mosaico { gap: 14px; } .percorso .n { font-size: 28px; } }
+</style>

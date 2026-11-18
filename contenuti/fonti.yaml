@@ -44,16 +44,14 @@
   pronta: false
 
 - id: interno-reati-spia
-  ente: "Ministero dell'Interno e Istat"
-  nome: "Denunce dei reati spia"
   domanda: 3
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: giustizia-processi-condanne
-  ente: "Ministero della Giustizia e Istat"
-  nome: "Processi e condanne"
   domanda: 3
-  pronta: false
+  pronta: true
+  in_verifica: true
 
 - id: istat-omicidi
   domanda: 4

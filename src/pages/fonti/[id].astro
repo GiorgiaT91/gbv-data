@@ -8,6 +8,8 @@ import Istat1522 from '../../componenti/infografiche/Istat1522.astro';
 import IstatCentri from '../../componenti/infografiche/IstatCentri.astro';
 import IstatStereotipi from '../../componenti/infografiche/IstatStereotipi.astro';
 import IstatSicurezza from '../../componenti/infografiche/IstatSicurezza.astro';
+import InternoReatiSpia from '../../componenti/infografiche/InternoReatiSpia.astro';
+import GiustiziaProcessi from '../../componenti/infografiche/GiustiziaProcessi.astro';
 import { scheda } from '../../lib/dati.js';
 import { fontiPronte, fonte, domanda as trovaDomanda, dataEstesa as data } from '../../lib/registro.js';
 import AvvisoVerifica from '../../componenti/AvvisoVerifica.astro';
@@ -18,7 +20,7 @@ export function getStaticPaths() {
 }
 
 const s = scheda(Astro.params.id);
-const infografiche = { 'istat-omicidi': IstatOmicidi, 'interno-femminicidi': InternoFemminicidi, 'nudm-osservatorio': NudmOsservatorio, 'istat-1522': Istat1522, 'istat-centri-antiviolenza': IstatCentri, 'istat-stereotipi-adulti': IstatStereotipi, 'istat-sicurezza-donne': IstatSicurezza };
+const infografiche = { 'istat-omicidi': IstatOmicidi, 'interno-femminicidi': InternoFemminicidi, 'nudm-osservatorio': NudmOsservatorio, 'istat-1522': Istat1522, 'istat-centri-antiviolenza': IstatCentri, 'istat-stereotipi-adulti': IstatStereotipi, 'istat-sicurezza-donne': IstatSicurezza, 'interno-reati-spia': InternoReatiSpia, 'giustizia-processi-condanne': GiustiziaProcessi };
 const Infografica = infografiche[s.id];
 const domanda = trovaDomanda(s.domanda);
 const inVerifica = fonte(s.id)?.in_verifica;

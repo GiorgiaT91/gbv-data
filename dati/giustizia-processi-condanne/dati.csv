@@ -1,0 +1,276 @@
+﻿anno,periodo,territorio,indicatore,categoria,valore,unita,nota
+2018,anno,Italia,archiviati_altri_motivi,maltrattamenti,1190,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_altri_motivi,stalking,1228,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_altri_motivi,violenze_sessuali,203,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_improcedibilita,maltrattamenti,6375,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_improcedibilita,stalking,4372,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_improcedibilita,violenze_sessuali,1207,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_nel_merito,maltrattamenti,8579,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_nel_merito,stalking,5691,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_nel_merito,violenze_sessuali,1573,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_prescrizione,maltrattamenti,287,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_prescrizione,stalking,0,persone,"procure, tavola 4"
+2018,anno,Italia,archiviati_prescrizione,violenze_sessuali,63,persone,"procure, tavola 4"
+2010,anno,Italia,condannati_definitivi,maltrattamenti,1949,persone,condanne
+2011,anno,Italia,condannati_definitivi,maltrattamenti,2035,persone,condanne
+2012,anno,Italia,condannati_definitivi,maltrattamenti,2080,persone,condanne
+2013,anno,Italia,condannati_definitivi,maltrattamenti,2017,persone,condanne
+2014,anno,Italia,condannati_definitivi,maltrattamenti,2072,persone,condanne
+2015,anno,Italia,condannati_definitivi,maltrattamenti,2448,persone,condanne
+2016,anno,Italia,condannati_definitivi,maltrattamenti,2580,persone,condanne
+2017,anno,Italia,condannati_definitivi,maltrattamenti,2696,persone,condanne
+2018,anno,Italia,condannati_definitivi,maltrattamenti,3462,persone,"condanne, dato provvisorio"
+2010,anno,Italia,condannati_definitivi,stalking,204,persone,condanne
+2011,anno,Italia,condannati_definitivi,stalking,472,persone,condanne
+2012,anno,Italia,condannati_definitivi,stalking,695,persone,condanne
+2013,anno,Italia,condannati_definitivi,stalking,778,persone,condanne
+2014,anno,Italia,condannati_definitivi,stalking,873,persone,condanne
+2015,anno,Italia,condannati_definitivi,stalking,1202,persone,condanne
+2016,anno,Italia,condannati_definitivi,stalking,1343,persone,condanne
+2017,anno,Italia,condannati_definitivi,stalking,1490,persone,condanne
+2018,anno,Italia,condannati_definitivi,stalking,1982,persone,"condanne, dato provvisorio"
+2010,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,119,persone,condanne
+2011,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,121,persone,condanne
+2012,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,117,persone,condanne
+2013,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,122,persone,condanne
+2014,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,119,persone,condanne
+2015,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,99,persone,condanne
+2016,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,92,persone,condanne
+2017,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,126,persone,condanne
+2018,anno,Italia,condannati_definitivi,violenza_sessuale_gruppo,75,persone,"condanne, dato provvisorio"
+2010,anno,Italia,condannati_definitivi,violenze_sessuali,1637,persone,condanne
+2011,anno,Italia,condannati_definitivi,violenze_sessuali,1587,persone,condanne
+2012,anno,Italia,condannati_definitivi,violenze_sessuali,1596,persone,condanne
+2013,anno,Italia,condannati_definitivi,violenze_sessuali,1625,persone,condanne
+2014,anno,Italia,condannati_definitivi,violenze_sessuali,1334,persone,condanne
+2015,anno,Italia,condannati_definitivi,violenze_sessuali,1501,persone,condanne
+2016,anno,Italia,condannati_definitivi,violenze_sessuali,1357,persone,condanne
+2017,anno,Italia,condannati_definitivi,violenze_sessuali,1571,persone,condanne
+2018,anno,Italia,condannati_definitivi,violenze_sessuali,1795,persone,"condanne, dato provvisorio"
+2021,anno,Italia,definiti_altro,diffusione_immagini,8,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,diffusione_immagini,14,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,diffusione_immagini,34,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,maltrattamenti,1077,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,maltrattamenti,1029,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,maltrattamenti,1084,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,matrimonio_forzato,1,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,matrimonio_forzato,0,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,matrimonio_forzato,0,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,stalking,2003,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,stalking,2083,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,stalking,2435,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,violenza_sessuale_aggravata,61,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,violenza_sessuale_aggravata,80,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,violenza_sessuale_aggravata,97,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,violenza_sessuale_gruppo,5,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,violenza_sessuale_gruppo,2,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,violenza_sessuale_gruppo,10,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_altro,violenze_sessuali,156,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_altro,violenze_sessuali,181,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_altro,violenze_sessuali,218,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,diffusione_immagini,2,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,diffusione_immagini,5,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,diffusione_immagini,19,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,maltrattamenti,2416,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,maltrattamenti,2780,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,maltrattamenti,3392,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,matrimonio_forzato,1,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,matrimonio_forzato,1,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,matrimonio_forzato,2,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,stalking,928,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,stalking,1024,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,stalking,1183,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,violenza_sessuale_aggravata,235,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,violenza_sessuale_aggravata,243,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,violenza_sessuale_aggravata,353,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,violenza_sessuale_gruppo,18,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,violenza_sessuale_gruppo,17,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,violenza_sessuale_gruppo,31,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_assoluzione,violenze_sessuali,552,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_assoluzione,violenze_sessuali,597,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_assoluzione,violenze_sessuali,704,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,diffusione_immagini,11,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,diffusione_immagini,31,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,diffusione_immagini,45,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,maltrattamenti,3263,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,maltrattamenti,3662,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,maltrattamenti,3858,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,matrimonio_forzato,0,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,matrimonio_forzato,0,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,matrimonio_forzato,1,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,stalking,2207,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,stalking,2462,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,stalking,2719,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,violenza_sessuale_aggravata,374,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,violenza_sessuale_aggravata,463,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,violenza_sessuale_aggravata,467,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,violenza_sessuale_gruppo,30,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,violenza_sessuale_gruppo,27,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,violenza_sessuale_gruppo,21,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2021,anno,Italia,definiti_condanna,violenze_sessuali,969,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2022,anno,Italia,definiti_condanna,violenze_sessuali,1039,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2023,anno,Italia,definiti_condanna,violenze_sessuali,961,procedimenti,"tribunali, tab. 2; la condanna comprende i patteggiamenti"
+2010,anno,Italia,detenuti,maltrattamenti,1534,persone,detenuti DAP
+2011,anno,Italia,detenuti,maltrattamenti,1557,persone,detenuti DAP
+2012,anno,Italia,detenuti,maltrattamenti,1610,persone,detenuti DAP
+2013,anno,Italia,detenuti,maltrattamenti,1851,persone,detenuti DAP
+2014,anno,Italia,detenuti,maltrattamenti,1738,persone,detenuti DAP
+2015,anno,Italia,detenuti,maltrattamenti,1741,persone,detenuti DAP
+2016,anno,Italia,detenuti,maltrattamenti,1945,persone,detenuti DAP
+2017,anno,Italia,detenuti,maltrattamenti,2362,persone,detenuti DAP
+2018,anno,Italia,detenuti,maltrattamenti,2835,persone,detenuti DAP
+2019,anno,Italia,detenuti,maltrattamenti,3542,persone,detenuti DAP
+2020,anno,Italia,detenuti,maltrattamenti,3524,persone,detenuti DAP
+2021,anno,Italia,detenuti,maltrattamenti,4054,persone,detenuti DAP
+2022,anno,Italia,detenuti,maltrattamenti,4771,persone,detenuti DAP
+2023,anno,Italia,detenuti,maltrattamenti,5765,persone,detenuti DAP
+2024,anno,Italia,detenuti,maltrattamenti,6523,persone,detenuti DAP
+2010,anno,Italia,detenuti,percosse,212,persone,detenuti DAP
+2011,anno,Italia,detenuti,percosse,218,persone,detenuti DAP
+2012,anno,Italia,detenuti,percosse,208,persone,detenuti DAP
+2013,anno,Italia,detenuti,percosse,232,persone,detenuti DAP
+2014,anno,Italia,detenuti,percosse,177,persone,detenuti DAP
+2015,anno,Italia,detenuti,percosse,188,persone,detenuti DAP
+2016,anno,Italia,detenuti,percosse,191,persone,detenuti DAP
+2017,anno,Italia,detenuti,percosse,226,persone,detenuti DAP
+2018,anno,Italia,detenuti,percosse,236,persone,detenuti DAP
+2019,anno,Italia,detenuti,percosse,252,persone,detenuti DAP
+2020,anno,Italia,detenuti,percosse,240,persone,detenuti DAP
+2021,anno,Italia,detenuti,percosse,239,persone,detenuti DAP
+2022,anno,Italia,detenuti,percosse,265,persone,detenuti DAP
+2023,anno,Italia,detenuti,percosse,305,persone,detenuti DAP
+2024,anno,Italia,detenuti,percosse,337,persone,detenuti DAP
+2010,anno,Italia,detenuti,stalking,398,persone,detenuti DAP
+2011,anno,Italia,detenuti,stalking,399,persone,detenuti DAP
+2012,anno,Italia,detenuti,stalking,462,persone,detenuti DAP
+2013,anno,Italia,detenuti,stalking,627,persone,detenuti DAP
+2014,anno,Italia,detenuti,stalking,573,persone,detenuti DAP
+2015,anno,Italia,detenuti,stalking,588,persone,detenuti DAP
+2016,anno,Italia,detenuti,stalking,702,persone,detenuti DAP
+2017,anno,Italia,detenuti,stalking,968,persone,detenuti DAP
+2018,anno,Italia,detenuti,stalking,1155,persone,detenuti DAP
+2019,anno,Italia,detenuti,stalking,1356,persone,detenuti DAP
+2020,anno,Italia,detenuti,stalking,1321,persone,detenuti DAP
+2021,anno,Italia,detenuti,stalking,1621,persone,detenuti DAP
+2022,anno,Italia,detenuti,stalking,1827,persone,detenuti DAP
+2023,anno,Italia,detenuti,stalking,2366,persone,detenuti DAP
+2024,anno,Italia,detenuti,stalking,2696,persone,detenuti DAP
+2010,anno,Italia,detenuti,violenze_sessuali,3658,persone,detenuti DAP
+2011,anno,Italia,detenuti,violenze_sessuali,3600,persone,detenuti DAP
+2012,anno,Italia,detenuti,violenze_sessuali,3498,persone,detenuti DAP
+2013,anno,Italia,detenuti,violenze_sessuali,3350,persone,detenuti DAP
+2014,anno,Italia,detenuti,violenze_sessuali,3153,persone,detenuti DAP
+2015,anno,Italia,detenuti,violenze_sessuali,3006,persone,detenuti DAP
+2016,anno,Italia,detenuti,violenze_sessuali,3036,persone,detenuti DAP
+2017,anno,Italia,detenuti,violenze_sessuali,3215,persone,detenuti DAP
+2018,anno,Italia,detenuti,violenze_sessuali,3373,persone,detenuti DAP
+2019,anno,Italia,detenuti,violenze_sessuali,3656,persone,detenuti DAP
+2020,anno,Italia,detenuti,violenze_sessuali,3111,persone,detenuti DAP
+2021,anno,Italia,detenuti,violenze_sessuali,3461,persone,detenuti DAP
+2022,anno,Italia,detenuti,violenze_sessuali,3631,persone,detenuti DAP
+2023,anno,Italia,detenuti,violenze_sessuali,3988,persone,detenuti DAP
+2024,anno,Italia,detenuti,violenze_sessuali,4123,persone,detenuti DAP
+2018,anno,Italia,giorni_mediani_archiviazione,maltrattamenti,154,giorni,"procure, tavola 2"
+2018,anno,Italia,giorni_mediani_archiviazione,stalking,160,giorni,"procure, tavola 2"
+2018,anno,Italia,giorni_mediani_archiviazione,violenze_sessuali,186,giorni,"procure, tavola 2"
+2018,anno,Italia,giorni_mediani_azione_penale,maltrattamenti,218,giorni,"procure, tavola 2"
+2018,anno,Italia,giorni_mediani_azione_penale,stalking,238,giorni,"procure, tavola 2"
+2018,anno,Italia,giorni_mediani_azione_penale,violenze_sessuali,243.5,giorni,"procure, tavola 2"
+2012,anno,Italia,indagati_archiviati,maltrattamenti,10344,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_archiviati,maltrattamenti,10466,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_archiviati,maltrattamenti,11957,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_archiviati,maltrattamenti,12271,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_archiviati,maltrattamenti,13528,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_archiviati,maltrattamenti,14422,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_archiviati,maltrattamenti,16431,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_archiviati,stalking,5636,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_archiviati,stalking,6570,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_archiviati,stalking,7124,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_archiviati,stalking,7692,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_archiviati,stalking,9141,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_archiviati,stalking,9937,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_archiviati,stalking,11291,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_archiviati,stalking_partner_ex,185,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_archiviati,stalking_partner_ex,190,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_archiviati,stalking_partner_ex,241,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_archiviati,stalking_partner_ex,270,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_archiviati,stalking_partner_ex,324,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_archiviati,stalking_partner_ex,342,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_archiviati,stalking_partner_ex,387,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_archiviati,violenze_sessuali,2765,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_archiviati,violenze_sessuali,2733,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_archiviati,violenze_sessuali,2882,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_archiviati,violenze_sessuali,2792,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_archiviati,violenze_sessuali,2823,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_archiviati,violenze_sessuali,2956,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_archiviati,violenze_sessuali,3046,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_azione_penale,maltrattamenti,6867,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_azione_penale,maltrattamenti,7595,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_azione_penale,maltrattamenti,9229,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_azione_penale,maltrattamenti,9034,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_azione_penale,maltrattamenti,9390,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_azione_penale,maltrattamenti,10302,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_azione_penale,maltrattamenti,12035,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_azione_penale,stalking,5615,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_azione_penale,stalking,6644,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_azione_penale,stalking,8338,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_azione_penale,stalking,8041,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_azione_penale,stalking,7769,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_azione_penale,stalking,8516,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_azione_penale,stalking,9470,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_azione_penale,stalking_partner_ex,1451,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_azione_penale,stalking_partner_ex,1846,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_azione_penale,stalking_partner_ex,2600,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_azione_penale,stalking_partner_ex,2629,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_azione_penale,stalking_partner_ex,2763,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_azione_penale,stalking_partner_ex,3188,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_azione_penale,stalking_partner_ex,3694,persone,"procure, tavola 1"
+2012,anno,Italia,indagati_azione_penale,violenze_sessuali,3054,persone,"procure, tavola 1"
+2013,anno,Italia,indagati_azione_penale,violenze_sessuali,3067,persone,"procure, tavola 1"
+2014,anno,Italia,indagati_azione_penale,violenze_sessuali,3087,persone,"procure, tavola 1"
+2015,anno,Italia,indagati_azione_penale,violenze_sessuali,3094,persone,"procure, tavola 1"
+2016,anno,Italia,indagati_azione_penale,violenze_sessuali,2932,persone,"procure, tavola 1"
+2017,anno,Italia,indagati_azione_penale,violenze_sessuali,3148,persone,"procure, tavola 1"
+2018,anno,Italia,indagati_azione_penale,violenze_sessuali,3434,persone,"procure, tavola 1"
+2021,anno,Italia,procedimenti_definiti,diffusione_immagini,21,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,diffusione_immagini,50,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,diffusione_immagini,98,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,maltrattamenti,6756,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,maltrattamenti,7471,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,maltrattamenti,8334,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,matrimonio_forzato,2,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,matrimonio_forzato,1,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,matrimonio_forzato,3,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,stalking,5138,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,stalking,5569,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,stalking,6337,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,violenza_sessuale_aggravata,670,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,violenza_sessuale_aggravata,786,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,violenza_sessuale_aggravata,917,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,violenza_sessuale_gruppo,53,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,violenza_sessuale_gruppo,46,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,violenza_sessuale_gruppo,62,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_definiti,violenze_sessuali,1677,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_definiti,violenze_sessuali,1817,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_definiti,violenze_sessuali,1883,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,diffusione_immagini,115,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,diffusione_immagini,197,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,diffusione_immagini,217,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,maltrattamenti,8997,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,maltrattamenti,8589,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,maltrattamenti,7336,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,matrimonio_forzato,4,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,matrimonio_forzato,5,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,matrimonio_forzato,4,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,stalking,6144,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,stalking,6186,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,stalking,5676,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,violenza_sessuale_aggravata,937,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,violenza_sessuale_aggravata,1071,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,violenza_sessuale_aggravata,998,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,violenza_sessuale_gruppo,51,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,violenza_sessuale_gruppo,63,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,violenza_sessuale_gruppo,48,procedimenti,"tribunali, tab. 1"
+2021,anno,Italia,procedimenti_iscritti,violenze_sessuali,1993,procedimenti,"tribunali, tab. 1"
+2022,anno,Italia,procedimenti_iscritti,violenze_sessuali,2020,procedimenti,"tribunali, tab. 1"
+2023,anno,Italia,procedimenti_iscritti,violenze_sessuali,1890,procedimenti,"tribunali, tab. 1"

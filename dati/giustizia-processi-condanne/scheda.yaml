@@ -1,0 +1,47 @@
+id: giustizia-processi-condanne
+nome: "Processi e condanne"
+ente: "Ministero della Giustizia e Istat"
+gruppo: giustizia
+domanda: 3
+
+periodo_coperto: "procure 2012-2018; tribunali 2021-2023; condanne definitive 2010-2018; detenuti 2010-2024"
+ultimo_dato: "tribunali anno 2023; detenuti anno 2024; procure e condanne anno 2018"
+ultimo_aggiornamento: "DA VERIFICARE"
+ultima_verifica: 2026-11-18
+cadenza: "irregolare, diversa per ogni passo"
+prossimo_aggiornamento: "data non annunciata"
+
+numero_principale: "46%"
+titolo_messaggio: "Meno di un processo su due per maltrattamenti si chiude con una condanna; procure e condanne definitive si fermano al 2018"
+componente: mosaico
+
+chi_conta: "Istat (procure e condanne definitive) e il Ministero della Giustizia (tribunali, con la Direzione di statistica; carceri, con il Dipartimento dell'amministrazione penitenziaria)"
+da_dove_vengono_i_casi: "Dai registri delle procure e dei tribunali, dal casellario giudiziale e dagli archivi delle carceri"
+cosa_viene_contato: "Per ogni passo una cosa diversa: le persone indagate e l'esito delle indagini; i procedimenti chiusi in tribunale e come si sono conclusi; le persone condannate con sentenza definitiva; i detenuti adulti presenti in carcere."
+
+limiti:
+  - "Ogni passo usa un'unità diversa (persone indagate, procedimenti, condannati, detenuti) e anni diversi: non si possono seguire gli stessi casi dalla denuncia alla sentenza."
+  - "I dati delle procure e delle condanne definitive si fermano al 2018; il 2018 delle condanne è provvisorio."
+  - "I dati dei tribunali coprono solo il 2021-2023 e le sezioni dibattimentali: restano fuori, per esempio, i riti abbreviati davanti al giudice dell'udienza preliminare."
+  - "Nei tribunali uno stesso procedimento può contenere più reati: le righe non si sommano. La condanna comprende i patteggiamenti."
+  - "Le condanne definitive sono classificate per il reato più grave: chi è condannato per maltrattamenti e per un reato più grave non è contato fra i maltrattamenti."
+  - "Non si sa quante vittime siano donne né quale fosse il rapporto con l'autore, salvo per lo stalking in procura."
+
+nuove_domande:
+  - "Quante denunce finiscono in una condanna?"
+  - "Perché in procura più di metà delle indagini per maltrattamenti viene archiviata?"
+  - "Che cosa è successo nelle procure e nelle condanne definitive dopo il 2018?"
+  - "Quanto tempo passa dalla denuncia alla sentenza definitiva?"
+
+link_fonte: "https://www.istat.it/statistiche-per-temi/focus/violenza-sulle-donne/il-percorso-giudiziario/"
+file_originali:
+  - "originali/grafici2018.xlsx"
+  - "originali/Indice-tavole-autori-2018.pdf"
+  - "originali/Tavole-Min-Giustizia-DIT-2021_2023-Sez_DIB.xlsx"
+  - "originali/Tavola_maltrattamenti_in_famiglia_2010-2018_per_pena_inflitta.xlsx"
+  - "originali/Tavola_stalking_2010-2018_per_pena_inflitta.xlsx"
+  - "originali/Tavola_violenza_sessuale_2010-2018_per_pena_inflitta.xlsx"
+  - "originali/DETENUTI-anni-2024-fonte-DAP.xlsx"
+licenza: "DA VERIFICARE"
+
+stato: bozza

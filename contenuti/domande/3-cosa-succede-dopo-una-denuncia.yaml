@@ -1,0 +1,54 @@
+# Domanda 3 — testi della pagina (versione 0.1, 18 novembre 2026). Pagina corta (modello delle domande 1, 2, 3 e 6).
+# I numeri non sono scritti qui: la pagina li legge da dati/<fonte>/dati.csv con i filtri indicati.
+# Sottodomande (decise il 18/11): quante denunce; quante arrivano a un processo; come finiscono i processi; condanne e detenuti.
+
+numero: 3
+indirizzo: cosa-succede-dopo-una-denuncia
+domanda: "Cosa succede dopo una denuncia?"
+
+numero_grande:
+  fonte: interno-reati-spia
+  filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: maltrattamenti }
+  testo: "**delitti di maltrattamenti in famiglia** denunciati alle forze di polizia nel 2023. Nello stesso anno, nei tribunali, {condanne} processi per maltrattamenti si sono chiusi con una condanna."
+  valori:
+    condanne: { fonte: giustizia-processi-condanne, filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: definiti_condanna, categoria: maltrattamenti } }
+  nota: "I due numeri contano cose diverse, delitti e procedimenti, e non riguardano gli stessi casi: quante denunce finiscano in una condanna non si può calcolare."
+
+fonti:
+  titolo: "I dati con cui si risponde"
+  sottotitolo: "Ogni fonte ha la sua infografica. Aprila per esplorare il dato."
+  voci:
+    - id: interno-reati-spia
+      etichetta: "Ministero dell'Interno · Denunce"
+      titolo: "Le denunce per maltrattamenti in famiglia sono quasi raddoppiate in dieci anni; quattro vittime su cinque sono donne"
+      anteprima:
+        descrizione: "Delitti denunciati nel 2023"
+        etichette: 120
+        evidenzia: 0            # barra in colore pieno (di norma l'ultima)
+        barre:
+          - { etichetta: "Maltrattamenti", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: maltrattamenti } }
+          - { etichetta: "Stalking", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: stalking } }
+          - { etichetta: "Percosse", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: percosse } }
+          - { etichetta: "Violenze sessuali", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: violenze_sessuali } }
+      piede: "Denunce 2014–2023, vittime donne 2024"
+    - id: giustizia-processi-condanne
+      etichetta: "Ministero della Giustizia e Istat · Processi e condanne"
+      titolo: "Meno di un processo su due per maltrattamenti si chiude con una condanna; procure e condanne definitive si fermano al 2018"
+      anteprima:
+        descrizione: "Maltrattamenti in famiglia, processi chiusi nel 2023"
+        etichette: 96
+        evidenzia: 0
+        barre:
+          - { etichetta: "Condanna", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: definiti_condanna, categoria: maltrattamenti } }
+          - { etichetta: "Assoluzione", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: definiti_assoluzione, categoria: maltrattamenti } }
+          - { etichetta: "Altro", filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: definiti_altro, categoria: maltrattamenti } }
+        nota: "Dentro: procure, tribunali, condanne definitive, carcere."
+      piede: "Procure 2012–2018, tribunali 2021–2023, detenuti fino al 2024"
+
+nuove_domande:
+  titolo: "Le domande che restano"
+  voci:
+    - "Quante denunce finiscono in una condanna? Ogni passo conta una cosa diversa e non esiste un modo per seguire lo stesso caso dalla denuncia alla sentenza."
+    - "Perché in procura più di metà delle indagini per maltrattamenti viene archiviata?"
+    - "Che cosa è successo dopo il 2018? I dati sulle procure e sulle condanne definitive si fermano lì."
+    - "Le denunce crescono perché aumenta la violenza o perché si denuncia di più?"

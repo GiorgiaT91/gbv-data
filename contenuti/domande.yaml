@@ -31,7 +31,9 @@
 
 - id: 3
   testo: "Cosa succede dopo una denuncia?"
-  stato: in-lavorazione
+  stato: in-verifica
+  modello: corta
+  indirizzo: /domande/cosa-succede-dopo-una-denuncia/
   fonti: [interno-reati-spia, giustizia-processi-condanne]
 
 - id: 4

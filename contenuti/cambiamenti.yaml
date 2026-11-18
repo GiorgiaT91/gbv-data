@@ -3,6 +3,11 @@
 # indirizzo: facoltativo, la pagina interessata (es. /domande/quante-donne-vengono-uccise/)
 # Questa lista alimenta anche il feed RSS (rss.xml).
 
+- data: 2026-11-18
+  titolo: "In verifica: «Cosa succede dopo una denuncia?»"
+  testo: "Le denunce per maltrattamenti, stalking, percosse e violenze sessuali, e il percorso giudiziario: procure, tribunali, condanne definitive e carcere. Ogni passo conta una cosa diversa, per questo i numeri non si collegano fra loro."
+  indirizzo: /domande/cosa-succede-dopo-una-denuncia/
+
 - data: 2026-11-17
   titolo: "In verifica: «Quante donne subiscono violenza?» e «Cosa non sappiamo ancora?»"
   testo: "L'indagine Istat sulla sicurezza delle donne, con i primi risultati 2025, e il confronto fra ciò che prevede la legge 53/2022 e i dati oggi pubblicati."
