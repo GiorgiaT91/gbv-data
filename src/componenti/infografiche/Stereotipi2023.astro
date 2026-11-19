@@ -1,0 +1,358 @@
+---
+// Rilevazione 2023 sugli stereotipi di genere, da esplorare (struttura scelta da Giorgia, 19/11/2026).
+// In apertura i tre indicatori "almeno uno", poi le tre domande in orizzontale, ciascuna con il quadro
+// delle differenze (Età; Sesso solo per i ruoli, dati provvisori) e il dettaglio al clic.
+// Dati: dati/istat-stereotipi-adulti/dati.csv (anno 2023). Età: tavole per età, ottobre 2024.
+// Sesso: primi risultati del 22/11/2023, prospetto 1, dati provvisori: restano separati (colonna tratteggiata),
+// fuori dalla sintesi e dal confronto 2018-2023.
+import { leggiDati } from '../../lib/dati.js';
+
+const righe = leggiDati('istat-stereotipi-adulti').filter((r) => r.anno === '2023' && r.territorio === 'Italia');
+const indice = new Map(righe.map((r) => [`${r.indicatore}#${r.categoria}`, r]));
+function riga(ind, cat) {
+  const r = indice.get(`${ind}#${cat}`);
+  if (!r) throw new Error(`Dato 2023 mancante: ${ind} ${cat}`);
+  return r;
+}
+const ETA = ['Y18-29', 'Y30-44', 'Y45-59', 'Y60-74'];
+// [valori per età..., totale]
+const perEta = (ind, c) => [...ETA.map((g) => riga(ind, `${c}|${g}`).valore), riga(ind, c).valore];
+
+const DOMANDE = [
+  {
+    id: 'ruoli', title: 'Ruoli di genere', nav: 'Ruoli', tav: 'tavola 2', ind: 'accordo', sesso: true,
+    ask: "Quanto è d'accordo con le seguenti affermazioni?",
+    measure: "Valori: molto o abbastanza d'accordo, per 100 persone dello stesso gruppo.", col: 'Affermazione · Italia',
+    items: {
+      MLESHOUS: 'Gli uomini sono meno adatti delle donne a occuparsi delle faccende domestiche',
+      WCOMPFIG: 'Una donna per essere completa deve avere dei figli',
+      MISUCWOR: "Per l'uomo, più che per la donna, è molto importante avere successo nel lavoro",
+      MOTHCARE: 'È compito delle madri seguire i figli e occuparsi delle loro esigenze quotidiane',
+      MPRFAM: "È soprattutto l'uomo che deve provvedere alle necessità economiche della famiglia",
+      BOYSSTEM: 'I ragazzi sono più portati delle ragazze nelle materie scientifiche, ingegneristiche e tecnologiche',
+      PRIOMEN: 'In condizioni di scarsità di lavoro, i datori di lavoro dovrebbero dare la precedenza agli uomini',
+      GOODWIFE: "Una buona moglie o compagna deve assecondare le idee del marito o compagno anche se non è d'accordo",
+      MTAKEDE: "È l'uomo che deve prendere le decisioni più importanti riguardanti la famiglia",
+    },
+  },
+  {
+    id: 'sessuale', title: 'Violenza sessuale', nav: 'Violenza sessuale', tav: 'tavola 4', ind: 'accordo', sesso: false,
+    ask: "Quanto è d'accordo con le seguenti affermazioni?",
+    measure: "Valori: molto o abbastanza d'accordo, per 100 persone dello stesso gruppo.", col: 'Affermazione · Italia',
+    items: {
+      WABLAVO: 'Le donne che non vogliono un rapporto sessuale riescono a evitarlo',
+      WPROVSEX: 'Le donne possono provocare la violenza sessuale con il loro modo di vestire',
+      WSVADRE: "Se una donna subisce una violenza sessuale quando è ubriaca o sotto l'effetto di droghe è almeno in parte responsabile",
+      PARTYINV: 'Se una donna dopo una festa accetta un invito da un uomo e viene stuprata è anche colpa sua',
+      OACVIF: 'Spesso le accuse di violenza sessuale sono false',
+      HUSFNVIO: 'Se un marito o compagno obbliga la moglie o compagna ad avere un rapporto sessuale contro la sua volontà non è una violenza',
+      SEWNRAP: 'Le donne serie non vengono violentate',
+      WOFSREM: 'Di fronte a una proposta sessuale le donne spesso dicono no, ma in realtà intendono sì',
+    },
+  },
+  {
+    id: 'coppia', title: 'Violenza e controllo nella coppia', nav: 'Coppia', tav: 'tavola 3', ind: 'accettabile', sesso: false,
+    ask: 'Quanto ritiene accettabili i seguenti comportamenti?',
+    measure: 'Valori: accettabile sempre o in certe circostanze, per 100 persone dello stesso gruppo.', col: 'Comportamento · Italia',
+    items: {
+      HABCONTR: "Un uomo controlla abitualmente il cellulare o l'attività sui social network della moglie o compagna",
+      NSMOCC: 'In una relazione di coppia ci scappa uno schiaffo ogni tanto',
+      SLGIROC: 'Un ragazzo schiaffeggia la sua fidanzata perché ha civettato o flirtato con un altro uomo',
+    },
+  },
+];
+// Forma usata dallo script: domanda → voce → [testo, età+totale, [donne, uomini] o null, nota]
+const Q = DOMANDE.map(({ ind, items, sesso, ...q }) => ({
+  ...q,
+  items: Object.fromEntries(Object.entries(items).map(([c, testo]) => {
+    const segnati = ETA.filter((g) => riga(ind, `${c}|${g}`).nota.includes('(a)'));
+    const nota = segnati.length ? `Il valore dei ${segnati.map((g) => g.slice(1)).join(', ')} anni è segnato nella tavola Istat con una nota (a) che il file non spiega.` : null;
+    return [c, [testo, perEta(ind, c), sesso ? [riga(ind, `${c}|F`).valore, riga(ind, `${c}|M`).valore] : null, nota]];
+  })),
+}));
+const SINTESI = Object.fromEntries(['TRGENROL', 'STEVIOSEX', 'ONEBEHP'].map((c) => [c, perEta('almeno_uno', c)]));
+---
+<div class="st23" id="st23">
+  <section class="q" aria-labelledby="st23-sintesi-t">
+    <div class="qhead">
+      <h3 id="st23-sintesi-t">Tre indicatori di sintesi</h3>
+      <p class="lead">Quota di persone che hanno risposto in un certo modo ad almeno una delle affermazioni di ciascun gruppo. Ogni quadrato rappresenta 1 persona su 100.</p>
+    </div>
+    <div class="sum" id="st23-sum"></div>
+    <p class="note">I tre valori sono calcolati su gruppi di affermazioni diversi (9, 8 e 3) e non vanno confrontati fra loro, né con gli stessi indicatori del 2018, calcolati su elenchi di affermazioni diversi.</p>
+    <p class="src">Fonte: Istat, tavole per età 2023 (ottobre 2024), tavola 1. Per 100 persone della stessa classe di età.</p>
+  </section>
+
+  <div class="howto">
+    <p><b>Come si legge il quadro.</b> Ogni riga è un'affermazione, con il valore per l'Italia. Ogni casella dice la distanza in punti fra il gruppo con il valore più alto e quello con il più basso, e li nomina. Toccando una casella si apre il grafico completo.</p>
+    <p>Per il 2023 Istat ha pubblicato tavole solo per età. Per sesso esistono solo le affermazioni sui ruoli, nei primi risultati provvisori: la colonna è segnata con un bordo tratteggiato.</p>
+  </div>
+
+  <div class="qbar" id="st23-qbar">
+    <div class="qtabs" role="tablist" aria-label="Le tre domande" id="st23-qtabs"></div>
+    <div class="qnav"><button id="st23-qprev" aria-label="Domanda precedente">←</button><span id="st23-qcount" aria-live="polite"></span><button id="st23-qnext" aria-label="Domanda successiva">→</button></div>
+  </div>
+  <div id="st23-questions" class="carousel"></div>
+
+  <section class="q" aria-labelledby="st23-limiti-t">
+    <h3 id="st23-limiti-t">Cosa è pubblicato per il 2023</h3>
+    <ul class="limits">
+      <li>Tavole per età (ottobre 2024): almeno uno stereotipo, 9 affermazioni sui ruoli, 3 comportamenti nella coppia, 8 affermazioni sulla violenza sessuale.</li>
+      <li>Per sesso: solo le 9 affermazioni sui ruoli, nei primi risultati del 22 novembre 2023, dichiarati provvisori.</li>
+      <li>Non pubblicati: titolo di studio, regione, diffusione percepita, cause della violenza, consigli a una donna che la subisce.</li>
+      <li>Le tavole riportano due risposte, d'accordo e non d'accordo (o accettabile e mai accettabile), che sommano a 100: non c'è la voce "Non risponde".</li>
+    </ul>
+  </section>
+
+  <section class="detail" id="st23-detail" aria-live="polite" hidden>
+    <div class="detail-top">
+      <p class="eyebrow" id="st23-d-dim"></p>
+      <button class="close" id="st23-d-close" aria-label="Chiudi il dettaglio">Chiudi ✕</button>
+    </div>
+    <h3 id="st23-d-title"></h3>
+    <div id="st23-d-chart" class="chart"></div>
+    <div class="legend" id="st23-d-legend"></div>
+  </section>
+</div>
+
+<script define:vars={{ Q, SINTESI }}>
+(() => {
+const $ = (id) => document.getElementById("st23-" + id);
+const root = $("questions").closest(".st23");
+const AGES = ["18-29 anni","30-44 anni","45-59 anni","60-74 anni"];
+const SUM = [
+  {k:"TRGENROL", what:"è d'accordo con almeno uno stereotipo sui <b>ruoli di genere</b>", n:9, q:0},
+  {k:"STEVIOSEX", what:"è d'accordo con almeno uno stereotipo sulla <b>violenza sessuale</b>", n:8, q:1},
+  {k:"ONEBEHP", what:"ritiene accettabile almeno un comportamento di <b>violenza o controllo nella coppia</b>", n:3, q:2}
+];
+const fmt = v => v.toLocaleString("it-IT",{minimumFractionDigits:1,maximumFractionDigits:1});
+const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const waffle = (v,cls="") => { const on=Math.round(v); return `<div class="waffle ${cls}" role="img" aria-label="${on} su 100">${Array.from({length:100},(_,i)=>`<i${i<on?' class="on"':''}></i>`).join("")}</div>`; };
+function ageRange(a){ let hi=0, lo=0; for(let i=1;i<4;i++){ if(a[i]>a[hi]) hi=i; if(a[i]<a[lo]) lo=i; } return {pts:+(a[hi]-a[lo]).toFixed(1), hi:[AGES[hi],a[hi]], lo:[AGES[lo],a[lo]]}; }
+function sexRange(s){ const f={n:"Donne",v:s[0]}, m={n:"Uomini",v:s[1]}; const hi=f.v>=m.v?f:m, lo=hi===f?m:f; return {pts:+(hi.v-lo.v).toFixed(1), hi:[hi.n,hi.v], lo:[lo.n,lo.v]}; }
+const short = n => n.replace(" anni","");
+const GB=[5,10,20,30], gbin = p => 1 + GB.filter(b=>p>=b).length;
+const legendGrid = () => `<div class="scale"><span>Distanza in punti, dalla più piccola alla più grande:</span><div class="steps">${["meno di 5","5-10","10-20","20-30","30 e oltre"].map((l,i)=>`<span><i style="background:var(--s${i+1})"></i><em>${l}</em></span>`).join("")}</div></div>`;
+
+// Sintesi
+$("sum").innerHTML = SUM.map(s=>{
+  const a = SINTESI[s.k], r = ageRange(a);
+  return `<article class="card sumcard">
+    <div class="big">${fmt(a[4])}<small>%</small></div>
+    <p class="what">${s.what}</p>
+    ${waffle(a[4])}
+    <dl class="facts">
+      <div><dt>Età</dt><dd>da <b>${fmt(r.lo[1])}%</b> (${short(r.lo[0])}) a <b>${fmt(r.hi[1])}%</b> (${short(r.hi[0])})</dd></div>
+      <div><dt>Sesso</dt><dd>non pubblicato</dd></div>
+    </dl>
+    <a class="go" href="#st23-qbar" data-go="${s.q}">Le ${s.n} ${s.q===2?"situazioni":"affermazioni"}, una per una: domanda ${s.q+1} →</a>
+  </article>`;
+}).join("");
+
+// Domande
+const qs = $("questions");
+qs.innerHTML = Q.map((q,i)=>`
+  <section class="q" id="st23-${q.id}" aria-labelledby="st23-${q.id}-t" role="tabpanel">
+    <div class="qhead">
+      <p class="qnum">Domanda ${i+1} di ${Q.length}</p>
+      <h3 id="st23-${q.id}-t" class="qtitle">${q.title}</h3>
+      <p class="ask">«${q.ask}»</p>
+      <p class="measure">${q.measure}</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div class="grid" data-q="${i}" role="group" aria-label="Quadro delle differenze: ${q.title}"></div>
+      ${legendGrid()}
+    </div>
+    <p class="src">Fonte: Istat, tavole per età 2023 (ottobre 2024), ${q.tav}.${q.id==="ruoli" ? " Per sesso: primi risultati, 22 novembre 2023, prospetto 1, dati provvisori." : ""} Testi delle affermazioni come nel questionario.</p>
+  </section>`).join("");
+
+function cell(qi,k,d,r,lab,prov){
+  const b = gbin(r.pts);
+  return `<button class="cell${prov?" prov":""}" data-q="${qi}" data-k="${k}" data-d="${d}" aria-pressed="false" aria-expanded="false"
+    style="background:var(--s${b});color:var(--s${b}fg)"
+    aria-label="${lab}: ${fmt(r.pts)} punti di distanza, da ${fmt(r.lo[1])}% (${r.lo[0]}) a ${fmt(r.hi[1])}% (${r.hi[0]})">
+    <span class="pts">${fmt(r.pts)} <small>punti</small></span>
+    <span class="rng">più alto: ${short(r.hi[0])} ${fmt(r.hi[1])}%</span>
+    <span class="rng">più basso: ${short(r.lo[0])} ${fmt(r.lo[1])}%</span></button>`;
+}
+Q.forEach((q,qi)=>{
+  const g = qs.querySelector(`.grid[data-q="${qi}"]`);
+  const keys = Object.keys(q.items).sort((a,b)=>q.items[b][1][4]-q.items[a][1][4]);
+  let h = `<div class="th first">${q.col}</div><div class="th">Età</div><div class="th">Sesso${q.id==="ruoli"?'<span class="prov">dati provvisori</span>':''}</div>`;
+  keys.forEach(k=>{
+    const [txt, a, s, nota] = q.items[k];
+    h += `<div class="stmt">${txt}${nota?" *":""} <b>${fmt(a[4])}%</b></div>`;
+    h += cell(qi,k,"eta",ageRange(a),"Età");
+    h += s ? cell(qi,k,"sesso",sexRange(s),"Sesso, dati provvisori",true) : `<div class="na">Per sesso: non pubblicato</div>`;
+  });
+  g.innerHTML = h;
+});
+
+// Dettaglio a fisarmonica
+const det = $("detail");
+let sel = null;
+function mark(){ qs.querySelectorAll(".cell").forEach(b=>{ const on = !!sel && +b.dataset.q===sel.q && b.dataset.k===sel.k && b.dataset.d===sel.d; b.setAttribute("aria-pressed",String(on)); b.setAttribute("aria-expanded",String(on)); }); }
+function closeDetail(){ det.hidden = true; root.appendChild(det); sel=null; mark(); fitHeight(); }
+$("d-close").addEventListener("click", closeDetail);
+qs.addEventListener("click", e=>{
+  const b = e.target.closest(".cell"); if(!b) return;
+  const n = {q:+b.dataset.q, k:b.dataset.k, d:b.dataset.d};
+  if(sel && !det.hidden && sel.q===n.q && sel.k===n.k && sel.d===n.d){ closeDetail(); return; }
+  sel = n; renderDetail(true);
+});
+function renderDetail(scroll){
+  const q = Q[sel.q], [txt, a, s, nota] = q.items[sel.k];
+  const first = qs.querySelector(`.grid[data-q="${sel.q}"] .cell[data-k="${sel.k}"][data-d="eta"]`);
+  const last = first.nextElementSibling;
+  if(last.nextElementSibling !== det) last.after(det);
+  det.hidden = false; mark();
+  $("d-dim").textContent = q.title + " · " + (sel.d==="eta" ? "Per età" : "Per sesso");
+  $("d-title").textContent = txt;
+  if(sel.d==="eta") drawAge(a, nota); else drawSex(s, a[4]);
+  fitHeight();
+  if(scroll){ const r = det.getBoundingClientRect(); if(r.bottom > innerHeight || r.top < 0) det.scrollIntoView({block:"nearest", behavior: reduce()?"auto":"smooth"}); }
+}
+function drawAge(a, nota){
+  const box = $("d-chart");
+  const W = Math.max(300, box.clientWidth || 760), small = W<520;
+  const L = small?62:120, R = 64, rowH = small?40:46, top = 34, H = top + 4*rowH + 18;
+  const xmax = Math.max(10, Math.ceil(Math.max(...a)/10)*10);
+  const x = v => L + v/xmax*(W-L-R);
+  const step = xmax<=20 ? 5 : (small && xmax>40 ? 20 : 10);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Valori per età">`;
+  for(let t=0;t<=xmax;t+=step) s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-14}" stroke="var(--line)"/><text x="${x(t)}" y="${top-14}" text-anchor="middle" font-size="12" fill="var(--muted)">${t}%</text>`;
+  s += `<line x1="${x(a[4])}" x2="${x(a[4])}" y1="${top-8}" y2="${H-14}" stroke="var(--fg)" stroke-dasharray="3 3" opacity=".55"/><text x="${Math.min(x(a[4])+4, W-90)}" y="${H-2}" font-size="11" fill="var(--muted)">Italia ${fmt(a[4])}%</text>`;
+  AGES.forEach((n,i)=>{
+    const y = top + i*rowH + rowH/2;
+    s += `<text x="0" y="${y+4}" font-size="${small?12:13}" fill="var(--fg)">${small?short(n):n}</text>`;
+    s += `<line x1="${x(0)}" x2="${x(a[i])}" y1="${y}" y2="${y}" stroke="var(--empty)" stroke-width="2"/>`;
+    s += `<circle cx="${x(a[i])}" cy="${y}" r="8" fill="var(--accent)"><title>${n}: ${fmt(a[i])}%</title></circle>`;
+    s += `<text x="${x(a[i])+14}" y="${y+4}" font-size="13" font-weight="600" fill="var(--fg)">${fmt(a[i])}%${nota && i===0 ? " *" : ""}</text>`;
+  });
+  box.innerHTML = s + "</svg>";
+  const r = ageRange(a);
+  $("d-legend").innerHTML = `<span><i class="dot" style="background:var(--accent)"></i>Classe di età</span><span>Linea tratteggiata: Italia, totale</span><span>Da ${fmt(r.lo[1])}% a ${fmt(r.hi[1])}% · Italia ${fmt(a[4])}%</span>${nota?`<span>* ${nota}</span>`:""}<span>Per età Istat non pubblica i valori separati di donne e uomini.</span>`;
+}
+function drawSex(s, tot){
+  const box = (v,n,cls,wcls) => `<div class="sexbox"><p><span class="${cls}">${n}</span></p><p class="sexval">${fmt(v)}<small>%</small></p>${waffle(v,wcls)}</div>`;
+  $("d-chart").innerHTML = `<p class="provnote">Dati provvisori · Istat, primi risultati, 22 novembre 2023, prospetto 1</p><div class="sexwrap" style="margin-top:12px">${box(s[0],"Donne","w","wf")}${box(s[1],"Uomini","m","wm")}</div>`;
+  $("d-legend").innerHTML = `<span>Distanza fra donne e uomini: ${fmt(Math.abs(s[0]-s[1]))} punti · Italia, totale ${fmt(tot)}%</span><span>Ogni cella è 1 persona su 100 (valori arrotondati): cerchi per le donne, quadrati per gli uomini</span>`;
+}
+
+// Le tre domande scorrono in orizzontale, una alla volta
+const tabs = $("qtabs"), prev = $("qprev"), next = $("qnext"), count = $("qcount");
+tabs.innerHTML = Q.map((q,i)=>`<button role="tab" id="st23-tab-${q.id}" aria-controls="st23-${q.id}" aria-selected="${i===0}">${i+1}. ${q.nav}</button>`).join("");
+let cur = 0;
+const stepW = () => qs.clientWidth + 32;
+function fitHeight(){ const s = qs.children[cur]; if(s && s.offsetHeight) qs.style.height = s.offsetHeight + "px"; }
+function setCur(i, scroll){
+  cur = Math.max(0, Math.min(Q.length-1, i));
+  [...tabs.children].forEach((b,j)=>{ b.setAttribute("aria-selected", String(j===cur)); b.tabIndex = j===cur?0:-1; });
+  [...qs.children].forEach((s,j)=>{ s.inert = j!==cur; });
+  prev.disabled = cur===0; next.disabled = cur===Q.length-1;
+  count.textContent = `${cur+1} di ${Q.length}`;
+  if(scroll) qs.scrollTo({left: cur*stepW(), behavior: reduce()?"auto":"smooth"});
+  fitHeight();
+}
+tabs.addEventListener("click", e=>{ const b = e.target.closest("button"); if(b) setCur([...tabs.children].indexOf(b), true); });
+tabs.addEventListener("keydown", e=>{ if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ setCur(cur+(e.key==="ArrowRight"?1:-1), true); tabs.children[cur].focus(); e.preventDefault(); } });
+prev.addEventListener("click", ()=>setCur(cur-1, true));
+next.addEventListener("click", ()=>setCur(cur+1, true));
+let t; qs.addEventListener("scroll", ()=>{ clearTimeout(t); t = setTimeout(()=>{ if(!qs.clientWidth) return; const i = Math.round(qs.scrollLeft/stepW()); if(i!==cur) setCur(i); }, 80); });
+root.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click", ()=>setCur(+a.dataset.go, true)));
+// Quando il riquadro che lo contiene si apre o cambia larghezza, rimette a posto il carosello
+new ResizeObserver(()=>{ if(!qs.clientWidth) return; qs.scrollLeft = cur*stepW(); if(sel && !det.hidden) renderDetail(false); fitHeight(); }).observe(qs);
+[...qs.children].forEach(s=>new ResizeObserver(()=>{ if(s===qs.children[cur]) fitHeight(); }).observe(s));
+setCur(0);
+})();
+</script>
+
+<style is:global>
+.st23{--bg:#f7f6f9;--surface:#ffffff;--fg:#16181D;--muted:#55585F;--line:#dedbe5;--accent:#5A2D82;--women:#d99a2b;--men:#1d5c3a;--empty:#e6e3ec;
+  --s1:#f1edf8;--s2:#d3c6ea;--s3:#a993d3;--s4:#7a5db5;--s5:#4a2b85;--s1fg:#16181D;--s2fg:#16181D;--s3fg:#16181D;--s4fg:#ffffff;--s5fg:#ffffff;
+  --font-body:var(--corpo);--font-display:var(--titoli);
+  display:flex;flex-direction:column;gap:32px;color:var(--fg);font-size:15px;line-height:1.5;min-width:0}
+.st23 h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0;font-size:1.05rem}
+.st23 h3.qtitle{font-size:1.3rem;line-height:1.2}
+.st23 p{margin:0}
+.st23 .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.st23 .lead{color:var(--muted);max-width:68ch}
+.st23 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}
+.st23 section.q{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px;min-width:0}
+.st23 .qhead{display:flex;flex-direction:column;gap:6px}
+.st23 .qnum{font-family:var(--font-display);font-size:.8rem;color:var(--accent);font-weight:600;letter-spacing:.04em}
+.st23 .ask{font-style:italic;max-width:68ch}
+.st23 .measure{font-size:.85rem;color:var(--muted);max-width:68ch}
+.st23 .note{font-size:.8rem;color:var(--muted);max-width:72ch}
+.st23 .src{font-size:.75rem;color:var(--muted)}
+.st23 .sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.st23 .sum{grid-template-columns:minmax(0,1fr)}}
+.st23 .sumcard{display:flex;flex-direction:column;gap:12px}
+.st23 .big{font-family:var(--font-display);font-size:2.6rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.st23 .big small{font-size:1rem;font-weight:500;color:var(--muted);margin-left:4px}
+.st23 .what{font-size:.9rem;min-height:2.7em}
+.st23 .waffle{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;max-width:280px}
+.st23 .waffle i{aspect-ratio:1;border-radius:2px;background:var(--empty)}
+.st23 .waffle i.on{background:var(--accent)}
+.st23 .facts{display:flex;flex-direction:column;font-size:.82rem;border-top:1px solid var(--line);margin:0}
+.st23 .facts div{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.st23 .facts dt{color:var(--muted)} .st23 .facts dd{margin:0;font-variant-numeric:tabular-nums}
+.st23 .go{font-size:.85rem;margin-top:auto}
+.st23 .howto{display:flex;flex-direction:column;gap:6px;font-size:.85rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.st23 .qbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;scroll-margin-top:12px}
+.st23 .qtabs{display:flex;flex-wrap:wrap;gap:6px}
+.st23 .qtabs button{all:unset;cursor:pointer;font-size:.82rem;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}
+.st23 .qtabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.st23 .qtabs button:focus-visible,.st23 .qnav button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.st23 .qnav{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.st23 .qnav button{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:50%;font-size:1.1rem;color:var(--fg)}
+.st23 .qnav button:disabled{opacity:.35;cursor:default}
+.st23 .carousel{display:flex;gap:32px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;align-items:flex-start}
+.st23 .carousel::-webkit-scrollbar{display:none}
+.st23 .carousel>section.q{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
+@media (prefers-reduced-motion:no-preference){.st23 .carousel{scroll-behavior:smooth;transition:height .25s ease}}
+@media (max-width:600px){.st23 .qbar{flex-wrap:nowrap}.st23 .qtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}.st23 .qtabs button{white-space:nowrap}.st23 .qnav span{display:none}}
+.st23 .grid{display:grid;grid-template-columns:minmax(0,2.4fr) repeat(2,minmax(0,1fr));gap:5px;align-items:stretch}
+.st23 .th{font-size:.78rem;font-weight:600;color:var(--muted);padding:2px 4px;align-self:end}
+.st23 .th .prov{display:inline-block;margin-left:4px;font-weight:500;font-size:.68rem;border:1px dashed var(--muted);border-radius:4px;padding:0 5px}
+.st23 .stmt{font-size:.88rem;padding:6px 8px 6px 0;align-self:center}
+.st23 .stmt b{font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.st23 .cell{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:2px;width:100%;min-height:58px;padding:8px 10px;border-radius:6px;cursor:pointer;font-variant-numeric:tabular-nums;border:2px solid transparent}
+.st23 .cell.prov{outline:1.5px dashed var(--muted);outline-offset:-5px}
+.st23 .cell:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.st23 .cell[aria-pressed="true"]{border-color:var(--fg)}
+.st23 .cell .pts{font-family:var(--font-display);font-size:1.05rem;font-weight:600}
+.st23 .cell .pts small{font-family:var(--font-body);font-size:.7rem;font-weight:500}
+.st23 .cell .rng{font-size:.72rem;line-height:1.3}
+.st23 .na{display:flex;align-items:center;justify-content:center;text-align:center;min-height:58px;padding:8px;border-radius:6px;border:1px dashed var(--line);font-size:.75rem;color:var(--muted)}
+@media (max-width:600px){.st23 .grid{grid-template-columns:repeat(2,minmax(0,1fr))}.st23 .stmt{grid-column:1/-1;padding:10px 0 0}.st23 .th.first{display:none}.st23 .cell{padding:7px 8px;min-height:52px}.st23 .cell .rng{font-size:.68rem}}
+@media (prefers-reduced-motion:no-preference){.st23 .cell{transition:transform .12s}.st23 .cell:hover{transform:translateY(-1px)}}
+.st23 .scale{display:flex;flex-wrap:wrap;align-items:center;gap:8px;row-gap:6px;font-size:.75rem;color:var(--muted)}
+.st23 .steps{display:flex;gap:3px;flex-wrap:wrap}
+.st23 .steps span{display:flex;flex-direction:column;gap:3px;min-width:64px}
+.st23 .steps i{display:block;width:100%;height:14px;border-radius:3px;border:1px solid var(--line)}
+.st23 .steps em{font-style:normal;font-size:.72rem;white-space:nowrap}
+.st23 .detail{grid-column:1/-1;display:flex;flex-direction:column;gap:14px;background:var(--bg);border:1px solid var(--fg);border-radius:8px;padding:16px;margin:2px 0 12px;min-width:0}
+.st23 .detail[hidden]{display:none}
+.st23 .detail-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.st23 .close{all:unset;cursor:pointer;font-size:.8rem;color:var(--muted);padding:2px 6px;border-radius:4px}
+.st23 .close:hover{color:var(--fg)} .st23 .close:focus-visible{outline:2px solid var(--fg)}
+@media (prefers-reduced-motion:no-preference){.st23 .detail{animation:st23open .18s ease-out}@keyframes st23open{from{opacity:.4;transform:translateY(-4px)}to{opacity:1;transform:none}}}
+.st23 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted)}
+.st23 .legend span{display:inline-flex;align-items:center;gap:6px}
+.st23 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.st23 .provnote{display:inline-block;font-size:.8rem;border:1px dashed var(--muted);border-radius:6px;padding:6px 10px;color:var(--fg)}
+.st23 .sexwrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:640px}
+.st23 .sexbox{display:flex;flex-direction:column;gap:6px;min-width:0}
+.st23 .sexval{font-family:var(--font-display);font-size:2rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.st23 .sexval small{font-size:.9rem;color:var(--muted);margin-left:2px}
+.st23 .w,.st23 .m{font-weight:600;white-space:nowrap}
+.st23 .w::before,.st23 .m::before{content:"";display:inline-block;width:9px;height:9px;margin-right:5px}
+.st23 .w::before{background:var(--women);border-radius:50%} .st23 .m::before{background:var(--men);border-radius:1px}
+.st23 .waffle.wf i{border-radius:50%} .st23 .waffle.wf i.on{background:var(--women)}
+.st23 .waffle.wm i{border-radius:1px} .st23 .waffle.wm i.on{background:var(--men)}
+@media (max-width:520px){.st23 .sexwrap{gap:14px}.st23 .sexwrap .waffle{grid-template-columns:repeat(10,minmax(0,1fr))}.st23 .sexval{font-size:1.6rem}}
+.st23 svg text{font-family:var(--font-body)}
+.st23 .chart{overflow-x:auto}
+.st23 .limits{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted)}
+</style>
