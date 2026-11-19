@@ -70,7 +70,11 @@ const MAP = { W: MAPPA.W, H: MAPPA.H, paths: MAPPA.paths, lab: MAPPA.lab };
 
   <div class="howto" id="st18-howto"></div>
 
-  <div id="st18-questions" style="display:flex;flex-direction:column;gap:40px"></div>
+  <div class="qbar" id="st18-qbar">
+    <div class="qtabs" role="tablist" aria-label="Le sei domande" id="st18-qtabs"></div>
+    <div class="qnav"><button id="st18-qprev" aria-label="Domanda precedente">←</button><span id="st18-qcount" aria-live="polite"></span><button id="st18-qnext" aria-label="Domanda successiva">→</button></div>
+  </div>
+  <div id="st18-questions" class="carousel"></div>
 
   <p class="note">Sesso: distanza fra donne e uomini. Età: 4 classi. Titolo di studio: 4 livelli. Regione: 19 regioni e 2 province autonome. Con più gruppi la distanza fra il più alto e il più basso tende a essere maggiore, e le stime delle regioni piccole sono meno precise. La scala dei colori è la stessa per tutte le domande.</p>
 <section class="detail" id="st18-detail" aria-live="polite" hidden>
@@ -191,7 +195,7 @@ Q.forEach(q=>q.order.forEach(s=>DIMS.forEach(d=>{ MAX=Math.max(MAX, range(DATA[q
 MAX = Math.ceil(MAX/10)*10;
 
 // Navigazione
-$("toc").innerHTML = `<a href="#st18-sintesi">In sintesi</a>` + Q.map((q,i)=>`<a href="#st18-${q.id}">${i+1}. ${q.nav}</a>`).join("");
+$("toc").innerHTML = `<a href="#st18-sintesi">In sintesi</a>` + `<a href="#st18-qbar">Le sei domande</a>`;
 
 // Sintesi
 $("sum").innerHTML = SUM.map(s=>{
@@ -209,7 +213,7 @@ $("sum").innerHTML = SUM.map(s=>{
       <div><dt>Titolo</dt><dd>${mm(ti)}</dd></div>
       <div><dt>Regione</dt><dd>${mm(re)}</dd></div>
     </dl>
-    <a class="go" href="#st18-${q.id}">Le ${s.n} ${q.id==="coppia"?"situazioni":"affermazioni"}, una per una: domanda ${qi} →</a>
+    <a class="go" href="#st18-${q.id}" data-go="${qi-1}">Le ${s.n} ${q.id==="coppia"?"situazioni":"affermazioni"}, una per una: domanda ${qi} →</a>
   </article>`;
 }).join("");
 
@@ -367,9 +371,43 @@ function drawRegionList(d, sx, W){
 }
 
 Q.forEach(buildGrid);
+
+// --- Carosello delle domande -------------------------------------------------------------
+const car = $("questions");
+const slides = [...car.children];
+let cur = 0;
+$("qtabs").innerHTML = Q.map((q,i)=>`<button role="tab" id="st18-tab-${q.id}" aria-controls="st18-${q.id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${i+1}. ${q.nav}</button>`).join("");
+const tabs = [...ROOT.querySelectorAll("#st18-qtabs button")];
+function fitHeight(){ car.style.height = slides[cur].offsetHeight + "px"; }
+function setCurrent(i){
+  cur = i;
+  tabs.forEach((b,k)=>{ b.setAttribute("aria-selected", String(k===i)); b.tabIndex = k===i ? 0 : -1; });
+  const tb = tabs[i], bar = tb.parentElement; if(bar.scrollWidth > bar.clientWidth) bar.scrollTo({left: tb.offsetLeft - bar.offsetLeft - 8, behavior: reduce() ? "auto" : "smooth"});
+  slides.forEach((s,k)=>{ s.inert = k!==i; });
+  $("qcount").textContent = `${i+1} di ${slides.length}`;
+  $("qprev").disabled = i===0;
+  $("qnext").disabled = i===slides.length-1;
+  fitHeight();
+}
+function goTo(i, focusBar){
+  i = Math.max(0, Math.min(slides.length-1, i));
+  car.scrollTo({left: slides[i].offsetLeft, behavior: reduce() ? "auto" : "smooth"});
+  setCurrent(i);
+  if(focusBar){ const r = $("qbar").getBoundingClientRect(); if(r.top < 0 || r.top > window.innerHeight*0.6) $("qbar").scrollIntoView({block:"start", behavior: reduce() ? "auto" : "smooth"}); }
+}
+let st; car.addEventListener("scroll",()=>{ clearTimeout(st); st = setTimeout(()=>{ const i = Math.round(car.scrollLeft / (slides[1].offsetLeft - slides[0].offsetLeft)); if(i!==cur) setCurrent(i); }, 80); });
+tabs.forEach((b,i)=>{ b.addEventListener("click",()=>goTo(i)); b.addEventListener("keydown",e=>{ if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ e.preventDefault(); const j = Math.max(0, Math.min(tabs.length-1, i + (e.key==="ArrowRight"?1:-1))); goTo(j); tabs[j].focus(); } }); });
+$("qprev").addEventListener("click",()=>goTo(cur-1));
+$("qnext").addEventListener("click",()=>goTo(cur+1));
+ROOT.querySelectorAll("a.go[data-go]").forEach(a=>a.addEventListener("click",e=>{ e.preventDefault(); goTo(+a.dataset.go, true); }));
+slides.forEach(s=>s.setAttribute("role","tabpanel"));
+slides.forEach((s,i)=>s.setAttribute("aria-labelledby", `st18-tab-${Q[i].id}`));
+new ResizeObserver(fitHeight).observe(car);
+slides.forEach(s=>new ResizeObserver(()=>{ if(s===slides[cur]) fitHeight(); }).observe(s));
+setCurrent(0);
 { const q0 = Q[0], s0 = q0.order[0], r0 = range(DATA[q0.id][s0],"sesso");
   const vF = r0.hi[0]==="F"?r0.hi[2]:r0.lo[2], vM = r0.hi[0]==="M"?r0.hi[2]:r0.lo[2];
-  $("howto").innerHTML = `<b>Come si leggono le sei domande</b><span>Ogni riga è un'affermazione o una risposta, con il valore per l'Italia. Ogni casella confronta i gruppi di una dimensione e indica la distanza in punti fra il gruppo più alto e quello più basso. Esempio, domanda 1, prima riga, colonna Sesso: donne ${fmt(vF)}%, uomini ${fmt(vM)}%, distanza ${fmt(r0.pts)} punti.</span><span>Clicca una casella: sotto la sua riga si apre il dettaglio con i valori di tutti i gruppi, donne e uomini separati. Clicca di nuovo la casella, o "Chiudi", per richiuderlo.</span>`; }
+  $("howto").innerHTML = `<b>Come si leggono le sei domande</b><span>Ogni riga è un'affermazione o una risposta, con il valore per l'Italia. Ogni casella confronta i gruppi di una dimensione e indica la distanza in punti fra il gruppo più alto e quello più basso. Esempio, domanda 1, prima riga, colonna Sesso: donne ${fmt(vF)}%, uomini ${fmt(vM)}%, distanza ${fmt(r0.pts)} punti.</span><span>Passa da una domanda all'altra con i pulsanti in alto, con le frecce o scorrendo verso destra.</span><span>Clicca una casella: sotto la sua riga si apre il dettaglio con i valori di tutti i gruppi, donne e uomini separati. Clicca di nuovo la casella, o "Chiudi", per richiuderlo.</span>`; }
 let rt; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>render(false),150); });
 $("d-close").addEventListener("click", closeDetail);
 </script>
@@ -382,7 +420,11 @@ $("d-close").addEventListener("click", closeDetail);
 .st18 h2,.st18 h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0}
 .st18 h2{font-size:1.3rem;line-height:1.2}.st18 h3{font-size:1rem}
 .st18 p{margin:0}
-.st18 .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.st18 .lead{color:var(--muted);max-width:68ch}.st18 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}.st18 .scroll{overflow-x:auto}.st18 nav.toc{display:flex;flex-wrap:wrap;gap:6px}.st18 nav.toc a{font-size:.82rem;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}.st18 nav.toc a:hover{border-color:var(--accent)}.st18 nav.toc a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}.st18 section.q{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}.st18 .qhead{display:flex;flex-direction:column;gap:6px}.st18 .qnum{font-family:var(--font-display);font-size:.8rem;color:var(--accent);font-weight:600;letter-spacing:.04em}.st18 .ask{font-style:italic;color:var(--fg);max-width:68ch}.st18 .measure{font-size:.85rem;color:var(--muted);max-width:68ch}
+.st18 .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.st18 .lead{color:var(--muted);max-width:68ch}.st18 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}.st18 .scroll{overflow-x:auto}.st18 nav.toc{display:flex;flex-wrap:wrap;gap:6px}.st18 nav.toc a{font-size:.82rem;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}.st18 nav.toc a:hover{border-color:var(--accent)}.st18 nav.toc a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}.st18 section.q{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+/* Le sei domande scorrono in orizzontale, una alla volta */
+.st18 .qbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;scroll-margin-top:12px}.st18 .qtabs{display:flex;flex-wrap:wrap;gap:6px}.st18 .qtabs button{all:unset;cursor:pointer;font-size:.82rem;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}.st18 .qtabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}.st18 .qtabs button:focus-visible,.st18 .qnav button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}.st18 .qnav{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}.st18 .qnav button{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:50%;font-size:1.1rem;color:var(--fg)}.st18 .qnav button:disabled{opacity:.35;cursor:default}.st18 .carousel{position:relative;display:flex;gap:32px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;align-items:flex-start}.st18 .carousel::-webkit-scrollbar{display:none}
+@media (max-width:600px){.st18 .qbar{flex-wrap:nowrap}.st18 .qtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}.st18 .qtabs::-webkit-scrollbar{display:none}.st18 .qtabs button{white-space:nowrap}.st18 .qnav span{display:none}}.st18 .carousel>section.q{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always}
+@media (prefers-reduced-motion:no-preference){.st18 .carousel{scroll-behavior:smooth;transition:height .25s ease}}.st18 .qhead{display:flex;flex-direction:column;gap:6px}.st18 .qnum{font-family:var(--font-display);font-size:.8rem;color:var(--accent);font-weight:600;letter-spacing:.04em}.st18 .ask{font-style:italic;color:var(--fg);max-width:68ch}.st18 .measure{font-size:.85rem;color:var(--muted);max-width:68ch}
 
 /* Sintesi */
 .st18 .sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
