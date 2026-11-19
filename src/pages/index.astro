@@ -1,42 +1,75 @@
 ---
+// Home: le sei domande come mosaico di tessere (scelta di Giorgia, 19/11/2026).
+// Ogni tessera mostra la domanda e il suo numero principale; testi e filtri sono in contenuti/domande.yaml (blocco "home").
+// La prima domanda è la tessera grande, con cento punti; "Cosa non sappiamo ancora?" (forma: vuoti) è tratteggiata, a tutta larghezza.
 import Layout from '../componenti/Layout.astro';
 import { url } from '../lib/url.js';
 import { domande, fonte } from '../lib/registro.js';
+import { valore, formatta } from '../lib/dati.js';
+import { percentuale } from '../lib/colori.js';
 
 // Nome breve dell'ente: la parte prima della virgola ("Ministero dell'Interno, Servizio…").
 const enteBreve = (e = '') => e.split(',')[0];
-const elenco = domande().map((d) => ({
-  ...d,
-  enti: [...new Set(d.fonti.filter((id) => fonte(id)?.pronta).map((id) => enteBreve(fonte(id).ente)))],
-}));
-const pronte = elenco.filter((d) => d.stato === 'pronta').length;
 const online = (d) => d.stato === 'pronta' || d.stato === 'in-verifica';
+
+// Il numero della tessera: letto dai dati (fonte + filtro) oppure scritto nel testo (es. "circa 100").
+function numeroHome(h = {}) {
+  if (h.testo_numero) return { testo: h.testo_numero };
+  if (!h.numero) return null;
+  const v = valore(h.numero.fonte, h.numero.filtro);
+  if (v === undefined) return null;
+  const pct = h.numero.unita === 'percentuale';
+  return { testo: pct ? `${percentuale(v, 1)}%` : formatta(v), punti: pct ? Math.round(v) : null };
+}
+
+const elenco = domande().map((d, i) => {
+  const h = d.home ?? {};
+  const enti = [...new Set(d.fonti.filter((id) => fonte(id)?.pronta).map((id) => enteBreve(fonte(id).ente)))];
+  return {
+    ...d,
+    h,
+    numero: online(d) ? numeroHome(h) : null,
+    piede: h.fonte_breve ?? enti.join(' · '),
+    forma: h.forma ?? (i === 0 ? 'grande' : 'normale'),
+  };
+});
+const pronte = elenco.filter((d) => d.stato === 'pronta').length;
 ---
 <Layout descrizione="Che cosa sappiamo sulla violenza di genere e sui femminicidi in Italia, e che cosa non sappiamo." sezione="domande">
   <section class="apertura">
     <h1>Che cosa sappiamo sulla violenza contro le donne in Italia?</h1>
-    <p class="attacco">Sei domande. Per ognuna, i dati con cui oggi si prova a rispondere e le domande che quei dati lasciano aperte.</p>
+    <p class="attacco">Sei domande. Per ognuna, il numero con cui oggi si prova a rispondere e le domande che quel numero lascia aperte.</p>
   </section>
 
   <section class="sezione" aria-labelledby="titolo-domande">
     <h2 id="titolo-domande" class="visivamente-nascosto">Le domande</h2>
-    <ul class="domande">
-      {elenco.map((d) => (
-        <li>
-          {online(d) ? (
-            <a href={url(d.indirizzo)} class="voce pronta">
-              <span class="testo">{d.testo}</span>
-              {d.enti.length > 0 && <span class="fonti">{d.enti.join(' · ')}{d.stato === 'in-verifica' && <span class="verifica"> · in verifica</span>}</span>}
-              <span class="vai" aria-hidden="true">→</span>
-            </a>
-          ) : (
-            <div class="voce">
-              <span class="testo">{d.testo}</span>
-              <span class="stato">In lavorazione</span>
-            </div>
-          )}
-        </li>
-      ))}
+    <ul class="mosaico">
+      {elenco.map((d) => {
+        const Tag = online(d) ? 'a' : 'div';
+        return (
+          <li class:list={['posto', d.forma]}>
+            <Tag href={online(d) ? url(d.indirizzo) : undefined} class:list={['tessera', d.forma, { attiva: online(d) }]}>
+              {d.h.etichetta && <span class="etichetta-t">{d.h.etichetta}</span>}
+              <h3 class="testo">{d.testo}</h3>
+              {d.numero && <span class="numero">{d.numero.testo}</span>}
+              {d.forma === 'grande' && d.numero?.punti != null && (
+                <span class="punti" aria-hidden="true">
+                  {Array.from({ length: 100 }, (_, k) => <i class:list={{ si: k < d.numero.punti }}></i>)}
+                </span>
+              )}
+              {online(d) && d.h.descrizione && <p class="cosa">{d.h.descrizione}</p>}
+              <span class="piede-t">
+                {online(d) ? (
+                  <span class="fonti">{d.piede}{d.stato === 'in-verifica' && <span class="verifica"> · in verifica</span>}</span>
+                ) : (
+                  <span class="stato">In lavorazione</span>
+                )}
+                {online(d) && <span class="vai" aria-hidden="true">→</span>}
+              </span>
+            </Tag>
+          </li>
+        );
+      })}
     </ul>
     {pronte < elenco.length && (
       <p class="nota">Le domande in lavorazione vengono pubblicate quando i loro dati sono stati controllati sugli originali. Ogni novità è registrata in <a href={url('/cosa-e-cambiato/')}>Cosa è cambiato</a>.</p>
@@ -45,23 +78,60 @@ const online = (d) => d.stato === 'pronta' || d.stato === 'in-verifica';
 </Layout>
 
 <style>
-  .domande { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-  .voce {
-    display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 16px; row-gap: 4px;
-    padding: 20px 24px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; color: var(--testo-3);
+  .mosaico { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .posto { display: flex; min-width: 0; }
+  .posto.grande { grid-row: span 2; }
+  .posto.vuoti { grid-column: 1 / -1; }
+
+  .tessera {
+    flex: 1; display: flex; flex-direction: column; gap: 10px; min-width: 0;
+    padding: 22px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 14px;
+    color: var(--testo-3); text-decoration: none;
   }
-  .pronta { text-decoration: none; color: var(--testo); }
-  .pronta:hover { border-color: var(--accento); color: var(--testo); }
-  .testo { font-family: var(--titoli); font-size: 22px; font-weight: 500; line-height: 1.25; }
-  .fonti { grid-column: 1; font-size: 14px; color: var(--testo-3); }
-  .vai { grid-column: 2; grid-row: 1 / span 2; font-size: 24px; color: var(--accento); }
+  .tessera.attiva { color: var(--testo); }
+  .tessera.attiva:hover { border-color: var(--accento); color: var(--testo); }
+  .etichetta-t { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accento); }
+  .testo { font-family: var(--titoli); font-size: 21px; font-weight: 500; line-height: 1.2; }
+  .numero {
+    font-family: var(--titoli); font-weight: 600; font-size: 44px; line-height: 1; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums; color: var(--accento);
+  }
+  .cosa { font-size: 15px; line-height: 1.45; color: var(--testo-2); }
+  .piede-t { margin-top: auto; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .fonti { font-size: 13px; color: var(--testo-3); }
   .verifica { color: var(--attenzione); font-weight: 500; }
+  .vai { font-size: 20px; color: var(--accento); }
   .stato {
     font-size: 13px; font-weight: 500; color: var(--testo-3); background: var(--grigio);
     padding: 4px 10px; border-radius: 999px; white-space: nowrap;
   }
-  @media (max-width: 640px) {
-    .voce { padding: 16px 18px; }
+
+  /* Tessera grande: la prima domanda, su fondo scuro, con cento punti */
+  .tessera.grande { background: var(--accento-scuro); border-color: var(--accento-scuro); color: var(--su-scuro); }
+  .tessera.grande:hover { border-color: var(--lilla-medio); color: var(--su-scuro); }
+  .grande .etichetta-t { color: var(--lilla-medio); }
+  .grande .testo { font-size: 26px; }
+  .grande .numero { font-size: 72px; color: var(--su-scuro); }
+  .grande .cosa, .grande .fonti { color: var(--scala-2); }
+  .grande .verifica { color: var(--scala-2); }
+  .grande .vai { color: var(--su-scuro); }
+  .punti { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; max-width: 230px; margin-block: 4px; }
+  .punti i { aspect-ratio: 1; border-radius: 50%; background: var(--accento); }
+  .punti i.si { background: var(--su-scuro); }
+
+  /* Tessera dei vuoti: tratteggiata, a tutta larghezza */
+  .tessera.vuoti { background: var(--grigio); border: 2px dashed var(--grigio-medio); }
+  .vuoti .numero { font-size: 36px; color: var(--testo-2); }
+
+  @media (max-width: 900px) {
+    .mosaico { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .mosaico { grid-template-columns: 1fr; }
+    .posto.grande { grid-row: auto; }
+    .tessera { padding: 18px; }
     .testo { font-size: 19px; }
+    .numero { font-size: 40px; }
+    .grande .numero { font-size: 60px; }
   }
 </style>

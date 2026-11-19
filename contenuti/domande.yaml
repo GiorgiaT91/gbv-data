@@ -7,9 +7,17 @@
 # modello: corta (domande 1, 2, 3, 6: pagina generata da src/pages/domande/[indirizzo].astro).
 # indirizzo: solo per le domande pronte.
 # fonti: identificativi delle fonti (vedi contenuti/fonti.yaml).
+# home: la tessera della domanda in home. etichetta; numero (fonte, filtro, unita: percentuale se è una quota)
+#   oppure testo_numero (numero scritto a mano); descrizione; fonte_breve; forma: vuoti per la tessera tratteggiata.
+#   La prima domanda dell'elenco è la tessera grande, con cento punti.
 
 - id: 1
   testo: "Quante donne subiscono violenza?"
+  home:
+    etichetta: "Il fenomeno"
+    numero: { fonte: istat-sicurezza-donne, unita: percentuale, filtro: { anno: 2025, periodo: nella_vita, indicatore: violenza, categoria: fisica_o_sessuale } }
+    descrizione: "delle donne italiane fra 16 e 75 anni ha subito violenza fisica o sessuale almeno una volta nella vita."
+    fonte_breve: "Istat · 2025"
   stato: in-verifica
   modello: corta
   indirizzo: /domande/quante-donne-subiscono-violenza/
@@ -17,6 +25,11 @@
 
 - id: 6
   testo: "In che contesto nasce?"
+  home:
+    etichetta: "Il contesto"
+    numero: { fonte: istat-stereotipi-adulti, unita: percentuale, filtro: { anno: 2023, indicatore: almeno_uno, categoria: TRGENROL } }
+    descrizione: "delle persone fra 18 e 74 anni è d'accordo con almeno uno stereotipo sui ruoli di genere."
+    fonte_breve: "Istat · 2023"
   stato: in-verifica
   modello: corta
   indirizzo: /domande/in-che-contesto-nasce/
@@ -24,6 +37,11 @@
 
 - id: 2
   testo: "Quante chiedono aiuto?"
+  home:
+    etichetta: "Le richieste di aiuto"
+    numero: { fonte: istat-1522, filtro: { anno: 2025, periodo: anno, indicatore: chiamate_valide, categoria: totale } }
+    descrizione: "chiamate valide al numero antiviolenza 1522 nel 2025."
+    fonte_breve: "Istat-DPO · 2025"
   stato: in-verifica
   modello: corta
   indirizzo: /domande/quante-chiedono-aiuto/
@@ -31,6 +49,11 @@
 
 - id: 3
   testo: "Cosa succede dopo una denuncia?"
+  home:
+    etichetta: "La giustizia"
+    numero: { fonte: interno-reati-spia, filtro: { anno: 2023, periodo: anno, territorio: Italia, indicatore: delitti_denunciati, categoria: maltrattamenti } }
+    descrizione: "delitti di maltrattamenti in famiglia denunciati alle forze di polizia."
+    fonte_breve: "Ministero dell'Interno · 2023"
   stato: in-verifica
   modello: corta
   indirizzo: /domande/cosa-succede-dopo-una-denuncia/
@@ -38,12 +61,23 @@
 
 - id: 4
   testo: "Quante donne vengono uccise?"
+  home:
+    etichetta: "I femminicidi"
+    testo_numero: "circa 100"
+    descrizione: "donne uccise ogni anno. Tre fonti, tre regole, numeri dello stesso ordine di grandezza."
+    fonte_breve: "Istat · Ministero dell'Interno · Non Una Di Meno"
   stato: pronta
   indirizzo: /domande/quante-donne-vengono-uccise/
   fonti: [istat-omicidi, interno-femminicidi, nudm-osservatorio]
 
 - id: 5
   testo: "Cosa non sappiamo ancora?"
+  home:
+    etichetta: "I vuoti"
+    forma: vuoti
+    testo_numero: "Legge 53/2022"
+    descrizione: "I dati che la legge prevede, messi a confronto con quelli pubblicati oggi."
+    fonte_breve: "Lettura di GBV-Data"
   stato: in-verifica
   modello: lista            # pagina propria: src/pages/domande/cosa-non-sappiamo-ancora.astro
   indirizzo: /domande/cosa-non-sappiamo-ancora/
