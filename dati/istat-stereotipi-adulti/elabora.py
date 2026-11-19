@@ -24,57 +24,63 @@ def aggiungi(anno, indicatore, categoria, valore, nota):
 
 def sdmx(n):
     f = glob.glob(str(QUI / 'originali' / '2018' / f'*RUOLIGEN_{n},*.csv'))[0]
-    return [r for r in csv.DictReader(open(f, encoding='utf-8-sig')) if r['REF_AREA'] == 'IT']
+    # keep_default_na non esiste in csv: il codice "NA" (non risponde) resta testo, mai mancante
+    return list(csv.DictReader(open(f, encoding='utf-8-sig')))
 
-def gruppo(r, campo_extra=None):
-    if r['SEX'] != 'T':
-        return f"|{r['SEX']}" if r['AGE'] == 'TOTAL' and r['EDU_LEV_HIGHEST'] == 'ALL' else None
-    if r['AGE'] != 'TOTAL':
-        return f"|{r['AGE']}"
-    if r['EDU_LEV_HIGHEST'] != 'ALL':
-        return f"|{r['EDU_LEV_HIGHEST']}"
-    return ''
+# Regioni (NUTS 2): Trentino-Alto Adige compare con le due province autonome, non come aggregato (ITDA)
+REGIONI = {
+    'ITC1': 'Piemonte', 'ITC2': "Valle d'Aosta", 'ITC3': 'Liguria', 'ITC4': 'Lombardia',
+    'ITD1': 'Provincia di Bolzano', 'ITD2': 'Provincia di Trento', 'ITD3': 'Veneto', 'ITD4': 'Friuli-Venezia Giulia',
+    'ITD5': 'Emilia-Romagna', 'ITE1': 'Toscana', 'ITE2': 'Umbria', 'ITE3': 'Marche', 'ITE4': 'Lazio',
+    'ITF1': 'Abruzzo', 'ITF2': 'Molise', 'ITF3': 'Campania', 'ITF4': 'Puglia', 'ITF5': 'Basilicata',
+    'ITF6': 'Calabria', 'ITG1': 'Sicilia', 'ITG2': 'Sardegna',
+}
 
 # ---------------------------------------------------------------- 2018
-# Almeno uno stereotipo: età (1) e titolo di studio (2)
-visti = set()
-for n in (1, 2):
-    for r in sdmx(n):
-        g = gruppo(r)
-        chiave = (r['STEREOT_GENDROLEPARTNER'], g)
-        if g is None or chiave in visti:
-            continue
-        visti.add(chiave)
-        aggiungi(2018, 'almeno_uno', r['STEREOT_GENDROLEPARTNER'] + g, float(r['OBS_VALUE']), f'IstatData RUOLIGEN_{n}')
+# Sette temi, ciascuno in tre dataset: per età (e sesso), per titolo di studio (e sesso), per regione (e sesso).
+# Colonna "categoria": codice[|gruppo][|sesso]; senza gruppo = tutte le età e titoli; senza sesso = totale.
+# Le regioni vanno nella colonna "territorio".
+TEMI = [
+    # indicatore, dataset (età, titolo, regione), campo della voce, campo del grado, gradi da sommare (None = valore diretto)
+    ('almeno_uno', (1, 2, 3), 'STEREOT_GENDROLEPARTNER', None, None),
+    ('accordo', (4, 5, 6), 'STEREOT_GENDROLEPARTNER', 'DEGREE_AGREEMENT', ('STRAGR', 'SOMAGR')),          # ruoli
+    ('accordo', (7, 8, 9), 'STEREOT_GENDROLEPARTNER', 'DEGREE_AGREEMENT', ('STRAGR', 'SOMAGR')),          # violenza sessuale
+    ('accettabile', (10, 11, 12), 'STEREOT_GENDROLEPARTNER', 'DEGREE_ACCEPTABILITY', ('ALWACC', 'ACUNDCIR')),  # coppia
+    ('diffusione', (13, 14, 15), 'HOW_COMMON', None, None),          # risposte che sommano a circa 100; NA = non risponde
+    ('cause', (16, 17, 18), 'POSSIBLE_CAUSES', None, None),          # più risposte
+    ('consigli', (19, 20, 21), 'ADVICE', None, None),                # più risposte; NOANSW = non risponde
+]
+TOTALI_VOCE = {'ALL', 'TOT'}
 
-def somma(n, indicatore, campo, gradi):
-    acc = {}
-    for r in sdmx(n):
-        g = gruppo(r)
-        if g is None or r[campo] not in gradi:
-            continue
-        k = r['STEREOT_GENDROLEPARTNER'] + g
-        acc[k] = acc.get(k, 0) + float(r['OBS_VALUE'])
-    for k, v in acc.items():
-        aggiungi(2018, indicatore, k, v, f'IstatData RUOLIGEN_{n}, somma di {" + ".join(gradi)}')
-
-somma(4, 'accordo', 'DEGREE_AGREEMENT', ('STRAGR', 'SOMAGR'))       # ruoli, per sesso ed età
-somma(7, 'accordo', 'DEGREE_AGREEMENT', ('STRAGR', 'SOMAGR'))       # violenza sessuale
-somma(10, 'accettabile', 'DEGREE_ACCEPTABILITY', ('ALWACC', 'ACUNDCIR'))  # coppia
-
-# Percezione della diffusione (13), cause (16), consigli (19): totale e per sesso
-for r in sdmx(13):
-    g = gruppo(r)
-    if g in ('', '|M', '|F') and r['HOW_COMMON'] not in ('ALL',):
-        aggiungi(2018, 'diffusione', r['HOW_COMMON'] + g, float(r['OBS_VALUE']), 'IstatData RUOLIGEN_13')
-for r in sdmx(16):
-    g = gruppo(r)
-    if g in ('', '|M', '|F') and r['POSSIBLE_CAUSES'] != 'ALL':
-        aggiungi(2018, 'cause', r['POSSIBLE_CAUSES'] + g, float(r['OBS_VALUE']), 'IstatData RUOLIGEN_16')
-for r in sdmx(19):
-    g = gruppo(r)
-    if g == '' and r['ADVICE'] != 'TOT':
-        aggiungi(2018, 'consigli', r['ADVICE'], float(r['OBS_VALUE']), 'IstatData RUOLIGEN_19; più risposte')
+for indicatore, (n_eta, n_tit, n_reg), campo, grado, gradi in TEMI:
+    acc = {}  # (territorio, categoria) -> [valore, dataset]
+    for n, tipo in ((n_eta, 'eta'), (n_tit, 'titolo'), (n_reg, 'regione')):
+        for r in sdmx(n):
+            if r[campo] in TOTALI_VOCE or (gradi and r[grado] not in gradi):
+                continue
+            area, eta, tit, sesso = r['REF_AREA'], r['AGE'], r['EDU_LEV_HIGHEST'], r['SEX']
+            if tipo == 'regione':
+                if area not in REGIONI or eta != 'TOTAL' or tit != 'ALL':
+                    continue
+                territorio, gruppo = REGIONI[area], ''
+            else:
+                if area != 'IT':
+                    continue
+                if tipo == 'eta' and tit == 'ALL':
+                    gruppo = '' if eta == 'TOTAL' else f'|{eta}'
+                elif tipo == 'titolo' and eta == 'TOTAL' and tit != 'ALL':
+                    gruppo = f'|{tit}'
+                else:
+                    continue
+                territorio = 'Italia'
+            categoria = r[campo] + gruppo + ('' if sesso == 'T' else f'|{sesso}')
+            chiave = (territorio, categoria)
+            if chiave in acc and acc[chiave][1] != n:
+                continue  # il totale Italia compare sia nel file per età sia in quello per titolo: si tiene il primo
+            acc.setdefault(chiave, [0.0, n])[0] += float(r['OBS_VALUE'])
+    for (territorio, categoria), (v, n) in acc.items():
+        nota = f'IstatData RUOLIGEN_{n}' + (f', somma di {" + ".join(gradi)}' if gradi else '') + ('; più risposte' if indicatore in ('cause', 'consigli') else '')
+        righe.append([2018, 'anno', territorio, indicatore, categoria, round(v, 1), 'percentuale', nota])
 
 # ---------------------------------------------------------------- 2023
 wb = openpyxl.load_workbook(QUI / 'originali' / '2023' / 'Tavole-stereotipi-per-eta-2023.xlsx', data_only=True)

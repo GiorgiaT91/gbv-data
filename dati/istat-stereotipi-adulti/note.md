@@ -86,3 +86,16 @@ Valori: % di persone di 18–74 anni molto o abbastanza d'accordo (ruoli, violen
 - Del 2023 sono pubbliche solo le tavole per età. Mancano sesso (se non nel PDF), titolo di studio, regione, cause e consigli.
 - Per ragazze e ragazzi non esistono tavole: i numeri vanno ricavati dai grafici del comunicato.
 - Si misurano opinioni dichiarate, non comportamenti.
+
+---
+
+## 6. Il 2018 completo in `dati.csv` (19 novembre 2026)
+
+`elabora.py` ora ricava dal 2018 tutti i valori dei 21 dataset IstatData, per l'infografica esplorabile (`src/componenti/infografiche/Stereotipi2018.astro`).
+
+- Sette temi, tre dataset ciascuno: almeno uno stereotipo (1–3), ruoli (4–6), violenza sessuale (7–9), coppia (10–12), diffusione percepita (13–15), cause (16–18), consigli (19–21).
+- Per ogni voce: totale, donne e uomini; per età (4 classi) e titolo di studio (4 livelli), ciascuno con donne e uomini; per regione con donne e uomini.
+- Le regioni stanno nella colonna `territorio`. Trentino-Alto Adige compare con le province di Bolzano e Trento; l'aggregato (ITDA) e le ripartizioni non sono usati.
+- `categoria` = codice, poi facoltativamente `|gruppo` (età o titolo) e `|F` o `|M`. Esempio: `MPRFAM|NP|F`.
+- "Non risponde" resta un valore: `NA` nella diffusione percepita, `NOANSW` nei consigli. `csv.DictReader` legge `NA` come testo, mai come mancante.
+- Controlli: le 319 righe di prima sono tutte presenti con lo stesso valore. Tutti i 3.720 valori usati dal prototipo approvato coincidono con il file.

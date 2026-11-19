@@ -1,0 +1,398 @@
+---
+// Rilevazione 2018 sugli stereotipi di genere, da esplorare (scelta di Giorgia, 19/11/2026):
+// in apertura i tre indicatori "almeno uno", poi le sei domande, ciascuna con il quadro delle differenze
+// (distanza fra il gruppo più alto e il più basso per sesso, età, titolo di studio, regione) e il dettaglio al clic.
+// Dati: dati/istat-stereotipi-adulti/dati.csv (anno 2018). Confini: src/lib/mappa-regioni.json (Istat, CC-BY 4.0).
+// Colori: niente rosa/azzurro; donne ocra e cerchi, uomini verde e quadrati; scala a 5 gradini con legenda.
+import { leggiDati } from '../../lib/dati.js';
+import MAPPA from '../../lib/mappa-regioni.json';
+
+const REGIONI = {
+  'Piemonte': 'ITC1', "Valle d'Aosta": 'ITC2', 'Liguria': 'ITC3', 'Lombardia': 'ITC4',
+  'Provincia di Bolzano': 'ITD1', 'Provincia di Trento': 'ITD2', 'Veneto': 'ITD3', 'Friuli-Venezia Giulia': 'ITD4',
+  'Emilia-Romagna': 'ITD5', 'Toscana': 'ITE1', 'Umbria': 'ITE2', 'Marche': 'ITE3', 'Lazio': 'ITE4',
+  'Abruzzo': 'ITF1', 'Molise': 'ITF2', 'Campania': 'ITF3', 'Puglia': 'ITF4', 'Basilicata': 'ITF5',
+  'Calabria': 'ITF6', 'Sicilia': 'ITG1', 'Sardegna': 'ITG2',
+};
+// Domande della pagina → indicatore in dati.csv e voci di ciascuna
+const VOCI = {
+  sintesi: ['almeno_uno', ['TRGENROL', 'STEVIOSEX', 'ONEBEHP']],
+  ruoli: ['accordo', ['MISUCWOR', 'MLESHOUS', 'MPRFAM', 'PRIOMEN', 'MTAKEDE']],
+  sessuale: ['accordo', ['WABLAVO', 'WPROVSEX', 'WSVADRE', 'OACVIF', 'WOFSREM', 'SEWNRAP', 'HUSFNVIO']],
+  coppia: ['accettabile', ['HABCONTR', 'SLGIROC', 'NSMOCC']],
+  diffusione: ['diffusione', ['VERYCOM', 'FAIRCOM', 'NOVERCOM', 'NOALCOM', 'NOKNOW', 'NA']],
+  cause: ['cause', ['DIFMAN', 'CONWPR', 'NEGEXF', 'NEFESUP', 'ABDRALC', 'NOSTWEM', 'RELREA']],
+  consigli: ['consigli', ['ANTVIOLCE', 'CAL1522', 'OTHSER', 'FILEREP', 'TALKPAT', 'ADVLEPA', 'KNDOADV', 'NOINTFAM', 'NOANSW']],
+};
+const ETA = ['Y18-29', 'Y30-44', 'Y45-59', 'Y60-74'];
+const TITOLI = ['NP', 'LSE', 'USE_IF', 'CLF_ML'];
+
+const righe = leggiDati('istat-stereotipi-adulti').filter((r) => r.anno === '2018');
+const indice = new Map(righe.map((r) => [`${r.territorio}#${r.indicatore}#${r.categoria}`, r.valore]));
+function tre(territorio, indicatore, base) {
+  const out = {};
+  for (const [s, suf] of [['T', ''], ['F', '|F'], ['M', '|M']]) {
+    const v = indice.get(`${territorio}#${indicatore}#${base}${suf}`);
+    if (v === undefined) throw new Error(`Dato 2018 mancante: ${territorio} ${indicatore} ${base}${suf}`);
+    out[s] = v;
+  }
+  return out;
+}
+// Stessa forma usata dal prototipo: domanda → voce → { eta, titolo, regione } → gruppo → { T, F, M }
+const DATA = {};
+for (const [q, [ind, voci]] of Object.entries(VOCI)) {
+  DATA[q] = {};
+  for (const c of voci) {
+    const eta = { TOTAL: tre('Italia', ind, c) };
+    ETA.forEach((g) => { eta[g] = tre('Italia', ind, `${c}|${g}`); });
+    const titolo = { ALL: eta.TOTAL };
+    TITOLI.forEach((g) => { titolo[g] = tre('Italia', ind, `${c}|${g}`); });
+    const regione = { IT: eta.TOTAL };
+    for (const [nome, cod] of Object.entries(REGIONI)) regione[cod] = tre(nome, ind, c);
+    DATA[q][c] = { eta, titolo, regione };
+  }
+}
+const MAP = { W: MAPPA.W, H: MAPPA.H, paths: MAPPA.paths, lab: MAPPA.lab };
+---
+<div class="st18" id="st18">
+<nav class="toc" aria-label="Sezioni della rilevazione 2018" id="st18-toc"></nav>
+
+  <section class="q" id="st18-sintesi" aria-labelledby="st18-sintesi-t">
+    <div class="qhead">
+      <p class="qnum">In sintesi</p>
+      <h2 id="st18-sintesi-t">Tre indicatori di sintesi</h2>
+      <p class="lead">Quota di persone che hanno risposto in un certo modo ad almeno una delle affermazioni di ciascun gruppo. Ogni quadrato rappresenta 1 persona su 100.</p>
+    </div>
+    <div class="sum" id="st18-sum"></div>
+    <p class="note">I tre valori sono calcolati su gruppi di affermazioni diversi (5, 7 e 3) e non vanno confrontati fra loro: un gruppo con più affermazioni offre più occasioni di essere d'accordo con almeno una.</p>
+    <p class="src">Fonte: Istat, IstatData, RUOLIGEN_1, 2 e 3, anno 2018. Per 100 persone dello stesso gruppo.</p>
+  </section>
+
+  <div class="howto" id="st18-howto"></div>
+
+  <div id="st18-questions" style="display:flex;flex-direction:column;gap:40px"></div>
+
+  <p class="note">Sesso: distanza fra donne e uomini. Età: 4 classi. Titolo di studio: 4 livelli. Regione: 19 regioni e 2 province autonome. Con più gruppi la distanza fra il più alto e il più basso tende a essere maggiore, e le stime delle regioni piccole sono meno precise. La scala dei colori è la stessa per tutte le domande.</p>
+<section class="detail" id="st18-detail" aria-live="polite" hidden>
+  <div class="detail-head">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+      <p class="eyebrow" id="st18-d-dim"></p>
+      <button class="close" id="st18-d-close" aria-label="Chiudi il dettaglio">Chiudi ✕</button>
+    </div>
+    <h3 id="st18-d-title"></h3>
+  </div>
+  <div id="st18-d-controls"></div>
+  <div id="st18-d-chart" class="scroll"></div>
+  <div class="legend" id="st18-d-legend"></div>
+</section>
+</div>
+
+<script define:vars={{ DATA, MAP }}>
+const ROOT = document.getElementById("st18");
+const $ = (id) => document.getElementById("st18-" + id);
+
+const Q = [
+  {id:"ruoli", title:"Ruoli di genere", nav:"Ruoli",
+   ask:"Quanto è d'accordo con le seguenti affermazioni?",
+   measure:"Valori: molto o abbastanza d'accordo, per 100 persone dello stesso gruppo.", col:"Affermazione · Italia",
+   src:"RUOLIGEN_4, 5 e 6", sintesi:"TRGENROL",
+   items:{MISUCWOR:"Per l'uomo, più che per la donna, è molto importante avere successo nel lavoro",
+     MLESHOUS:"Gli uomini sono meno adatti a occuparsi delle faccende domestiche",
+     MPRFAM:"È soprattutto l'uomo che deve provvedere alle necessità economiche della famiglia",
+     PRIOMEN:"In condizioni di scarsità di lavoro, i datori di lavoro dovrebbero dare la precedenza agli uomini",
+     MTAKEDE:"È l'uomo che deve prendere le decisioni più importanti riguardanti la famiglia"}},
+  {id:"sessuale", title:"Violenza sessuale", nav:"Violenza sessuale",
+   ask:"Quanto è d'accordo con le seguenti affermazioni?",
+   measure:"Valori: molto o abbastanza d'accordo, per 100 persone dello stesso gruppo.", col:"Affermazione · Italia",
+   src:"RUOLIGEN_7, 8 e 9", sintesi:"STEVIOSEX",
+   items:{WABLAVO:"Se una donna non vuole un rapporto sessuale, riesce a evitarlo",
+     WPROVSEX:"Le donne possono provocare la violenza sessuale con il loro modo di vestire",
+     WSVADRE:"Se una donna subisce violenza sessuale quando è ubriaca o sotto l'effetto di droghe, è almeno in parte responsabile",
+     OACVIF:"Le accuse di violenza sessuale sono spesso false",
+     WOFSREM:"Spesso le donne, quando dicono no, in realtà intendono sì",
+     SEWNRAP:"Le donne serie non vengono violentate",
+     HUSFNVIO:"Se il marito obbliga la moglie ad avere un rapporto sessuale contro la sua volontà, non è violenza"}},
+  {id:"coppia", title:"Violenza e controllo nella coppia", nav:"Coppia",
+   ask:"Quanto ritiene accettabili i seguenti comportamenti?",
+   measure:"Valori: accettabile sempre o in alcune circostanze, per 100 persone dello stesso gruppo.", col:"Comportamento · Italia",
+   src:"RUOLIGEN_10, 11 e 12", sintesi:"ONEBEHP",
+   items:{HABCONTR:"Un uomo controlla abitualmente il cellulare o l'attività sui social network della moglie o compagna",
+     SLGIROC:"Un ragazzo schiaffeggia la fidanzata perché ha flirtato con un altro",
+     NSMOCC:"In una coppia ci può scappare uno schiaffo ogni tanto"}},
+  {id:"diffusione", title:"Diffusione della violenza nella coppia", nav:"Diffusione",
+   ask:"Secondo lei, quanto è diffusa la violenza nella coppia?",
+   measure:"Valori: persone che hanno dato ciascuna risposta, per 100 persone dello stesso gruppo. Le risposte sommano a circa 100.", col:"Risposta · Italia",
+   src:"RUOLIGEN_13, 14 e 15", fixed:true,
+   items:{VERYCOM:"Molto diffusa", FAIRCOM:"Abbastanza diffusa", NOVERCOM:"Poco diffusa", NOALCOM:"Per niente diffusa", NOKNOW:"Non sa", NA:"Non risponde"}},
+  {id:"cause", title:"Cause della violenza nella coppia", nav:"Cause",
+   ask:"Quali sono, secondo lei, le cause della violenza nella coppia?",
+   measure:"Valori: persone che hanno indicato ciascuna causa, per 100 persone dello stesso gruppo. Erano possibili più risposte.", col:"Causa indicata · Italia",
+   src:"RUOLIGEN_16, 17 e 18",
+   items:{DIFMAN:"Difficoltà degli uomini a gestire la rabbia",
+     CONWPR:"Gli uomini considerano le donne oggetti di loro proprietà",
+     NEGEXF:"Esperienze violente vissute in famiglia da bambini",
+     NEFESUP:"Il bisogno degli uomini di sentirsi superiori alla compagna",
+     ABDRALC:"Abuso di alcol o di sostanze stupefacenti",
+     NOSTWEM:"Gli uomini non sopportano l'emancipazione femminile",
+     RELREA:"Motivi religiosi"}},
+  {id:"consigli", title:"Consigli a una donna che subisce violenza", nav:"Consigli",
+   ask:"Cosa consiglierebbe a una donna che ha subito violenza dal compagno?",
+   measure:"Valori: persone che hanno indicato ciascun consiglio, per 100 persone dello stesso gruppo. Erano possibili più risposte.", col:"Consiglio · Italia",
+   src:"RUOLIGEN_19, 20 e 21",
+   items:{ANTVIOLCE:"Rivolgersi a un centro antiviolenza", CAL1522:"Chiamare il numero 1522",
+     OTHSER:"Rivolgersi ad altri servizi o professionisti", FILEREP:"Denunciare la violenza",
+     TALKPAT:"Parlarne con il compagno", ADVLEPA:"Lasciare il compagno",
+     KNDOADV:"Non saprei cosa consigliare", NOINTFAM:"Non mi intrometto nelle questioni di coppia", NOANSW:"Non risponde"}}
+];
+const SUM = [
+  {k:"TRGENROL", what:"è d'accordo con almeno uno stereotipo sui <b>ruoli di genere</b>", n:5, q:"ruoli"},
+  {k:"STEVIOSEX", what:"è d'accordo con almeno uno stereotipo sulla <b>violenza sessuale</b>", n:7, q:"sessuale"},
+  {k:"ONEBEHP", what:"ritiene accettabile almeno un comportamento di <b>violenza o controllo nella coppia</b>", n:3, q:"coppia"}
+];
+const DIMS = [
+  {k:"sesso", label:"Sesso"},
+  {k:"eta", label:"Età", groups:[["Y18-29","18-29 anni"],["Y30-44","30-44 anni"],["Y45-59","45-59 anni"],["Y60-74","60-74 anni"]]},
+  {k:"titolo", label:"Titolo di studio", groups:[["NP","Elementare o nessuno"],["LSE","Licenza media"],["USE_IF","Diploma"],["CLF_ML","Laurea"]]},
+  {k:"regione", label:"Regione"}
+];
+// Tessere della mappa: [codice, nome, colonna, riga]. Trentino-Alto Adige è rappresentato dalle due province.
+const REG = [
+  ["ITC2","Valle d'Aosta",0,0],["ITD1","Bolzano",3,0],
+  ["ITC1","Piemonte",0,1],["ITC4","Lombardia",1,1],["ITD2","Trento",2,1],["ITD3","Veneto",3,1],["ITD4","Friuli-Venezia Giulia",4,1],
+  ["ITC3","Liguria",0,2],["ITD5","Emilia-Romagna",1,2],
+  ["ITE1","Toscana",1,3],["ITE2","Umbria",2,3],["ITE3","Marche",3,3],
+  ["ITE4","Lazio",2,4],["ITF1","Abruzzo",3,4],["ITF2","Molise",4,4],
+  ["ITG2","Sardegna",0,5],["ITF3","Campania",3,5],["ITF4","Puglia",5,5],
+  ["ITF5","Basilicata",4,6],
+  ["ITF6","Calabria",4,7],
+  ["ITG1","Sicilia",3,8]
+];
+const short = n => n.replace(" anni","").replace("Elementare o nessuno","Elementare").replace("Licenza media","Media").replace("Friuli-Venezia Giulia","Friuli V.G.").replace("Emilia-Romagna","Emilia-Rom.");
+const fmt = v => v.toLocaleString("it-IT",{minimumFractionDigits:1,maximumFractionDigits:1});
+const SEXLAB = {T:"Totale",F:"Donne",M:"Uomini"};
+const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function groupsOf(rec, dim, sex){
+  if(dim==="sesso") return [["F","Donne",rec.eta.TOTAL.F],["M","Uomini",rec.eta.TOTAL.M]];
+  if(dim==="regione") return REG.map(([c,n])=>[c,n,rec.regione[c][sex]]);
+  return DIMS.find(x=>x.k===dim).groups.map(([c,n])=>[c,n,rec[dim][c][sex]]);
+}
+function range(rec, dim){
+  const g = groupsOf(rec, dim, "T");
+  let hi=g[0], lo=g[0];
+  g.forEach(x=>{ if(x[2]>hi[2]) hi=x; if(x[2]<lo[2]) lo=x; });
+  return {pts:+(hi[2]-lo[2]).toFixed(1), hi, lo};
+}
+
+// Ordine delle righe: dal valore italiano più alto, tranne la diffusione (ordine delle risposte)
+Q.forEach(q=>{ q.order = Object.keys(q.items); if(!q.fixed) q.order.sort((a,b)=>DATA[q.id][b].eta.TOTAL.T-DATA[q.id][a].eta.TOTAL.T); });
+let MAX = 0;
+Q.forEach(q=>q.order.forEach(s=>DIMS.forEach(d=>{ MAX=Math.max(MAX, range(DATA[q.id][s],d.k).pts); })));
+MAX = Math.ceil(MAX/10)*10;
+
+// Navigazione
+$("toc").innerHTML = `<a href="#st18-sintesi">In sintesi</a>` + Q.map((q,i)=>`<a href="#st18-${q.id}">${i+1}. ${q.nav}</a>`).join("");
+
+// Sintesi
+$("sum").innerHTML = SUM.map(s=>{
+  const r = DATA.sintesi[s.k], t = r.eta.TOTAL.T, on = Math.round(t);
+  const e = range(r,"eta"), ti = range(r,"titolo"), re = range(r,"regione");
+  const q = Q.find(x=>x.id===s.q), qi = Q.indexOf(q)+1;
+  const mm = x => `da <b>${fmt(x.lo[2])}%</b> (${short(x.lo[1])}) a <b>${fmt(x.hi[2])}%</b> (${short(x.hi[1])})`;
+  return `<article class="card sumcard">
+    <div class="big">${fmt(t)}<small>%</small></div>
+    <p class="what">${s.what}</p>
+    <div class="waffle" role="img" aria-label="${on} quadrati su 100">${Array.from({length:100},(_,i)=>`<i${i<on?' class="on"':''}></i>`).join("")}</div>
+    <dl class="facts">
+      <div><dt>Sesso</dt><dd><span class="w">Donne ${fmt(r.eta.TOTAL.F)}%</span> · <span class="m">Uomini ${fmt(r.eta.TOTAL.M)}%</span></dd></div>
+      <div><dt>Età</dt><dd>${mm(e)}</dd></div>
+      <div><dt>Titolo</dt><dd>${mm(ti)}</dd></div>
+      <div><dt>Regione</dt><dd>${mm(re)}</dd></div>
+    </dl>
+    <a class="go" href="#st18-${q.id}">Le ${s.n} ${q.id==="coppia"?"situazioni":"affermazioni"}, una per una: domanda ${qi} →</a>
+  </article>`;
+}).join("");
+
+// Sezioni delle domande
+$("questions").innerHTML = Q.map((q,i)=>`
+  <section class="q" id="st18-${q.id}" aria-labelledby="st18-${q.id}-t">
+    <div class="qhead">
+      <p class="qnum">Domanda ${i+1} di 6</p>
+      <h2 id="st18-${q.id}-t">${q.title}</h2>
+      <p class="ask">«${q.ask}»</p>
+      <p class="measure">${q.measure}</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;gap:12px">
+      <div class="grid" data-q="${q.id}" role="group" aria-label="Quadro delle differenze: ${q.title}"></div>
+      ${gridLegend()}
+    </div>
+    <p class="src">Fonte: Istat, IstatData, ${q.src}, anno 2018. Testi delle risposte abbreviati. Confini regionali: Istat, CC-BY 4.0.</p>
+  </section>`).join("");
+
+// Scala a 5 gradini: dal più chiaro (distanza minima) al più scuro (distanza massima)
+const GB = [5,10,20,30];
+const gbin = p => 1 + GB.filter(b=>p>=b).length;
+function gridLegend(){
+  const lab = ["meno di 5","5-10","10-20","20-30","30 e oltre"];
+  return `<div class="scale"><span>Distanza in punti, dalla più piccola alla più grande:</span><div class="steps">${lab.map((l,i)=>`<span><i style="background:var(--s${i+1})"></i><em>${l}</em></span>`).join("")}</div></div>`;
+}
+const mbin = (v,lo,hi) => hi===lo ? 3 : Math.min(5, 1 + Math.floor((v-lo)/((hi-lo)/5)));
+function mapLegend(lo,hi){
+  const st = (hi-lo)/5;
+  return `<div class="scale" style="width:100%"><span>Valori, dal più basso al più alto:</span><div class="steps">${[0,1,2,3,4].map(i=>`<span><i style="background:var(--s${i+1})"></i><em>${fmt(lo+i*st)}-${fmt(lo+(i+1)*st)}%</em></span>`).join("")}</div></div>`;
+}
+
+let sel = {q:null, stmt:null, dim:null, sex:"T"};
+
+function buildGrid(q){
+  const t = ROOT.querySelector(`.grid[data-q="${q.id}"]`);
+  const D = DATA[q.id];
+  let h = `<div class="th first">${q.col}</div>` + DIMS.map(d=>`<div class="th">${d.label}</div>`).join("");
+  q.order.forEach(s=>{
+    h += `<div class="stmt">${q.items[s]} <b>${fmt(D[s].eta.TOTAL.T)}%</b></div>`;
+    DIMS.forEach(d=>{
+      const r = range(D[s],d.k);
+      h += `<button class="cell" data-q="${q.id}" data-s="${s}" data-d="${d.k}" aria-pressed="false" aria-expanded="false"
+        style="background:var(--s${gbin(r.pts)});color:var(--s${gbin(r.pts)}fg)"
+        aria-label="${d.label}: ${fmt(r.pts)} punti di distanza, da ${fmt(r.lo[2])}% (${r.lo[1]}) a ${fmt(r.hi[2])}% (${r.hi[1]})">
+        <span class="pts">${fmt(r.pts)} <small>punti</small></span>${r.pts===0 ? `<span class="rng">stesso valore in tutti i gruppi: ${fmt(r.hi[2])}%</span>` : `<span class="rng">più alto: ${short(r.hi[1])} ${fmt(r.hi[2])}%</span><span class="rng">più basso: ${short(r.lo[1])} ${fmt(r.lo[2])}%</span>`}</button>`;
+    });
+  });
+  t.innerHTML = h;
+  t.querySelectorAll(".cell").forEach(b=>b.addEventListener("click",()=>{
+    const det = $("detail");
+    if(!det.hidden && sel.q===b.dataset.q && sel.stmt===b.dataset.s && sel.dim===b.dataset.d){ closeDetail(); return; }
+    sel = {q:b.dataset.q, stmt:b.dataset.s, dim:b.dataset.d, sex:"T"}; render(true);
+  }));
+}
+
+function closeDetail(){
+  const det = $("detail");
+  det.hidden = true; ROOT.appendChild(det);
+  ROOT.querySelectorAll(".cell").forEach(b=>{ b.setAttribute("aria-pressed","false"); b.setAttribute("aria-expanded","false"); });
+  sel.stmt = null;
+}
+function render(scroll){
+  if(!sel.stmt) return;
+  const det = $("detail");
+  const anchor = ROOT.querySelector(`.cell[data-q="${sel.q}"][data-s="${sel.stmt}"][data-d="regione"]`);
+  if(anchor.nextElementSibling !== det) anchor.after(det);
+  det.hidden = false;
+  ROOT.querySelectorAll(".cell").forEach(b=>{ const on = b.dataset.q===sel.q && b.dataset.s===sel.stmt && b.dataset.d===sel.dim; b.setAttribute("aria-pressed", String(on)); b.setAttribute("aria-expanded", String(on)); });
+  const q = Q.find(x=>x.id===sel.q), dim = DIMS.find(d=>d.k===sel.dim);
+  $("d-dim").textContent = q.title + " · " + dim.label;
+  $("d-title").textContent = q.items[sel.stmt];
+  const ctr = $("d-controls");
+  const rec = DATA[sel.q][sel.stmt];
+  if(sel.dim==="regione"){
+    ctr.innerHTML = '<div class="seg" role="group" aria-label="Mostra">' + ["T","F","M"].map(x=>`<button data-x="${x}" aria-pressed="${sel.sex===x}">${SEXLAB[x]}</button>`).join("") + '</div>';
+    ctr.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ sel.sex=b.dataset.x; render(); }));
+    drawMap(rec);
+  } else { ctr.innerHTML = ""; drawDots(rec); }
+  if(scroll){ const r = det.getBoundingClientRect(); if(r.bottom > window.innerHeight || r.top < 0){ det.scrollIntoView({block:"nearest", behavior: reduce() ? "auto" : "smooth"}); } }
+}
+
+function drawSex(d){
+  const t = d.eta.TOTAL, gap = Math.abs(t.F-t.M);
+  const box = (c,n,cls) => { const v=t[c], on=Math.round(v);
+    return `<div class="sexbox"><p class="sexlab"><span class="${cls}">${n}</span></p><p class="sexval">${fmt(v)}<small>%</small></p>
+      <div class="waffle ${c==="F"?"wf":"wm"}" role="img" aria-label="${n}: ${on} su 100">${Array.from({length:100},(_,i)=>`<i${i<on?' class="on"':''}></i>`).join("")}</div></div>`; };
+  $("d-chart").innerHTML = `<div class="sexwrap">${box("F","Donne","w")}${box("M","Uomini","m")}</div>`;
+  $("d-legend").innerHTML = `<span>Distanza fra donne e uomini: ${fmt(gap)} punti · Italia, totale ${fmt(t.T)}%</span><span>Ogni cella è 1 persona su 100 (valori arrotondati): cerchi per le donne, quadrati per gli uomini</span>`;
+}
+function drawDots(d){
+  const isSex = sel.dim==="sesso";
+  if(isSex) return drawSex(d);
+  const rows = isSex ? [["F","Donne"],["M","Uomini"]] : DIMS.find(z=>z.k===sel.dim).groups;
+  const val = (c,sx) => isSex ? d.eta.TOTAL[c] : d[sel.dim][c][sx];
+  const all = []; rows.forEach(([c])=>{ if(isSex) all.push(val(c)); else ["T","F","M"].forEach(sx=>all.push(val(c,sx))); });
+  const xmax = Math.max(10, Math.ceil(Math.max(...all, d.eta.TOTAL.T)/10)*10);
+  const W=Math.max(300, $("d-chart").clientWidth||760), L=W<520?96:190, R=W<520?64:70, rowH=W<520?42:48, top=34, H=top+rows.length*rowH+16;
+  const x = v => L + v/xmax*(W-L-R);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Valori per ${DIMS.find(z=>z.k===sel.dim).label.toLowerCase()}">`;
+  const step = (W<520 && xmax>40) ? 20 : (xmax<=20 ? 5 : 10);
+  for(let t=0;t<=xmax;t+=step){ s+=`<line x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-12}" stroke="var(--line)"/><text x="${x(t)}" y="${top-14}" text-anchor="middle" font-size="12" fill="var(--muted)">${t}%</text>`; }
+  const it = d.eta.TOTAL.T;
+  s += `<line x1="${x(it)}" x2="${x(it)}" y1="${top-8}" y2="${H-12}" stroke="var(--fg)" stroke-dasharray="3 3" opacity=".55"/><text x="${Math.min(x(it)+4, W-80)}" y="${H-2}" font-size="11" fill="var(--muted)">Italia ${fmt(it)}%</text>`;
+  rows.forEach(([c,n],i)=>{
+    const y = top + i*rowH + rowH/2;
+    s += `<text x="0" y="${y+4}" font-size="${W<520?12:13}" fill="var(--fg)">${W<520 ? short(n) : n}</text>`;
+    if(isSex){
+      const v=val(c), col = c==="F"?"var(--women)":"var(--men)";
+      s += (c==="F" ? `<circle cx="${x(v)}" cy="${y}" r="8" fill="${col}">` : `<rect x="${x(v)-7.5}" y="${y-7.5}" width="15" height="15" rx="1.5" fill="${col}">`) + `<title>${n}: ${fmt(v)}%</title>${c==="F"?"</circle>":"</rect>"}<text x="${x(v)+14}" y="${y+4}" font-size="13" font-weight="600" fill="var(--fg)">${fmt(v)}%</text>`;
+    } else {
+      const vf=val(c,"F"), vm=val(c,"M"), vt=val(c,"T");
+      s += `<line x1="${x(Math.min(vf,vm))}" x2="${x(Math.max(vf,vm))}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/>`;
+      s += `<circle cx="${x(vf)}" cy="${y}" r="5" fill="var(--women)"><title>${n}, donne: ${fmt(vf)}%</title></circle>`;
+      s += `<rect x="${x(vm)-5}" y="${y-5}" width="10" height="10" rx="1" fill="var(--men)"><title>${n}, uomini: ${fmt(vm)}%</title></rect>`;
+      s += `<circle cx="${x(vt)}" cy="${y}" r="8" fill="var(--accent)" stroke="var(--bg)" stroke-width="2"><title>${n}, totale: ${fmt(vt)}%</title></circle>`;
+      s += `<text x="${x(Math.max(vf,vm,vt))+14}" y="${y+4}" font-size="13" font-weight="600" fill="var(--fg)">${fmt(vt)}%</text>`;
+    }
+  });
+  $("d-chart").innerHTML = s + "</svg>";
+  $("d-legend").innerHTML = isSex
+    ? `<span><i class="dot" style="background:var(--women)"></i>Donne (cerchio)</span><span><i class="dot sq" style="background:var(--men)"></i>Uomini (quadrato)</span><span>Linea tratteggiata: Italia, totale</span>`
+    : `<span><i class="dot" style="background:var(--accent)"></i>Totale (valore scritto)</span><span><i class="dot" style="background:var(--women)"></i>Donne (cerchio)</span><span><i class="dot sq" style="background:var(--men)"></i>Uomini (quadrato)</span><span>Linea tratteggiata: Italia, totale</span>`;
+}
+
+function drawMap(d){
+  const sx = sel.sex, cwid = $("d-chart").clientWidth||760;
+  if(cwid < 520){ return drawRegionList(d, sx, cwid); }
+  const vals = REG.map(r=>d.regione[r[0]][sx]);
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  let s = `<svg viewBox="-6 -6 ${MAP.W+12} ${MAP.H+12}" width="100%" style="max-width:400px;display:block" role="img" aria-label="Mappa per regione">`;
+  REG.forEach(([c,n])=>{ const v = d.regione[c][sx];
+    s += `<path d="${MAP.paths[c]}" fill="var(--s${mbin(v,lo,hi)})" stroke="var(--bg)" stroke-width="1.2" stroke-linejoin="round"><title>${n}: ${fmt(v)}% (donne ${fmt(d.regione[c].F)}%, uomini ${fmt(d.regione[c].M)}%)</title></path>`; });
+  REG.forEach(([c])=>{ const [x,y] = MAP.lab[c], v = d.regione[c][sx];
+    s += `<text x="${x}" y="${y+4}" text-anchor="middle" font-size="16" font-weight="600" fill="var(--fg)" stroke="var(--bg)" stroke-width="3.5" paint-order="stroke" style="pointer-events:none">${fmt(v)}</text>`; });
+  s += "</svg>";
+  const rows = REG.map(([c,n])=>[n, d.regione[c][sx]]).sort((a,b)=>b[1]-a[1]);
+  const list = `<ol class="rlist">${rows.map(([n,v])=>`<li><i style="background:var(--s${mbin(v,lo,hi)})"></i><span>${short(n)}</span><b>${fmt(v)}%</b></li>`).join("")}</ol>`;
+  $("d-chart").innerHTML = `<div class="mapwrap">${s}${list}</div>`;
+  $("d-legend").innerHTML = `<span>${SEXLAB[sx]} · da ${fmt(lo)}% a ${fmt(hi)}% · Italia ${fmt(d.regione.IT[sx])}%</span><span>Sulla mappa i valori in %; passa sopra una regione per vedere donne e uomini</span>`;
+  $("d-legend").insertAdjacentHTML("afterbegin", mapLegend(lo,hi));
+}
+
+function drawRegionList(d, sx, W){
+  const rows = REG.map(([c,n])=>[n, d.regione[c][sx]]).sort((a,b)=>b[1]-a[1]);
+  const xmax = Math.max(10, Math.ceil(Math.max(...rows.map(r=>r[1]))/10)*10), L=110, R=46, rowH=26, top=30, H=top+rows.length*rowH+18;
+  const x = v => L + v/xmax*(W-L-R), it = d.regione.IT[sx];
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Valori per regione, ordinati">`;
+  for(let t=0;t<=xmax;t+=(xmax>40?20:(xmax<=20?5:10))){ s+=`<line x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-14}" stroke="var(--line)"/><text x="${x(t)}" y="${top-14}" text-anchor="middle" font-size="11" fill="var(--muted)">${t}%</text>`; }
+  s += `<line x1="${x(it)}" x2="${x(it)}" y1="${top-8}" y2="${H-14}" stroke="var(--fg)" stroke-dasharray="3 3" opacity=".55"/><text x="${Math.min(x(it)+4, W-80)}" y="${H-2}" font-size="11" fill="var(--muted)">Italia ${fmt(it)}%</text>`;
+  rows.forEach(([n,v],i)=>{ const y=top+i*rowH+rowH/2;
+    s += `<text x="0" y="${y+4}" font-size="12" fill="var(--fg)">${short(n)}</text><circle cx="${x(v)}" cy="${y}" r="6" fill="var(--accent)"><title>${n}: ${fmt(v)}%</title></circle><text x="${x(v)+10}" y="${y+4}" font-size="12" font-weight="600" fill="var(--fg)">${fmt(v)}</text>`; });
+  $("d-chart").innerHTML = s + "</svg>";
+  $("d-legend").innerHTML = `<span>${SEXLAB[sx]} · regioni ordinate dal valore più alto · Italia ${fmt(it)}%</span>`;
+}
+
+Q.forEach(buildGrid);
+{ const q0 = Q[0], s0 = q0.order[0], r0 = range(DATA[q0.id][s0],"sesso");
+  const vF = r0.hi[0]==="F"?r0.hi[2]:r0.lo[2], vM = r0.hi[0]==="M"?r0.hi[2]:r0.lo[2];
+  $("howto").innerHTML = `<b>Come si leggono le sei domande</b><span>Ogni riga è un'affermazione o una risposta, con il valore per l'Italia. Ogni casella confronta i gruppi di una dimensione e indica la distanza in punti fra il gruppo più alto e quello più basso. Esempio, domanda 1, prima riga, colonna Sesso: donne ${fmt(vF)}%, uomini ${fmt(vM)}%, distanza ${fmt(r0.pts)} punti.</span><span>Clicca una casella: sotto la sua riga si apre il dettaglio con i valori di tutti i gruppi, donne e uomini separati. Clicca di nuovo la casella, o "Chiudi", per richiuderlo.</span>`; }
+let rt; window.addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>render(false),150); });
+$("d-close").addEventListener("click", closeDetail);
+</script>
+
+<style is:global>
+.st18{--bg:#f7f6f9;--surface:#ffffff;--fg:#16181D;--muted:#55585F;--line:#dedbe5;--accent:#5A2D82;--women:#d99a2b;--men:#1d5c3a;--empty:#e6e3ec;
+  --s1:#f1edf8;--s2:#d3c6ea;--s3:#a993d3;--s4:#7a5db5;--s5:#4a2b85;--s1fg:#16181D;--s2fg:#16181D;--s3fg:#16181D;--s4fg:#ffffff;--s5fg:#ffffff;
+  --font-body:var(--corpo);--font-display:var(--titoli);
+  display:flex;flex-direction:column;gap:32px;color:var(--fg);font-size:15px;line-height:1.5}
+.st18 h2,.st18 h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0}
+.st18 h2{font-size:1.3rem;line-height:1.2}.st18 h3{font-size:1rem}
+.st18 p{margin:0}
+.st18 .eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.st18 .lead{color:var(--muted);max-width:68ch}.st18 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}.st18 .scroll{overflow-x:auto}.st18 nav.toc{display:flex;flex-wrap:wrap;gap:6px}.st18 nav.toc a{font-size:.82rem;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}.st18 nav.toc a:hover{border-color:var(--accent)}.st18 nav.toc a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}.st18 section.q{display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}.st18 .qhead{display:flex;flex-direction:column;gap:6px}.st18 .qnum{font-family:var(--font-display);font-size:.8rem;color:var(--accent);font-weight:600;letter-spacing:.04em}.st18 .ask{font-style:italic;color:var(--fg);max-width:68ch}.st18 .measure{font-size:.85rem;color:var(--muted);max-width:68ch}
+
+/* Sintesi */
+.st18 .sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.st18 .sum{grid-template-columns:minmax(0,1fr)}}.st18 .sumcard{display:flex;flex-direction:column;gap:12px}.st18 .sumcard .big{font-family:var(--font-display);font-size:2.6rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}.st18 .sumcard .big small{font-size:1rem;font-weight:500;color:var(--muted);margin-left:4px}.st18 .sumcard .what{font-size:.9rem;min-height:2.7em}.st18 .waffle{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;max-width:280px}.st18 .waffle i{aspect-ratio:1;border-radius:2px;background:var(--empty)}.st18 .waffle i.on{background:var(--accent)}.st18 .facts{display:flex;flex-direction:column;gap:0;font-size:.82rem;border-top:1px solid var(--line)}.st18 .facts div{display:grid;grid-template-columns:5.6em minmax(0,1fr);gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}.st18 .facts dt{color:var(--muted);margin:0}.st18 .facts dd{margin:0;font-variant-numeric:tabular-nums}.st18 .facts b{font-weight:600}.st18 .w,.st18 .m{font-weight:600;white-space:nowrap}.st18 .w::before,.st18 .m::before{content:"";display:inline-block;width:9px;height:9px;margin-right:5px;vertical-align:0}.st18 .w::before{background:var(--women);border-radius:50%}.st18 .m::before{background:var(--men);border-radius:1px}.st18 .sumcard .go{font-size:.85rem;margin-top:auto}
+
+/* Quadro delle differenze */
+.st18 .grid{display:grid;grid-template-columns:minmax(0,2.3fr) repeat(4,minmax(0,1fr));gap:5px;align-items:stretch}.st18 .grid .th{font-size:.78rem;font-weight:600;color:var(--muted);padding:2px 4px}.st18 .grid .stmt{font-size:.88rem;padding:6px 8px 6px 0;align-self:center}.st18 .grid .stmt b{font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:600px){.st18 .grid{grid-template-columns:repeat(4,minmax(0,1fr))}.st18 .grid .stmt{grid-column:1/-1;padding:10px 0 0}.st18 .grid .th.first{display:none}.st18 .cell{padding:7px 8px;min-height:52px}.st18 .cell .rng{font-size:.66rem}}.st18 .cell{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:2px;width:100%;min-height:58px;padding:8px 10px;border-radius:6px;cursor:pointer;
+  font-variant-numeric:tabular-nums;border:2px solid transparent}.st18 .cell:focus-visible{outline:2px solid var(--fg);outline-offset:2px}.st18 .cell[aria-pressed="true"]{border-color:var(--fg)}.st18 .cell .pts{font-family:var(--font-display);font-size:1.05rem;font-weight:600}.st18 .cell .rng{font-size:.72rem;opacity:.9;line-height:1.3}.st18 .cell .pts small{font-family:var(--font-body);font-size:.7rem;font-weight:500}.st18 .howto{display:flex;flex-direction:column;gap:6px;font-size:.85rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}.st18 .howto b{font-weight:600}.st18 .note{font-size:.8rem;color:var(--muted);max-width:72ch}.st18 .scale{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted)}.st18 .scale{flex-wrap:wrap;row-gap:6px}.st18 .steps{display:flex;gap:3px;flex-wrap:wrap}.st18 .steps span{display:flex;flex-direction:column;gap:3px;min-width:64px}.st18 .legend .steps span{flex-direction:column;align-items:stretch;gap:3px}.st18 .steps i{display:block;width:100%;height:14px;border-radius:3px;border:1px solid var(--line)}.st18 .steps em{font-style:normal;font-size:.72rem;color:var(--muted);white-space:nowrap}.st18 .detail-head{display:flex;flex-direction:column;gap:4px}.st18 .detail{grid-column:1/-1;display:flex;flex-direction:column;gap:14px;background:var(--bg);border:1px solid var(--fg);border-radius:8px;padding:16px;margin:2px 0 12px;min-width:0}.st18 .close{all:unset;cursor:pointer;font-size:.8rem;color:var(--muted);padding:2px 6px;border-radius:4px}.st18 .close:hover{color:var(--fg)}.st18 .close:focus-visible{outline:2px solid var(--fg)}
+@media (prefers-reduced-motion:no-preference){.st18 .detail{animation:st18open .18s ease-out}@keyframes st18open{from{opacity:.4;transform:translateY(-4px)}to{opacity:1;transform:none}}}.st18 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted)}.st18 .legend span{display:inline-flex;align-items:center;gap:6px}.st18 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}.st18 .dot.sq{border-radius:1px}.st18 .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.st18 .seg button{all:unset;cursor:pointer;padding:5px 12px;font-size:.82rem;color:var(--muted)}.st18 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}.st18 .seg button:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}.st18 svg text{font-family:var(--font-body)}.st18 .rlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:.82rem;font-variant-numeric:tabular-nums}.st18 .rlist li{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:8px;align-items:center;padding:2px 0;border-bottom:1px solid var(--line)}.st18 .rlist i{width:14px;height:14px;border-radius:3px;border:1px solid var(--line)}.st18 .rlist b{font-weight:600}.st18 .mapwrap{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(170px,1fr);gap:24px;align-items:start}.st18 .sexwrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:640px}.st18 .sexbox{display:flex;flex-direction:column;gap:6px;min-width:0}.st18 .sexlab{font-size:.9rem}.st18 .sexval{font-family:var(--font-display);font-size:2rem;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}.st18 .sexval small{font-size:.9rem;color:var(--muted);margin-left:2px}.st18 .waffle.wf i{border-radius:50%}.st18 .waffle.wf i.on{background:var(--women)}.st18 .waffle.wm i{border-radius:1px}.st18 .waffle.wm i.on{background:var(--men)}
+@media (max-width:520px){.st18 .sexwrap{gap:14px}.st18 .sexwrap .waffle{grid-template-columns:repeat(10,minmax(0,1fr));gap:2px}.st18 .sexval{font-size:1.6rem}}.st18 .src{font-size:.75rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.st18 .cell{transition:transform .12s}.st18 .cell:hover{transform:translateY(-1px)}}.st18 hr{border:0;border-top:1px solid var(--line);margin:0}
+</style>

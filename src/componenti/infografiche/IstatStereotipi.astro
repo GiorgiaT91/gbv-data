@@ -1,11 +1,13 @@
 ---
 // Infografica degli stereotipi di genere, adulti 18-74 anni, a mosaico:
 // 2023 → cosa manca → confronto 2018-2023 → 2018 (mockup riga 10 della tela, scelta il 16/11/2026).
+// La parte 2018 è il componente esplorabile Stereotipi2018 (19/11/2026).
 // Dati: dati/istat-stereotipi-adulti (codici delle affermazioni in codici.csv).
 import Riquadro from '../grafici/Riquadro.astro';
 import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
 import BarreGruppi from '../grafici/BarreGruppi.astro';
 import Cifre from '../grafici/Cifre.astro';
+import Stereotipi2018 from './Stereotipi2018.astro';
 import { richiesto, valore } from '../../lib/dati.js';
 import { C, PERIODI, percentuale } from '../../lib/colori.js';
 
@@ -71,19 +73,8 @@ const confronto = GRUPPI.map(([titolo, ind, codici]) => ({
 const tutte = confronto.flatMap((g) => g.voci);
 const inCalo = tutte.filter((x) => x.valori[1] < x.valori[0]).length;
 
-// --- 2018 ---------------------------------------------------------------------------
-const almeno18 = TRE.map((s) => v(2018, 'almeno_uno', s.codice));
-const sesso18 = (c) => [v(2018, 'almeno_uno', `${c}|M`), v(2018, 'almeno_uno', `${c}|F`)];
-const TITOLI = [['NP', 'Elementare o nessuno'], ['LSE', 'Licenza media'], ['USE_IF', 'Diploma'], ['CLF_ML', 'Laurea']];
-const perTitolo = TITOLI.map(([c, e]) => ({ etichetta: e, valori: TRE.map((s) => v(2018, 'almeno_uno', `${s.codice}|${c}`)) }));
-const consigli = [['FILEREP', 'Denunciarlo'], ['ADVLEPA', 'Lasciarlo'], ['ANTVIOLCE', 'Rivolgersi a un centro antiviolenza'], ['OTHSER', 'Rivolgersi ad altri servizi o professionisti'], ['CAL1522', 'Chiamare il 1522']]
-  .map(([c, e]) => ({ etichetta: e, valore: v(2018, 'consigli', c), colore: c === 'CAL1522' ? PERIODI.passaggio : undefined }));
+// --- 2018: componente esplorabile a parte (Stereotipi2018.astro) ---------------------
 const DONNE_UOMINI = [{ nome: 'Donne', colore: C.accento }, { nome: 'Uomini', colore: C.uomini }];
-const cause = [['CONWPR', 'Le donne sono considerate oggetti di proprietà'], ['NEFESUP', 'Bisogno di sentirsi superiori alla compagna'], ['NOSTWEM', "Gli uomini non sopportano l'emancipazione femminile"], ['ABDRALC', 'Abuso di alcol o sostanze']]
-  .map(([c, e]) => ({ etichetta: e, valori: [v(2018, 'cause', `${c}|F`), v(2018, 'cause', `${c}|M`)] }));
-const diff = (cats, s) => cats.reduce((t, c) => t + v(2018, 'diffusione', `${c}|${s}`), 0);
-const diffusione = [['Molto diffusa', ['VERYCOM']], ['Abbastanza diffusa', ['FAIRCOM']], ['Poco o per niente diffusa', ['NOVERCOM', 'NOALCOM']]]
-  .map(([e, cats]) => ({ etichetta: e, valori: [diff(cats, 'F'), diff(cats, 'M')] }));
 ---
 <div class="mosaico">
   <div class="s12 testata" style={`border-top-color:${C.accento}`}>
@@ -151,35 +142,8 @@ const diffusione = [['Molto diffusa', ['VERYCOM']], ['Abbastanza diffusa', ['FAI
     <span class="bollino" style="background:#8E6BB3">2018</span>
     <div><h2>La rilevazione più dettagliata</h2><p>Tutti i dati in tabella, per sesso, età, titolo di studio e regione</p></div>
   </div>
-  <div class="s4">
-    <Riquadro titolo={`Nel 2018 il ${percentuale(almeno18[0], 1)}% condivideva almeno uno stereotipo sui ruoli di genere`} nota="Istat · 2018 · IstatData RUOLIGEN_1">
-      <Cifre voci={[
-        { numero: p(almeno18[0]), testo: 'almeno uno stereotipo sui ruoli di genere (5 affermazioni)' },
-        { numero: p(almeno18[1]), testo: 'almeno uno stereotipo sulla violenza sessuale (7 affermazioni)' },
-        { numero: p(almeno18[2]), testo: 'accetta almeno un comportamento violento nella coppia (3)' },
-      ]} />
-      <p class="piccola">Uomini e donne: {p(sesso18('TRGENROL')[0])} e {p(sesso18('TRGENROL')[1])} sui ruoli; {p(sesso18('STEVIOSEX')[0])} e {p(sesso18('STEVIOSEX')[1])} sulla violenza sessuale.</p>
-    </Riquadro>
-  </div>
-  <div class="s8">
-    <Riquadro titolo="Nel 2018 gli stereotipi diminuivano al crescere del titolo di studio" sottotitolo="Persone con almeno uno stereotipo, per titolo di studio" nota="Istat · 2018 · IstatData RUOLIGEN_2">
-      <BarreGruppi voci={perTitolo} serie={TRE} massimo={85} />
-    </Riquadro>
-  </div>
-  <div class="s4">
-    <Riquadro titolo={`Nel 2018 il ${percentuale(consigli[4].valore, 1)}% avrebbe consigliato di chiamare il 1522`} sottotitolo="Cosa consiglierebbero a una donna che subisce violenza dal partner (più risposte)" nota="Istat · 2018 · IstatData RUOLIGEN_19">
-      <BarreOrizzontali voci={consigli} />
-    </Riquadro>
-  </div>
-  <div class="s4 solo-computer">
-    <Riquadro titolo="Le donne indicavano più spesso degli uomini cause legate al potere" sottotitolo="Persone che indicano ciascuna causa della violenza nella coppia" nota="Istat · 2018 · IstatData RUOLIGEN_16">
-      <BarreGruppi voci={cause} serie={DONNE_UOMINI} />
-    </Riquadro>
-  </div>
-  <div class="s4 solo-computer">
-    <Riquadro titolo={`Il ${percentuale(diffusione[0].valori[0], 1)}% delle donne considerava molto diffusa la violenza nella coppia; fra gli uomini il ${percentuale(diffusione[0].valori[1], 1)}%`} sottotitolo="Quanto si pensa sia diffusa in Italia la violenza fisica o sessuale dei partner" nota="Istat · 2018 · IstatData RUOLIGEN_13">
-      <BarreGruppi voci={diffusione} serie={DONNE_UOMINI} />
-    </Riquadro>
+  <div class="s12">
+    <Stereotipi2018 />
   </div>
 
   <section class="s12 chiusura">
