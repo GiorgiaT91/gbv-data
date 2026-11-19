@@ -1,0 +1,30 @@
+---
+// L'infografica di una fonte, scelta in base al suo identificativo.
+// Usata dalla pagina della fonte e dai riquadri della pagina domanda (rapporto 1 a 1 fra fonte e infografica).
+import IstatOmicidi from './infografiche/IstatOmicidi.astro';
+import InternoFemminicidi from './infografiche/InternoFemminicidi.astro';
+import NudmOsservatorio from './infografiche/NudmOsservatorio.astro';
+import Istat1522 from './infografiche/Istat1522.astro';
+import IstatCentri from './infografiche/IstatCentri.astro';
+import IstatStereotipi from './infografiche/IstatStereotipi.astro';
+import IstatSicurezza from './infografiche/IstatSicurezza.astro';
+import InternoReatiSpia from './infografiche/InternoReatiSpia.astro';
+import GiustiziaProcessi from './infografiche/GiustiziaProcessi.astro';
+
+const INFOGRAFICHE = {
+  'istat-omicidi': IstatOmicidi,
+  'interno-femminicidi': InternoFemminicidi,
+  'nudm-osservatorio': NudmOsservatorio,
+  'istat-1522': Istat1522,
+  'istat-centri-antiviolenza': IstatCentri,
+  'istat-stereotipi-adulti': IstatStereotipi,
+  'istat-sicurezza-donne': IstatSicurezza,
+  'interno-reati-spia': InternoReatiSpia,
+  'giustizia-processi-condanne': GiustiziaProcessi,
+};
+
+const { id } = Astro.props;
+const Infografica = INFOGRAFICHE[id];
+if (!Infografica) throw new Error(`Nessuna infografica per la fonte "${id}": aggiungila in componenti/InfograficaFonte.astro`);
+---
+<Infografica />
