@@ -15,7 +15,7 @@ const { voci } = Astro.props;
 
 <style>
   .cifre { list-style: none; margin: 0; padding: 0; }
-  li { display: flex; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px solid #E6E6E1; }
+  li { display: flex; align-items: baseline; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--griglia); }
   .numero { font-family: var(--titoli); font-weight: 600; font-size: 40px; line-height: 1; min-width: 130px; }
   .testo { font-size: 14px; line-height: 1.4; }
   @media (max-width: 640px) { .numero { font-size: 32px; min-width: 104px; } }

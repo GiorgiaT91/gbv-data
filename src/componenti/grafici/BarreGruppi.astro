@@ -26,9 +26,9 @@ const { voci, serie, massimo = 100, decimali = 1, legenda = true } = Astro.props
   .gruppi { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   li { display: flex; flex-direction: column; gap: 3px; }
   .voce { font-size: 14px; line-height: 1.35; margin-bottom: 2px; }
-  .segno { color: #8A4A12; font-weight: 600; }
+  .segno { color: var(--segnale); font-weight: 600; }
   .riga { display: flex; align-items: center; gap: 8px; }
-  .binario { flex: 1; height: 10px; background: #E6E6E1; border-radius: 5px; overflow: hidden; }
+  .binario { flex: 1; height: 10px; background: var(--griglia); border-radius: 5px; overflow: hidden; }
   .pieno { display: block; height: 10px; }
   .valore { min-width: 52px; text-align: right; font-size: 13px; font-weight: 600; white-space: nowrap; }
 </style>

@@ -7,7 +7,7 @@ import LineaMensile from '../grafici/LineaMensile.astro';
 import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
 import Cifre from '../grafici/Cifre.astro';
 import { leggiDati, richiesto, formatta } from '../../lib/dati.js';
-import { C, PERIODI, percentuale, quota } from '../../lib/colori.js';
+import { C, PERIODI, PERIODI_SFONDO, percentuale, quota } from '../../lib/colori.js';
 
 const F = 'istat-1522';
 const righe = leggiDati(F);
@@ -24,9 +24,9 @@ const iPiattaforma = idx(2023, 1);
 const iGestore = idx(2025, 4);
 const punti = (da, a) => serie.slice(da, a).map((valore, k) => ({ i: da + k, valore }));
 const tratti = [
-  { colore: PERIODI.precedente, sfondo: '#F2F2EE', punti: punti(0, iPiattaforma) },
-  { colore: PERIODI.riferimento, sfondo: '#EFE9F5', punti: punti(iPiattaforma, iGestore) },
-  { colore: PERIODI.passaggio, sfondo: '#F6F1E8', punti: punti(iGestore, serie.length) },
+  { colore: PERIODI.precedente, sfondo: PERIODI_SFONDO.precedente, punti: punti(0, iPiattaforma) },
+  { colore: PERIODI.riferimento, sfondo: PERIODI_SFONDO.riferimento, punti: punti(iPiattaforma, iGestore) },
+  { colore: PERIODI.passaggio, sfondo: PERIODI_SFONDO.passaggio, punti: punti(iGestore, serie.length) },
 ];
 const MESI = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
 const etichettaMese = (i) => `${MESI[i % 12]} ${anni[0] + Math.floor(i / 12)}`;
@@ -276,11 +276,11 @@ const fonteN = `Istat-DPO · lug – dic 2025 · % sulle ${formatta(vittimeN)} v
   .testata-periodo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
   .testata-periodo h2 { font-size: 22px; }
   .testata-periodo p { font-size: 14px; color: var(--testo-2); }
-  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: var(--su-scuro); padding: 6px 12px; border-radius: 6px; }
   .due { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
   .due h3 { font-family: var(--corpo); font-size: 14px; margin-bottom: 8px; }
   .piccola { font-size: 13px; color: var(--testo-3); }
-  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.45; color: var(--testo-2); }
+  .non-utilizzabile { background: var(--grigio); border: 1px dashed var(--grigio-medio); border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.45; color: var(--testo-2); }
   .solo-telefono { display: none; }
   @media (max-width: 980px) { .s4, .s6, .s8 { grid-column: span 12; } }
   @media (max-width: 640px) {

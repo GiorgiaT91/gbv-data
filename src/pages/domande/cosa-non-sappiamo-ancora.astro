@@ -68,7 +68,7 @@ const aperte = fontiPronte().filter((f) => f.nuove_domande?.length);
 <style>
   .legenda-stati { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .stato { display: inline-block; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
-  .stato.pubblicato { background: #E6F0E8; color: #1E5631; }
+  .stato.pubblicato { background: var(--pubblicato-fondo); color: var(--pubblicato-testo); }
   .stato.in-parte { background: var(--limiti-fondo); color: var(--limiti-titolo); }
   .stato.non-trovato { background: var(--grigio); color: var(--testo-2); border: 1px dashed var(--testo-3); }
   .voci { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }

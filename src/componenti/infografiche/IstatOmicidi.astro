@@ -70,7 +70,7 @@ const descr3 = `Vittime per età, ${qa}-${qb}, in percentuale. Donne di 65 anni 
     serie={[
       { nome: 'Partner o ex', colore: C.accento, valori: partner, etichettaFinale: 'partner o ex' },
       { nome: 'Altro familiare', colore: C.familiare, valori: familiari, etichettaFinale: 'altri familiari' },
-      { nome: 'Altre persone', colore: '#D9D9D4', valori: altri },
+      { nome: 'Altre persone', colore: C.grigioBordo, valori: altri },
     ]}
     linea={{ valori: stimati }}
     etichetteLinea={[`${stimati[ultimo]} femminicidi`, `stimati nel ${ultimo},`, `su ${totaleUltimo} donne uccise`]}
@@ -81,7 +81,7 @@ const descr3 = `Vittime per età, ${qa}-${qb}, in percentuale. Donne di 65 anni 
   <Legenda voci={[
     { etichetta: 'Partner o ex', colore: C.accento },
     { etichetta: 'Altro familiare', colore: C.familiare },
-    { etichetta: 'Altre persone o autore non identificato', colore: '#D9D9D4' },
+    { etichetta: 'Altre persone o autore non identificato', colore: C.grigioBordo },
     { etichetta: `Femminicidi stimati da Istat (dal ${primoStima})`, colore: C.testo, tipo: 'linea' },
   ]} />
 </Riquadro>

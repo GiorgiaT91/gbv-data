@@ -92,7 +92,7 @@ const fonteTribunali = 'Ministero della Giustizia, DIT · sezioni dibattimentali
     <Riquadro titolo={`Nel 2018 la procura ha archiviato il ${p0(100 - pm.quota)} degli indagati per maltrattamenti`}
       sottotitolo="Persone indagate, per esito della fase di indagine, 2018" nota={`${fonteProcure} · tavola 1`}>
       <Legenda piccola voci={[{ etichetta: 'Azione penale', colore: C.accento }, { etichetta: 'Archiviazione', colore: C.grigioChiaro }]} />
-      <ul class="composte" aria-label={`Quota di indagati con azione penale nel 2018: ${righeProcura.map((r) => `${r.etichetta} ${r.parti[0].testo}`).join(', ')}`}>{righeProcura.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? "#fff" : "#16181D"}`}>{x.testo}</span>)}</span></li>)}</ul>
+      <ul class="composte" aria-label={`Quota di indagati con azione penale nel 2018: ${righeProcura.map((r) => `${r.etichetta} ${r.parti[0].testo}`).join(', ')}`}>{righeProcura.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? C.bianco : C.testo}`}>{x.testo}</span>)}</span></li>)}</ul>
       <p class="piccola">Quando lo stalking è commesso da un partner o da un ex, la procura chiede il processo nel {p0(partner.quota)} dei casi ({formatta(partner.tot)} indagati). Dal 2012 la quota con azione penale è cambiata poco: {quote2012.map((q) => `${q.nome.toLowerCase()} dal ${p0(q.da)} al ${p0(q.a)}`).join(', ')}.</p>
     </Riquadro>
   </div>
@@ -111,7 +111,7 @@ const fonteTribunali = 'Ministero della Giustizia, DIT · sezioni dibattimentali
     <Riquadro titolo={`Meno di un processo su due per maltrattamenti si chiude con una condanna`}
       sottotitolo="Procedimenti definiti nel 2023, per esito" nota={`${fonteTribunali} · tab. 2. La condanna comprende i patteggiamenti. «Altro» raccoglie gli esiti diversi da condanna e assoluzione, che la tavola non distingue. Uno stesso procedimento può contenere più reati: le righe non si sommano.`}>
       <Legenda piccola voci={[{ etichetta: 'Condanna', colore: C.accento }, { etichetta: 'Assoluzione', colore: C.lilla }, { etichetta: 'Altro', colore: C.grigioChiaro }]} />
-      <ul class="composte" aria-label={`Esito dei procedimenti definiti nel 2023: ${righeTribunale.map((r) => `${r.etichetta} condanna ${r.parti[0].testo}, assoluzione ${r.parti[1].testo}`).join('; ')}`}>{righeTribunale.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? "#fff" : "#16181D"}`}>{x.testo}</span>)}</span></li>)}</ul>
+      <ul class="composte" aria-label={`Esito dei procedimenti definiti nel 2023: ${righeTribunale.map((r) => `${r.etichetta} condanna ${r.parti[0].testo}, assoluzione ${r.parti[1].testo}`).join('; ')}`}>{righeTribunale.map((r) => <li><span class="voce">{r.etichetta}</span><span class="barra-c" aria-hidden="true">{r.parti.map((x) => <span style={`flex:${x.valore};background:${x.colore};color:${x.colore === C.accento ? C.bianco : C.testo}`}>{x.testo}</span>)}</span></li>)}</ul>
     </Riquadro>
   </div>
   <div class="s4">
@@ -124,8 +124,8 @@ const fonteTribunali = 'Ministero della Giustizia, DIT · sezioni dibattimentali
     </Riquadro>
   </div>
 
-  <div class="s12 testata-periodo" style="border-top-color:#3A3D44">
-    <span class="bollino" style="background:#3A3D44">Dopo la sentenza</span>
+  <div class="s12 testata-periodo" style="border-top-color:var(--testo-2)">
+    <span class="bollino" style="background:var(--testo-2)">Dopo la sentenza</span>
     <div><h2>Quante condanne e quanti detenuti?</h2><p>Condanne definitive fino al 2018; detenuti fino al {ultimoDet.anno}</p></div>
   </div>
   <div class="s12">
@@ -164,19 +164,19 @@ const fonteTribunali = 'Ministero della Giustizia, DIT · sezioni dibattimentali
   .testata-periodo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
   .testata-periodo h2 { font-size: 22px; }
   .testata-periodo p { font-size: 14px; color: var(--testo-2); }
-  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: #fff; padding: 6px 12px; border-radius: 6px; }
+  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: var(--su-scuro); padding: 6px 12px; border-radius: 6px; }
   .tre { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
   @media (max-width: 640px) { .tre { grid-template-columns: 1fr; gap: 16px; } }
   .composte { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   .composte li { display: flex; flex-direction: column; gap: 4px; }
   .composte .voce { font-size: 14px; font-weight: 600; }
   .barra-c { display: flex; height: 30px; border-radius: 4px; overflow: hidden; }
-  .barra-c span { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; border-right: 1px solid #fff; }
+  .barra-c span { display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; min-width: 0; overflow: hidden; white-space: nowrap; border-right: 1px solid var(--carta); }
   .piccola { font-size: 13px; color: var(--testo-3); margin: 0; }
   .mini { border-collapse: collapse; font-size: 15px; width: 100%; }
-  .mini th, .mini td { padding: 6px 4px; border-bottom: 1px solid var(--bordo-chiaro, #E6E6E1); text-align: right; }
+  .mini th, .mini td { padding: 6px 4px; border-bottom: 1px solid var(--griglia); text-align: right; }
   .mini th:first-child { text-align: left; }
-  .non-utilizzabile { background: #F2F2EE; border: 1px dashed #8A8A84; border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.5; color: var(--testo-2); margin: 0; }
+  .non-utilizzabile { background: var(--grigio); border: 1px dashed var(--grigio-medio); border-radius: 10px; padding: 14px; font-size: 14px; line-height: 1.5; color: var(--testo-2); margin: 0; }
   @media (max-width: 980px) { .s4, .s6, .s8 { grid-column: span 12; } .percorso ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .mosaico { gap: 14px; } .percorso .n { font-size: 28px; } }
 </style>

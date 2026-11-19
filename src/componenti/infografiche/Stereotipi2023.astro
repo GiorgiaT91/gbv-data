@@ -268,8 +268,8 @@ setCur(0);
 </script>
 
 <style is:global>
-.st23{--bg:#f7f6f9;--surface:#ffffff;--fg:#16181D;--muted:#55585F;--line:#dedbe5;--accent:#5A2D82;--women:#d99a2b;--men:#1d5c3a;--empty:#e6e3ec;
-  --s1:#f1edf8;--s2:#d3c6ea;--s3:#a993d3;--s4:#7a5db5;--s5:#4a2b85;--s1fg:#16181D;--s2fg:#16181D;--s3fg:#16181D;--s4fg:#ffffff;--s5fg:#ffffff;
+.st23{--bg:var(--info-fondo);--surface:var(--carta);--fg:var(--testo);--muted:var(--testo-3);--line:var(--info-linea);--accent:var(--accento);--women:var(--donne);--men:var(--uomini);--empty:var(--info-vuoto);
+  --s1:var(--scala-1);--s2:var(--scala-2);--s3:var(--scala-3);--s4:var(--scala-4);--s5:var(--scala-5);--s1fg:var(--testo);--s2fg:var(--testo);--s3fg:var(--testo);--s4fg:var(--su-scuro);--s5fg:var(--su-scuro);
   --font-body:var(--corpo);--font-display:var(--titoli);
   display:flex;flex-direction:column;gap:32px;color:var(--fg);font-size:15px;line-height:1.5;min-width:0}
 .st23 h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0;font-size:1.05rem}
@@ -302,7 +302,7 @@ setCur(0);
 .st23 .qbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;scroll-margin-top:12px}
 .st23 .qtabs{display:flex;flex-wrap:wrap;gap:6px}
 .st23 .qtabs button{all:unset;cursor:pointer;font-size:.82rem;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px}
-.st23 .qtabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.st23 .qtabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--su-scuro)}
 .st23 .qtabs button:focus-visible,.st23 .qnav button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 .st23 .qnav{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .st23 .qnav button{all:unset;cursor:pointer;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:50%;font-size:1.1rem;color:var(--fg)}

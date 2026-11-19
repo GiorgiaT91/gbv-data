@@ -1,11 +1,14 @@
-// Colori dei grafici. Stessi valori del foglio di stile, scritti qui perché
-// gli attributi dei disegni SVG non leggono le variabili CSS in modo affidabile.
+// Colori dei grafici. Stessi valori del foglio di stile (src/stili/globale.css),
+// scritti qui perché gli attributi dei disegni SVG non leggono le variabili CSS
+// in modo affidabile. Se cambi un colore qui, aggiornalo anche nel foglio di stile.
 export const C = {
   accento: '#5A2D82',      // partner o ex; dato principale
   familiare: '#8E6BB3',    // altro familiare; seconda voce
   lilla: '#C4B2D9',        // terza voce chiara
   grigio: '#B5B5AF',       // conoscente; reato estinto
   grigioChiaro: '#DCDCD6', // altre persone; sconosciuto
+  grigioBordo: '#D9D9D4',  // altre persone (omicidi); = --bordo
+  lillaMedio: '#B9A6CC',   // anno precedente; = --lilla-medio
   uomini: '#8A8A84',
   bianco: '#FFFFFF',
   bordo: '#8A8A84',
@@ -29,6 +32,13 @@ export const PERIODI = {
   riferimento: '#5A2D82', // periodo di riferimento
   passaggio: '#B4651E',   // passaggio
   nuovo: '#8A4A12',       // nuovo sistema
+};
+
+// Fasce di sfondo dei periodi.
+export const PERIODI_SFONDO = {
+  precedente: '#F1F0EC',  // = --grigio
+  riferimento: '#EFE9F5',
+  passaggio: '#F6F1E8',
 };
 
 // "41,7%" a partire da una parte e un totale.

@@ -24,7 +24,7 @@ const { voci, colore = C.accento, massimo = 100 } = Astro.props;
   li { display: flex; flex-direction: column; gap: 4px; }
   .voce { font-size: 14px; line-height: 1.35; }
   .riga { display: flex; align-items: center; gap: 8px; }
-  .binario { flex: 1; height: 12px; background: #E6E6E1; border-radius: 6px; overflow: hidden; }
+  .binario { flex: 1; height: 12px; background: var(--griglia); border-radius: 6px; overflow: hidden; }
   .pieno { display: block; height: 12px; }
   .valore { min-width: 60px; text-align: right; font-size: 14px; font-weight: 600; white-space: nowrap; }
 </style>
