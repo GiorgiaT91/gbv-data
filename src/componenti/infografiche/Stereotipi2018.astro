@@ -348,12 +348,12 @@ function drawMap(d){
   REG.forEach(([c,n])=>{ const v = d.regione[c][sx];
     s += `<path d="${MAP.paths[c]}" fill="var(--s${mbin(v,lo,hi)})" stroke="var(--bg)" stroke-width="1.2" stroke-linejoin="round"><title>${n}: ${fmt(v)}% (donne ${fmt(d.regione[c].F)}%, uomini ${fmt(d.regione[c].M)}%)</title></path>`; });
   REG.forEach(([c])=>{ const [x,y] = MAP.lab[c], v = d.regione[c][sx];
-    s += `<text x="${x}" y="${y+4}" text-anchor="middle" font-size="16" font-weight="600" fill="var(--fg)" stroke="var(--bg)" stroke-width="3.5" paint-order="stroke" style="pointer-events:none">${fmt(v)}</text>`; });
+    s += `<text x="${x}" y="${y+4}" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)" stroke="var(--bg)" stroke-width="3.5" paint-order="stroke" style="pointer-events:none">${fmt(v)}%</text>`; });
   s += "</svg>";
   const rows = REG.map(([c,n])=>[n, d.regione[c][sx]]).sort((a,b)=>b[1]-a[1]);
   const list = `<ol class="rlist">${rows.map(([n,v])=>`<li><i style="background:var(--s${mbin(v,lo,hi)})"></i><span>${short(n)}</span><b>${fmt(v)}%</b></li>`).join("")}</ol>`;
   $("d-chart").innerHTML = `<div class="mapwrap">${s}${list}</div>`;
-  $("d-legend").innerHTML = `<span>${SEXLAB[sx]} · da ${fmt(lo)}% a ${fmt(hi)}% · Italia ${fmt(d.regione.IT[sx])}%</span><span>Sulla mappa i valori in %; passa sopra una regione per vedere donne e uomini</span>`;
+  $("d-legend").innerHTML = `<span>${SEXLAB[sx]} · da ${fmt(lo)}% a ${fmt(hi)}% · Italia ${fmt(d.regione.IT[sx])}%</span><span>Passa sopra una regione per vedere donne e uomini</span>`;
   $("d-legend").insertAdjacentHTML("afterbegin", mapLegend(lo,hi));
 }
 
@@ -365,7 +365,7 @@ function drawRegionList(d, sx, W){
   for(let t=0;t<=xmax;t+=(xmax>40?20:(xmax<=20?5:10))){ s+=`<line x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-14}" stroke="var(--line)"/><text x="${x(t)}" y="${top-14}" text-anchor="middle" font-size="11" fill="var(--muted)">${t}%</text>`; }
   s += `<line x1="${x(it)}" x2="${x(it)}" y1="${top-8}" y2="${H-14}" stroke="var(--fg)" stroke-dasharray="3 3" opacity=".55"/><text x="${Math.min(x(it)+4, W-80)}" y="${H-2}" font-size="11" fill="var(--muted)">Italia ${fmt(it)}%</text>`;
   rows.forEach(([n,v],i)=>{ const y=top+i*rowH+rowH/2;
-    s += `<text x="0" y="${y+4}" font-size="12" fill="var(--fg)">${short(n)}</text><circle cx="${x(v)}" cy="${y}" r="6" fill="var(--accent)"><title>${n}: ${fmt(v)}%</title></circle><text x="${x(v)+10}" y="${y+4}" font-size="12" font-weight="600" fill="var(--fg)">${fmt(v)}</text>`; });
+    s += `<text x="0" y="${y+4}" font-size="12" fill="var(--fg)">${short(n)}</text><circle cx="${x(v)}" cy="${y}" r="6" fill="var(--accent)"><title>${n}: ${fmt(v)}%</title></circle><text x="${x(v)+10}" y="${y+4}" font-size="12" font-weight="600" fill="var(--fg)">${fmt(v)}%</text>`; });
   $("d-chart").innerHTML = s + "</svg>";
   $("d-legend").innerHTML = `<span>${SEXLAB[sx]} · regioni ordinate dal valore più alto · Italia ${fmt(it)}%</span>`;
 }
