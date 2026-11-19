@@ -2,7 +2,8 @@
 // Pagina corta di una domanda (modello delle domande 1, 2, 3 e 6):
 // la domanda, un numero grande con due righe, poi un riquadro per ogni fonte (rapporto 1 a 1 fra fonte e infografica).
 // Toccando un riquadro l'infografica della fonte si apre sotto, nella stessa pagina: uno aperto alla volta,
-// nessuno aperto all'avvio (stesso modello dei riquadri degli stereotipi). Le fonti non ancora pronte
+// nessuno aperto all'avvio (stesso modello dei riquadri degli stereotipi). Con una sola fonte pronta
+// (domande 1 e 6) non c'è riquadro: l'infografica si vede subito. Le fonti non ancora pronte
 // sono nominate nella nota sotto i riquadri (fonti.in_lavorazione). La pagina della fonte resta come scheda completa.
 // Testi in contenuti/domande/<numero>-<indirizzo>.yaml; la domanda deve avere modello "corta" in contenuti/domande.yaml.
 import fs from 'node:fs';
@@ -36,10 +37,11 @@ let testoGrande = ng.testo;
 for (const [k, val] of Object.entries(ng.valori ?? {})) testoGrande = testoGrande.replace(`{${k}}`, mostra(richiesto(val.fonte, val.filtro)));
 
 const riquadri = t.fonti.voci.map((voce) => {
-  const barre = voce.anteprima.barre.map((b) => ({ ...b, valore: richiesto(voce.id, b.filtro) }));
-  const massimo = Math.max(...barre.map((b) => b.valore));
-  return { ...voce, barre, massimo, inVerifica: fonte(voce.id)?.in_verifica, s: scheda(voce.id) };
+  const [ente, ...resto] = voce.etichetta.split(' · ');
+  return { ...voce, ente, nome: resto.join(' · ') || ente, inVerifica: fonte(voce.id)?.in_verifica, s: scheda(voce.id) };
 });
+// Una sola fonte: l'infografica si vede subito, senza riquadro da aprire.
+const diretta = riquadri.length === 1;
 const inVerifica = riquadri.some((r) => r.inVerifica);
 ---
 <Layout titolo={t.domanda} descrizione={`${grande} ${testoGrande.replace(/\*\*/g, '')}`} sezione="domande">
@@ -55,33 +57,22 @@ const inVerifica = riquadri.some((r) => r.inVerifica);
   <section class="sezione">
     <div class="intestazione">
       <h2>{t.fonti.titolo}</h2>
-      <p class="sottotitolo">{t.fonti.sottotitolo}</p>
+      {!diretta && <p class="sottotitolo">{t.fonti.sottotitolo}</p>}
     </div>
-    <div class="fonti-hub">
+    <div class:list={['fonti-hub', { diretta }]}>
       {riquadri.map((r, i) => (
         <>
-          <button type="button" class="fonte-box" id={`fonte-b-${r.id}`} data-fonte-pannello={`fonte-p-${r.id}`} aria-expanded="false" aria-controls={`fonte-p-${r.id}`} style={`--o:${2 * i}`}>
-            <span class="etichetta">{r.etichetta}</span>
-            <span class="titolo">{r.titolo}</span>
-            <span class="anteprima" style={r.anteprima.etichette ? `--etichetta:${r.anteprima.etichette}px` : undefined} role="img" aria-label={`${r.anteprima.descrizione}: ${r.barre.map((b) => `${b.etichetta} ${mostra(b.valore)}`).join(', ')}`}>
-              <span class="piccola">{r.anteprima.descrizione}</span>
-              {r.barre.map((b, j) => (
-                <span class="barra">
-                  <span>{b.etichetta}</span>
-                  <span class="traccia">
-                    <span class:list={['pieno', { ultimo: j === (r.anteprima.evidenzia ?? r.barre.length - 1) }]} style={`width:${(85 * b.valore) / r.massimo}%`}></span>
-                    <strong>{mostra(b.valore)}</strong>
-                  </span>
-                </span>
-              ))}
-              {r.anteprima.nota && <span class="piccola">{r.anteprima.nota}</span>}
-            </span>
-            <span class="fonte-piede"><span>{r.piede}</span><span class="apri"><span class="o">Apri l'infografica</span><span class="c">Chiudi</span> <i aria-hidden="true">↓</i></span></span>
-          </button>
-          <section class="fonte-pannello" id={`fonte-p-${r.id}`} aria-labelledby={`fonte-t-${r.id}`} style={`--o:${2 * i}`} hidden>
+          {!diretta && (
+            <button type="button" class="fonte-box" id={`fonte-b-${r.id}`} data-fonte-pannello={`fonte-p-${r.id}`} aria-expanded="false" aria-controls={`fonte-p-${r.id}`} style={`--o:${2 * i}`}>
+              <span class="ente">{r.ente}</span>
+              <span class="nome">{r.nome}</span>
+              <span class="fonte-piede"><span>{r.piede}</span><span class="apri"><span class="o">Apri l'infografica</span><span class="c">Chiudi</span> <i aria-hidden="true">↓</i></span></span>
+            </button>
+          )}
+          <section class="fonte-pannello" id={`fonte-p-${r.id}`} aria-labelledby={`fonte-t-${r.id}`} style={`--o:${2 * i}`} hidden={!diretta}>
             <div class="pannello-testa">
-              <p class="meta">{r.s.ente} · {r.s.nome} · ultimo aggiornamento {data(r.s.ultimo_aggiornamento)}</p>
-              <h3 id={`fonte-t-${r.id}`}>{r.s.titolo_messaggio}</h3>
+              <p class:list={['meta', { 'visivamente-nascosto': diretta }]}>{r.s.ente} · {r.s.nome} · ultimo aggiornamento {data(r.s.ultimo_aggiornamento)}</p>
+              <h3 id={`fonte-t-${r.id}`} class:list={{ 'visivamente-nascosto': diretta }}>{r.s.titolo_messaggio}</h3>
             </div>
             <div class="infografica">
               <InfograficaFonte id={r.id} />
@@ -139,26 +130,20 @@ const inVerifica = riquadri.some((r) => r.inVerifica);
 
 <style>
   .domanda-titolo { font-size: clamp(30px, 5vw, 44px) !important; color: var(--testo-2); font-weight: 500; }
-  .grande { font-family: var(--titoli); font-weight: 600; font-size: clamp(72px, 14vw, 120px); line-height: 1; color: var(--accento); }
+  .grande { font-family: var(--titoli); font-weight: 600; font-size: clamp(48px, 8vw, 72px); line-height: 1; color: var(--accento); }
   /* Riquadri delle fonti: stesso modello di componenti/infografiche/IstatStereotipi.astro */
   .fonti-hub { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: stretch; }
   .fonte-box {
     all: unset; box-sizing: border-box; cursor: pointer; min-width: 0;
-    display: flex; flex-direction: column; gap: 16px; padding: 24px;
+    display: flex; flex-direction: column; gap: 12px; padding: 20px 24px;
     background: var(--carta); border: 1px solid var(--bordo); border-radius: 16px; color: var(--testo);
   }
   .fonte-box:hover { border-color: var(--accento); }
   .fonte-box:focus-visible { outline: 3px solid var(--accento); outline-offset: 2px; }
-  .fonte-box[aria-expanded="true"] { border: 2px solid var(--accento); padding: 23px; background: var(--accento-chiaro); }
-  .etichetta { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--testo-3); }
-  .titolo { font-family: var(--titoli); font-size: 22px; font-weight: 600; line-height: 1.2; }
-  .anteprima { display: flex; flex-direction: column; gap: 10px; }
-  .piccola { font-size: 13px; color: var(--testo-3); }
-  .barra { display: grid; grid-template-columns: var(--etichetta, 48px) 1fr; align-items: center; gap: 10px; font-size: 14px; }
-  .traccia { display: flex; align-items: center; gap: 8px; }
-  .pieno { height: 20px; background: var(--lilla-medio); border-radius: 4px; }
-  .pieno.ultimo { background: var(--accento); }
-  .fonte-piede { margin-top: auto; padding-bottom: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 16px; border-top: 1px solid var(--bordo); font-size: 14px; color: var(--testo-3); }
+  .fonte-box[aria-expanded="true"] { border: 2px solid var(--accento); padding: 19px 23px; background: var(--accento-chiaro); }
+  .ente { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--testo-3); }
+  .nome { font-family: var(--titoli); font-size: 22px; font-weight: 600; line-height: 1.2; }
+  .fonte-piede { margin-top: auto; padding-bottom: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; border-top: 1px solid var(--bordo); font-size: 14px; color: var(--testo-3); }
   .apri { font-size: 16px; font-weight: 600; color: var(--link); white-space: nowrap; }
   .apri i { font-style: normal; display: inline-block; transition: transform .2s; }
   .fonte-box .c { display: none; }
@@ -167,6 +152,7 @@ const inVerifica = riquadri.some((r) => r.inVerifica);
   .fonte-box[aria-expanded="true"] .apri i { transform: rotate(180deg); }
 
   /* Pannello aperto: occupa tutta la riga, sotto i riquadri */
+  .diretta .fonte-pannello { padding-top: 0; }
   .fonte-pannello { grid-column: 1 / -1; order: 1000; min-width: 0; display: flex; flex-direction: column; gap: 24px; padding-top: 16px; }
   .fonte-pannello[hidden] { display: none; }
   .pannello-testa { display: flex; flex-direction: column; gap: 8px; }
@@ -198,5 +184,5 @@ const inVerifica = riquadri.some((r) => r.inVerifica);
   }
   .nuove { margin: 0; padding: 0; list-style: none; }
   .nuove li { font-family: var(--titoli); font-size: 21px; padding: 16px 0; border-top: 1px solid var(--bordo); }
-  @media (max-width: 640px) { .fonte-box { padding: 20px; } .fonte-box[aria-expanded="true"] { padding: 19px; } .titolo { font-size: 20px; } .nuove li { font-size: 18px; } }
+  @media (max-width: 640px) { .fonte-box { padding: 18px 20px; } .fonte-box[aria-expanded="true"] { padding: 17px 19px; } .nome { font-size: 20px; } .nuove li { font-size: 18px; } }
 </style>
