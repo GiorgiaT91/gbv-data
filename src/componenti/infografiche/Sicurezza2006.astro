@@ -1,29 +1,18 @@
 ---
 // Riquadro 2006 della domanda 1: prima indagine Istat sulla sicurezza delle donne, tutte le donne di 16-70 anni.
+// Forma scelta da Giorgia il 20/11/2026: classifica dei gruppi a quadrati da 100 (SicurezzaClassifica), non il quadro delle differenze.
 // Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (tavole 2006; ultimi 5 anni dal report 2014).
-import SicurezzaSintesi from './SicurezzaSintesi.astro';
-import SicurezzaQuadro from './SicurezzaQuadro.astro';
-import { prev, perc } from '../../lib/sicurezza.js';
+import SicurezzaClassifica from './SicurezzaClassifica.astro';
 
-const V = (forma, autore = 'qualsiasi') => prev('2006', 'tutte_16_70', 'nella_vita', forma, { autore });
-const FS = 'fisica_o_sessuale';
-const dodici = prev('2006', 'tutte_16_70', 'ultimi_12_mesi', FS);
-const TAVOLE = 'Istat, tavole 2006 (Violenza_Tavole.xls), tavola 3.';
+const TAVOLE = 'Fonte: Istat, Indagine sulla sicurezza delle donne 2006 (Violenza_Tavole.xls), tavole 1 e 3. Tutte le donne di 16–70 anni.';
 ---
-<SicurezzaSintesi
-  titolo="Nel corso della vita"
-  sotto="Tutte le donne di 16–70 anni, italiane e straniere, violenze subite dai 16 anni in poi."
-  valore={V(FS)}
-  dida={`violenza fisica o sessuale nella vita: ${perc(V(FS))}. Negli ultimi 12 mesi: ${perc(dodici)}`}
-  gruppi={[
-    { titolo: 'Per forma', voci: [['Violenza fisica', V('fisica')], ['Violenza sessuale', V('sessuale')], ['Stupro o tentato stupro', V('stupro_o_tentato')]] },
-    { titolo: 'Per autore · violenza fisica o sessuale', tenue: true, voci: [['Da un non partner', V(FS, 'non_partner')], ['Da partner o ex partner', V(FS, 'partner_o_ex')]] },
-  ]}
-  nota="Istat, tavole 2006 (Violenza_Tavole.xls), tavola 1. In questa tavola il 2006 non distingue il partner attuale dall'ex."
-/>
-<SicurezzaQuadro
-  id="sic-q06" anno="2006" popolazione="tutte_16_70" periodi={['nella_vita', 'ultimi_5_anni', 'ultimi_12_mesi']}
+<SicurezzaClassifica
+  id="sic-c06" anno="2006" popolazione="tutte_16_70" periodi={['nella_vita', 'ultimi_5_anni', 'ultimi_12_mesi']}
   dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'ripartizione']}
-  sotto="Tutte le donne di 16–70 anni. Per l'area geografica le tavole 2006 hanno cinque ripartizioni, non le regioni."
-  note={{ nella_vita: TAVOLE, ultimi_12_mesi: TAVOLE, ultimi_5_anni: 'Gli ultimi 5 anni del 2006 non sono nelle tavole 2006: vengono dal report Istat 2014, prospetto 11.' }}
+  sotto="Tutte le donne di 16–70 anni, italiane e straniere, violenze subite dai 16 anni in poi. Ogni quadrato è un gruppo di donne: i quadratini pieni sono quelle che hanno subito violenza, su 100. Per l'area geografica il 2006 ha cinque ripartizioni, non le regioni."
+  note={{
+    nella_vita: TAVOLE,
+    ultimi_12_mesi: TAVOLE,
+    ultimi_5_anni: 'Fonte: gli ultimi 5 anni del 2006 non sono nelle tavole 2006 e vengono dal report Istat 2014, prospetti 8 e 11. Tutte le donne di 16–70 anni.',
+  }}
 />
