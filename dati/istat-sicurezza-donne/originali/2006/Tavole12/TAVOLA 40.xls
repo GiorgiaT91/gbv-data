@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 11">
+<link rel=File-List href="TAVOLA%2040_file/filelist.xml">
+<link rel=Edit-Time-Data href="TAVOLA%2040_file/editdata.mso">
+<link rel=OLE-Object-Data href="TAVOLA%2040_file/oledata.mso">
+<title>SAS Output</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>istat</o:LastAuthor>
+  <o:LastPrinted>2007-06-12T11:32:12Z</o:LastPrinted>
+  <o:LastSaved>2007-06-12T13:17:08Z</o:LastSaved>
+  <o:Version>11.6568</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\,";
+	mso-displayed-thousand-separator:"\.";}
+@page
+	{margin:.98in .79in 1.38in .57in;
+	mso-header-margin:0in;
+	mso-footer-margin:.87in;}
+.font5
+	{color:black;
+	font-size:7.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;}
+.font7
+	{color:black;
+	font-size:9.0pt;
+	font-weight:400;
+	font-style:italic;
+	text-decoration:none;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normale;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	background:white;
+	mso-pattern:auto none;}
+.xl25
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:top;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl30
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:top;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl32
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	background:white;
+	mso-pattern:auto none;}
+.xl33
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:top;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	color:black;
+	font-size:9.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:top;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>TAVOLA 40</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>180</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:HorizontalResolution>600</x:HorizontalResolution>
+      <x:VerticalResolution>600</x:VerticalResolution>
+     </x:Print>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>5</x:ActiveRow>
+       <x:ActiveCol>6</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>9120</x:WindowHeight>
+  <x:WindowWidth>12120</x:WindowWidth>
+  <x:WindowTopX>0</x:WindowTopX>
+  <x:WindowTopY>45</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>IDX</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 40'!#REF!</x:Formula>
+ </x:ExcelName>
+ <x:ExcelName>
+  <x:Name>IDX1</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 40'!#REF!</x:Formula>
+ </x:ExcelName>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1025"/>
+</xml><![endif]-->
+<noscript>
+</noscript>
+
+<script language="JavaScript"  type="text/javascript">
+<!-- 
+function startup(){
+
+}
+function shutdown(){
+
+}
+
+//-->
+</script>
+</head>
+
+<body link=black vlink=black class=xl24>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=628 style='border-collapse:
+ collapse;table-layout:fixed;width:472pt'>
+ <col class=xl24 width=112 style='mso-width-source:userset;mso-width-alt:4096;
+ width:84pt'>
+ <col class=xl24 width=46 style='mso-width-source:userset;mso-width-alt:1682;
+ width:35pt'>
+ <col class=xl24 width=57 style='mso-width-source:userset;mso-width-alt:2084;
+ width:43pt'>
+ <col class=xl24 width=56 style='mso-width-source:userset;mso-width-alt:2048;
+ width:42pt'>
+ <col class=xl24 width=62 span=2 style='mso-width-source:userset;mso-width-alt:
+ 2267;width:47pt'>
+ <col class=xl24 width=48 style='mso-width-source:userset;mso-width-alt:1755;
+ width:36pt'>
+ <col class=xl24 width=39 style='mso-width-source:userset;mso-width-alt:1426;
+ width:29pt'>
+ <col class=xl24 width=55 style='mso-width-source:userset;mso-width-alt:2011;
+ width:41pt'>
+ <col class=xl24 width=52 style='mso-width-source:userset;mso-width-alt:1901;
+ width:39pt'>
+ <col class=xl24 width=39 style='mso-width-source:userset;mso-width-alt:1426;
+ width:29pt'>
+ <col class=xl24 width=61 span=20 style='mso-width-source:userset;mso-width-alt:
+ 2230;width:46pt'>
+ <tr height=52 style='mso-height-source:userset;height:39.0pt'>
+  <td colspan=11 height=52 class=xl35 width=628 style='height:39.0pt;
+  width:472pt'>Tavola 40 - Donne dai 16 ai 70 anni che hanno subito violenza da
+  un uomo non partner, per cambiamento di <br>
+    <span style='mso-spacerun:yes'>                     </span>abitudini a
+  seguito del fatto, ripartizione geografica e tipo di comune-<span
+  style='mso-spacerun:yes'>  </span>Anno 2006<font class="font5"> </font><font
+  class="font7">(per 100 vittime<br>
+    <span style='mso-spacerun:yes'>                    </span>della stessa
+  zona)</font></td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 colspan=11 class=xl24 style='height:9.0pt;mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=111 style='mso-height-source:userset;height:83.25pt'>
+  <td height=111 class=xl25 width=112 style='height:83.25pt;width:84pt'></colgroup></colgroup>&nbsp;</td>
+  <td class=xl26 width=46 style='width:35pt'>Non sono più tranquilla quando
+  esco</td>
+  <td class=xl26 width=57 style='width:43pt'>Sono diventata più
+  diffidente/fredda /non riesco ad instaurare relazioni</td>
+  <td class=xl26 width=56 style='width:42pt'>Evito strade isolate/ho paura del
+  buio/non esco più di sera</td>
+  <td class=xl26 width=62 style='width:47pt'>Ho problemi di
+  depressione/attacchi di ansia/<br>
+    problemi legati al sonno</td>
+  <td class=xl26 width=62 style='width:47pt'>Sono meno femminile/ <br>
+    cattivo rapporto con<br>
+    <span style='mso-spacerun:yes'> </span>il mio corpo/difficoltà ad avere
+  rapporti sessuali</td>
+  <td class=xl26 width=48 style='width:36pt'>Non ho più fiducia negli
+  uomini<br>
+    <span style='mso-spacerun:yes'> </span>in lui</td>
+  <td class=xl26 width=39 style='width:29pt'>Sono stata più attenta</td>
+  <td class=xl26 width=55 style='width:41pt'>Sono rimasta sotto shock/<br>
+    non sono più la stessa</td>
+  <td class=xl26 width=52 style='width:39pt'>Sono diventata più aggressiva</td>
+  <td class=xl26 width=39 style='width:29pt'>Totale*</td>
+ </tr>
+ <tr height=14 style='mso-height-source:userset;height:10.5pt'>
+  <td height=14 class=xl27 style='height:10.5pt'>&nbsp;</td>
+  <td colspan=10 class=xl28 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'
+  x:str="RIPARTIZIONE ">RIPARTIZIONE<span style='mso-spacerun:yes'> </span></td>
+  <td colspan=10 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>GEOGRAFICHE</td>
+  <td colspan=10 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Nord-ovest</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="3.1">3,1</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="15.4">15,4</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="1.9">1,9</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.5">1,5</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.9">0,9</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="3.6">3,6</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="19.5">19,5</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.8">1,8</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.2">2,2</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Nord-est</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="1.7">1,7</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="18.9">18,9</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="2.3">2,3</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.1">1,1</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.8">0,8</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="4.6">4,6</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="19.7">19,7</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.7">1,7</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="3.3">3,3</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Centro</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="2.7">2,7</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="14.3">14,3</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="3.8">3,8</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.9">0,9</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.8">0,8</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="3.7">3,7</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="26">26,0</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.2">1,2</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.3">2,3</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Sud</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="3.6">3,6</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="17.2">17,2</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="4.6">4,6</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.3">1,3</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.3">0,3</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="4.4">4,4</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="25.4">25,4</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.9">1,9</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="3.4">3,4</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Isole</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="4.5">4,5</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="20">20,0</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="4.9">4,9</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.7">0,7</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.5">0,5</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="5.9">5,9</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="25.5">25,5</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="2.4">2,4</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="3.1">3,1</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl30 width=112 style='height:9.0pt;width:84pt'>Italia</td>
+  <td class=xl31 align=right width=46 style='width:35pt' x:num="2.9">2,9</td>
+  <td class=xl31 align=right width=57 style='width:43pt' x:num="16.6">16,6</td>
+  <td class=xl31 align=right width=56 style='width:42pt' x:num="3.2">3,2</td>
+  <td class=xl31 align=right width=62 style='width:47pt' x:num="1.2">1,2</td>
+  <td class=xl31 align=right width=62 style='width:47pt' x:num="0.7">0,7</td>
+  <td class=xl31 align=right width=48 style='width:36pt' x:num="4.2">4,2</td>
+  <td class=xl31 align=right width=39 style='width:29pt' x:num="22.6">22,6</td>
+  <td class=xl31 align=right width=55 style='width:41pt' x:num="1.7">1,7</td>
+  <td class=xl31 align=right width=52 style='width:39pt' x:num="2.8">2,8</td>
+  <td class=xl31 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl30 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=10 class=xl29 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'
+  x:str="TIPI DI COMUNE ">TIPI DI COMUNE<span style='mso-spacerun:yes'> </span></td>
+  <td colspan=10 class=xl32 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=13 style='mso-height-source:userset;height:9.75pt'>
+  <td height=13 class=xl27 width=112 style='height:9.75pt;width:84pt'
+  x:str="Comune centro dell'area&#10; ">Comune centro dell'area<br>
+    <span style='mso-spacerun:yes'> </span></td>
+  <td colspan=10 class=xl29 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>metropolitana</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="2.8">2,8</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="15.7">15,7</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="3.7">3,7</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.8">0,8</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.7">0,7</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="2.8">2,8</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="25.4">25,4</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.3">1,3</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.1">2,1</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'
+  x:str="Periferia dell'area ">Periferia dell'area<span
+  style='mso-spacerun:yes'> </span></td>
+  <td colspan=10 class=xl32 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>metropolitana</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="3">3,0</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="14.8">14,8</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="4.8">4,8</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.6">1,6</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.6">0,6</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="4.2">4,2</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="24">24,0</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.3">1,3</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="3.6">3,6</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Fino a
+  2.000 abitanti</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="2.6">2,6</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="13.3">13,3</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="1.9">1,9</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="2.1">2,1</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.3">1,3</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="5.3">5,3</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="20.7">20,7</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="3.1">3,1</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.6">2,6</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>Da 2.001 a
+  10.000 abitanti</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="2.7">2,7</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="17.6">17,6</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="2.4">2,4</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.9">0,9</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.6">0,6</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="5.3">5,3</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="19.6">19,6</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="1.3">1,3</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.5">2,5</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'
+  x:str="Da 10.001 a 50.000 ">Da 10.001 a 50.000<span
+  style='mso-spacerun:yes'> </span></td>
+  <td colspan=10 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>abitanti</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="3.5">3,5</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="19.5">19,5</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="3.6">3,6</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.4">1,4</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.8">0,8</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="3.7">3,7</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="22.8">22,8</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="2.1">2,1</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="2.9">2,9</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl27 width=112 style='height:9.0pt;width:84pt'>50.001
+  abitanti e più</td>
+  <td class=xl29 align=right width=46 style='width:35pt' x:num="2.7">2,7</td>
+  <td class=xl29 align=right width=57 style='width:43pt' x:num="15.3">15,3</td>
+  <td class=xl29 align=right width=56 style='width:42pt' x:num="2.1">2,1</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="1.2">1,2</td>
+  <td class=xl29 align=right width=62 style='width:47pt' x:num="0.5">0,5</td>
+  <td class=xl29 align=right width=48 style='width:36pt' x:num="4.6">4,6</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="22.2">22,2</td>
+  <td class=xl29 align=right width=55 style='width:41pt' x:num="2.1">2,1</td>
+  <td class=xl29 align=right width=52 style='width:39pt' x:num="3.2">3,2</td>
+  <td class=xl29 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=20 style='mso-height-source:userset;height:15.0pt'>
+  <td height=20 class=xl33 width=112 style='height:15.0pt;width:84pt'>Italia</td>
+  <td class=xl34 align=right width=46 style='width:35pt' x:num="2.9">2,9</td>
+  <td class=xl34 align=right width=57 style='width:43pt' x:num="16.6">16,6</td>
+  <td class=xl34 align=right width=56 style='width:42pt' x:num="3.2">3,2</td>
+  <td class=xl34 align=right width=62 style='width:47pt' x:num="1.2">1,2</td>
+  <td class=xl34 align=right width=62 style='width:47pt' x:num="0.7">0,7</td>
+  <td class=xl34 align=right width=48 style='width:36pt' x:num="4.2">4,2</td>
+  <td class=xl34 align=right width=39 style='width:29pt' x:num="22.6">22,6</td>
+  <td class=xl34 align=right width=55 style='width:41pt' x:num="1.7">1,7</td>
+  <td class=xl34 align=right width=52 style='width:39pt' x:num="2.8">2,8</td>
+  <td class=xl34 align=right width=39 style='width:29pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl24 colspan=6 style='height:9.0pt;mso-ignore:colspan'>*
+  La somma può superare 100 perché la donna può aver indicato più conseguenze</td>
+  <td colspan=5 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=112 style='width:84pt'></td>
+  <td width=46 style='width:35pt'></td>
+  <td width=57 style='width:43pt'></td>
+  <td width=56 style='width:42pt'></td>
+  <td width=62 style='width:47pt'></td>
+  <td width=62 style='width:47pt'></td>
+  <td width=48 style='width:36pt'></td>
+  <td width=39 style='width:29pt'></td>
+  <td width=55 style='width:41pt'></td>
+  <td width=52 style='width:39pt'></td>
+  <td width=39 style='width:29pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

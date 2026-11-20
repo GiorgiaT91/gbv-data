@@ -1,0 +1,646 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 11">
+<link rel=File-List href="TAVOLA%2046_file/filelist.xml">
+<link rel=Edit-Time-Data href="TAVOLA%2046_file/editdata.mso">
+<link rel=OLE-Object-Data href="TAVOLA%2046_file/oledata.mso">
+<title>SAS Output</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>istat</o:LastAuthor>
+  <o:LastPrinted>2007-06-12T13:37:14Z</o:LastPrinted>
+  <o:Created>2007-06-05T14:12:46Z</o:Created>
+  <o:LastSaved>2007-06-12T13:37:16Z</o:LastSaved>
+  <o:Version>11.6568</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\,";
+	mso-displayed-thousand-separator:"\.";}
+@page
+	{margin:.98in .79in 1.38in .79in;
+	mso-header-margin:0in;
+	mso-footer-margin:.87in;}
+.font7
+	{color:black;
+	font-size:9.0pt;
+	font-weight:400;
+	font-style:italic;
+	text-decoration:none;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normale;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl25
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl26
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl27
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl29
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl30
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:center;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl32
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl33
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl34
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl36
+	{mso-style-parent:style0;
+	color:black;
+	font-size:9.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:center;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>TAVOLA 46</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>180</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:HorizontalResolution>600</x:HorizontalResolution>
+      <x:VerticalResolution>600</x:VerticalResolution>
+     </x:Print>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>15</x:ActiveRow>
+       <x:ActiveCol>8</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>11640</x:WindowHeight>
+  <x:WindowWidth>15480</x:WindowWidth>
+  <x:WindowTopX>0</x:WindowTopX>
+  <x:WindowTopY>120</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>IDX</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 46'!#REF!</x:Formula>
+ </x:ExcelName>
+ <x:ExcelName>
+  <x:Name>IDX1</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 46'!#REF!</x:Formula>
+ </x:ExcelName>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1025"/>
+</xml><![endif]-->
+<noscript>
+</noscript>
+
+<script language="JavaScript"  type="text/javascript">
+<!-- 
+function startup(){
+
+}
+function shutdown(){
+
+}
+
+//-->
+</script>
+</head>
+
+<body link=black vlink=black class=xl24>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=673 style='border-collapse:
+ collapse;table-layout:fixed;width:506pt'>
+ <col class=xl25 width=369 style='mso-width-source:userset;mso-width-alt:13494;
+ width:277pt'>
+ <col class=xl26 width=33 span=5 style='mso-width-source:userset;mso-width-alt:
+ 1206;width:25pt'>
+ <col class=xl26 width=75 style='mso-width-source:userset;mso-width-alt:2742;
+ width:56pt'>
+ <col class=xl24 width=64 style='width:48pt'>
+ <tr height=64 style='mso-height-source:userset;height:48.0pt'>
+  <td colspan=7 height=64 class=xl36 width=609 style='height:48.0pt;width:458pt'>Tavola
+  46 -<span style='mso-spacerun:yes'>  </span>Donne dai 16 ai 70 anni che hanno
+  subito violenza da un uomo non partner e che hanno<br>
+    <span style='mso-spacerun:yes'>                     </span>denunciato il
+  fatto, per grado di soddisfazione rispetto all'operato delle forze
+  dell'ordine, azioni<br>
+    <span style='mso-spacerun:yes'>                     </span>intraprese dalle
+  forze dell'ordine, opinione su cosa altro avrebbero dovuto fare le
+  forze<br>
+    <span style='mso-spacerun:yes'>                     </span>dell'ordine -
+  Anno 2006<font class="font7"> (per 100 vittime)</font></td>
+  <td class=xl24 width=64 style='width:48pt'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='height:9.0pt'>
+  <td height=12 class=xl28 style='height:9.0pt'>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td colspan=5 height=16 class=xl37 width=501 style='height:12.0pt;width:377pt'>&nbsp;</td>
+  <td class=xl31>&nbsp;</td>
+  <td class=xl31>%</td>
+  <td class=xl32>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 colspan=5 class=xl30 style='height:9.0pt;mso-ignore:colspan'>&nbsp;</td>
+  <td colspan=2 class=xl33 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl32>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>È
+  SODDISFATTA DI COME LE FORZE DELL'ORDINE HANNO GESTITO IL CASO</td>
+  <td colspan=6 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Molto
+  soddisfatta</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="19.3">19,3</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Soddisfatta</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="24.2">24,2</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Insoddisfatta</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="21.3">21,3</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Molto
+  insoddisfatta</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="28.6">28,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Non sa,
+  non ricorda</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="6.6">6,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl25 style='height:9.0pt'>Totale</td>
+  <td colspan=4 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+  <td class=xl34 width=75 style='width:56pt' x:num="100">100,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl25 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td colspan=2 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl25 style='height:9.0pt'>AZIONI INTRAPRESE DALLE FORZE
+  DELL'ORDINE</td>
+  <td class=xl25>&nbsp;</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Hanno
+  preso la denuncia</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="49.3">49,3</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Hanno
+  arrestato il colpevole</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="6.2">6,2</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Hanno
+  ammonito il colpevole</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="9.6">9,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Mi hanno
+  indirizzata a servizi specializzati</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="2.3">2,3</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Mi hanno
+  fornito protezione</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="6.6">6,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Hanno
+  seguito il procedimento</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="24.1">24,1</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Mi hanno
+  fornito informazioni sulla possibile assistenza legale</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="4.2">4,2</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Non hanno
+  fatto niente</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="24.5">24,5</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Altro</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="1.1">1,1</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Non sa,
+  non risponde</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="5.6">5,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Totale*</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="100">100,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl25 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=6 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>COSA
+  ALTRO AVREBBERO DOVUTO FARE LE FORZE DELL'ORDINE</td>
+  <td colspan=6 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Informare
+  su ciò che stava succedendo</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="3.9">3,9</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Fornire
+  informazioni sulle possibili azioni legali e sui servizi</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="3">3,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Rispondere
+  con maggiore tempismo</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="7.9">7,9</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Imputarlo/
+  arrestarlo/ fermarlo</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="18.2">18,2</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Dargli un
+  avvertimento/ ammonirlo</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="12.9">12,9</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Prendere
+  più seriamente denuncia/ ascoltarla/ darle maggior appoggio</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="18.3">18,3</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'
+  x:str="Avrebbero dovuto dargli un ordine di allontanamento/ tenerlo fuori da casa ">Avrebbero
+  dovuto dargli un ordine di allontanamento/ tenerlo fuori da casa<span
+  style='mso-spacerun:yes'> </span></td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="7">7,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Indirizzare
+  in un centro antiviolenza o in una struttura di accoglienza</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="0.5">0,5</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Fornire
+  protezione aiutarla ad andare via di casa</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="3">3,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Portarla
+  in ospedale/ procurarle cure mediche</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="1.1">1,1</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Altro</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="2.4">2,4</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>No,
+  niente</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="45.6">45,6</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Rifiuta,
+  non risponde</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="4.2">4,2</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl27 width=369 style='height:9.0pt;width:277pt'>Totale*</td>
+  <td colspan=5 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl35 align=right width=75 style='width:56pt' x:num="100">100,0</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 style='height:9.0pt'>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl29>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=8 style='mso-height-source:userset;height:6.0pt'>
+  <td height=8 class=xl25 style='height:6.0pt'>&nbsp;</td>
+  <td colspan=6 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl25 style='height:9.0pt'>*La somma può essere superiore
+  a 100 perché erano possibili più risposte</td>
+  <td colspan=2 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td colspan=4 class=xl26 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl24>&nbsp;</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=369 style='width:277pt'></td>
+  <td width=33 style='width:25pt'></td>
+  <td width=33 style='width:25pt'></td>
+  <td width=33 style='width:25pt'></td>
+  <td width=33 style='width:25pt'></td>
+  <td width=33 style='width:25pt'></td>
+  <td width=75 style='width:56pt'></td>
+  <td width=64 style='width:48pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

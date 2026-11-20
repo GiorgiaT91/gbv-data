@@ -1,39 +1,68 @@
 """Indagine Istat sulla sicurezza delle donne: ricava dati.csv per la domanda 1.
 
 Uso:  python elabora.py   (scrive dati.csv, UTF-8 con BOM)
+Serve openpyxl (file .xlsx) e xlrd (file .xls del 2006 e del 2014):  pip install openpyxl xlrd
 
-Fonti:
-- 2025, primi risultati (21/11/2025): solo donne italiane. Prospetti 1, 3 e 5 del PDF trascritti qui sotto;
-  tavola 4 dell'allegato Excel (Allegato-tavole-statistiche.xlsx) letta dal file.
-- 2014 e 2006: prospetto 8 del report 2014 (Violenze_contro_le_donne.pdf), tutte le donne di 16-70 anni.
+Il file ha due parti.
 
-Attenzione alle popolazioni: "nella vita" = italiane 16-75 anni (2025);
-"ultimi 5 anni" = donne 16-70 anni (2006 e 2014 tutte; 2014 e 2025 solo italiane, prospetto 5).
-Le due serie degli ultimi 5 anni NON vanno unite in una sola linea.
+1. Righe storiche (colonne da «anno» a «nota»), usate dalla pagina attuale e dalla home.
+   Restano uguali: i filtri del sito le cercano per anno, periodo, indicatore e categoria.
+
+2. Righe «prevalenza» (indicatore = prevalenza), una per ogni combinazione di:
+   popolazione · periodo · forma · autore · dimensione · gruppo.
+   Le colonne in più (popolazione, forma, autore, dimensione, gruppo, avvertenza) servono
+   ai riquadri 2006, 2014, 2025 e al confronto.
+
+Da dove vengono i numeri della parte 2:
+- 2006: originali/2006/tavole5/Violenza_Tavole.xls (tavole 1 e 3), tutte le donne 16-70.
+  Gli ultimi 5 anni del 2006 non sono nelle tavole 2006: vengono dal report 2014,
+  prospetto 11 (per caratteristiche) e prospetto 8 (per autore), trascritti qui sotto.
+- 2014: i CSV della banca dati Istat in originali/2014 (scaricati il 15/11/2026),
+  tutte le donne 16-70 e, per cittadinanza, italiane e straniere 16-70.
+  Le ripartizioni del 2014 non sono nella banca dati (ci sono le regioni): vengono dal
+  report 2014, prospetto 11.
+- 2025: originali/2025/Allegato-tavole-statistiche.xlsx (tavole 1 e 3), solo italiane;
+  per gli ultimi 5 anni senza distinzione di autore, report 2025, prospetto 5 (trascritto).
+
+Popolazioni: tutte_16_70 (2006, 2014), italiane_16_70 e straniere_16_70 (2014, 2025),
+italiane_16_75 (2025, nel corso della vita). Non si confrontano popolazioni diverse.
+«Non risponde» resta un gruppo a sé (gruppo = non_risponde), mai zero o dato mancante.
+avvertenza = errore_oltre_35 quando Istat segna il valore con * (errore campionario oltre il 35%).
 """
 import csv
+import re
+import sys
 from pathlib import Path
 
 import openpyxl
+try:
+    import xlrd
+except ImportError:
+    sys.exit('Manca xlrd: installalo con  pip install xlrd')
 
 QUI = Path(__file__).parent
+ORIG = QUI / 'originali'
+COLONNE = ['anno', 'periodo', 'territorio', 'indicatore', 'categoria', 'valore', 'unita', 'nota',
+           'popolazione', 'forma', 'autore', 'dimensione', 'gruppo', 'avvertenza']
 righe = []
+
+# ---------------------------------------------------------------------------------------------
+# Parte 1: righe storiche (invariate)
+# ---------------------------------------------------------------------------------------------
 def aggiungi(anno, periodo, indicatore, categoria, valore, unita, nota):
-    righe.append([anno, periodo, 'Italia', indicatore, categoria, valore, unita, nota])
+    righe.append(dict(anno=anno, periodo=periodo, territorio='Italia', indicatore=indicatore,
+                      categoria=categoria, valore=valore, unita=unita, nota=nota))
 
 P1 = 'report 2025, prospetto 1; italiane 16-75 anni'
-# Nella vita (dai 16 anni), 2025, % sulle donne italiane 16-75 anni (totale) o con partner/ex (coppia)
 for cat, v in [('fisica_o_sessuale', 31.9), ('fisica', 18.8), ('sessuale', 23.4), ('stupro_o_tentato', 5.7), ('stalking', 15.5)]:
     aggiungi(2025, 'nella_vita', 'violenza', cat, v, 'percentuale', P1 + '; colonna Totale')
 aggiungi(2025, 'nella_vita', 'violenza', 'fisica_o_sessuale_vittime', 6393143, 'persone', P1 + '; colonna Totale, valore assoluto')
 for cat, v in [('fisica_o_sessuale', 12.6), ('psicologica', 17.9), ('economica', 6.6)]:
     aggiungi(2025, 'nella_vita', 'violenza_da_partner_o_ex', cat, v, 'percentuale', P1 + '; % sulle donne con partner attuale o ex')
 aggiungi(2025, 'nella_vita', 'violenza_da_non_partner', 'fisica_o_sessuale', 26.5, 'percentuale', P1)
-# Denuncia, nella vita (report 2025, pagina 4)
 for cat, v in [('qualsiasi_autore', 13.3), ('ex_partner', 19.1), ('partner_attuale', 3.8)]:
     aggiungi(2025, 'nella_vita', 'hanno_denunciato', cat, v, 'percentuale', 'report 2025, pagina 4; % sulle vittime')
 
-# Ultimi 5 anni, violenza fisica o sessuale, donne 16-70
 P8 = 'report 2014, prospetto 8; tutte le donne 16-70 anni'
 aggiungi(2006, 'ultimi_5_anni', 'violenza_tutte', 'fisica_o_sessuale', 13.3, 'percentuale', P8)
 aggiungi(2014, 'ultimi_5_anni', 'violenza_tutte', 'fisica_o_sessuale', 11.3, 'percentuale', P8)
@@ -47,8 +76,7 @@ for anno, k in [(2014, 0), (2025, 1)]:
         aggiungi(anno, 'ultimi_5_anni', 'violenza_italiane', f'fisica_o_sessuale|{eta}', v[k], 'percentuale', P5)
     aggiungi(anno, 'ultimi_5_anni', 'violenza_italiane', 'sessuale|16-24', (17.7, 30.8)[k], 'percentuale', P5)
 
-# Tavola 4 dell'allegato: dopo la violenza (ultimi 5 anni), 2014 e 2025
-ws = openpyxl.load_workbook(QUI / 'originali' / '2025' / 'Allegato-tavole-statistiche.xlsx', data_only=True)['Tavola 4']
+ws = openpyxl.load_workbook(ORIG / '2025' / 'Allegato-tavole-statistiche.xlsx', data_only=True)['Tavola 4']
 VOCI = {'Si rivolgono ai centri antiviolenza': 'centro_antiviolenza', 'Ha denunciato': 'denuncia',
         'Considera l\'episodio che ha subito: Un reato': 'considera_reato', 'Non ha parlato con nessuno': 'non_ne_ha_parlato'}
 for r in ws.iter_rows(min_row=7, max_row=17, values_only=True):
@@ -65,8 +93,277 @@ for r in ws.iter_rows(min_row=7, max_row=17, values_only=True):
                 v = float(v.replace('*', '').replace(',', '.'))
             aggiungi(anno, 'ultimi_5_anni', f'dopo_la_violenza_{autore}', codice, round(v, 1), 'percentuale', nota)
 
+# ---------------------------------------------------------------------------------------------
+# Parte 2: righe «prevalenza»
+# ---------------------------------------------------------------------------------------------
+visti = set()
+def prevalenza(anno, periodo, popolazione, forma, autore, dimensione, gruppo, valore, nota,
+               territorio='Italia', avvertenza=''):
+    chiave = (anno, periodo, popolazione, forma, autore, dimensione, gruppo)
+    if chiave in visti:
+        raise SystemExit(f'Riga doppia: {chiave}')
+    visti.add(chiave)
+    righe.append(dict(anno=anno, periodo=periodo, territorio=territorio, indicatore='prevalenza',
+                      categoria=f'{forma}|{autore}|{dimensione}={gruppo}', valore=valore,
+                      unita='percentuale', nota=nota, popolazione=popolazione, forma=forma,
+                      autore=autore, dimensione=dimensione, gruppo=gruppo, avvertenza=avvertenza))
+
+def numero(v):
+    """Valore di una cella: (numero, avvertenza) oppure None se la cella è vuota o «-»."""
+    if v is None or v == '':
+        return None
+    if isinstance(v, (int, float)):
+        return round(float(v), 2), ''
+    s = str(v).strip()
+    if s in ('-', ''):
+        return None
+    avv = 'errore_oltre_35' if s.endswith('*') else ''
+    return round(float(s.replace('*', '').replace(',', '.')), 2), avv
+
+# Nomi dei gruppi uguali per i tre anni. La chiave è l'inizio dell'etichetta Istat, in minuscolo.
+SEZIONI = {'stato civile': 'stato_civile', "classi di età": 'eta', "eta'": 'eta', 'titolo di studio': 'titolo',
+           'titoli di studio': 'titolo', 'condizione professionale': 'condizione',
+           'ripartizione': 'ripartizione', 'limitazioni': 'limitazioni'}
+GRUPPI = [
+    ('nubile', 'nubile'), ('coniugata', 'coniugata'), ('separata', 'separata_divorziata'), ('vedova', 'vedova'),
+    ('16-24', '16-24'), ('25-34', '25-34'), ('35-44', '35-44'), ('45-54', '45-54'), ('55-64', '55-64'), ('65-70', '65-70'),
+    ('laurea', 'post_secondario'), ('post-secondario', 'post_secondario'), ('diploma superiore', 'superiore'),
+    ('secondario superiore', 'superiore'), ('licenza media', 'media'), ('secondario di primo grado', 'media'),
+    ('licenza elementare', 'elementare_nessuno'), ('elementare/nessun', 'elementare_nessuno'),
+    ('dirigenti', 'dirigenti'), ('direttiv', 'direttive_impiegate'), ('operaie', 'operaie'),
+    ('lavoratrici in proprio', 'in_proprio'), ('in cerca', 'in_cerca'), ('casalinghe', 'casalinghe'),
+    ('studentesse', 'studentesse'), ('ritirate', 'ritirate'), ('in altra condizione', 'altra'), ('altre inattive', 'altra'),
+    ('nord ovest', 'nord_ovest'), ('nord-ovest', 'nord_ovest'), ('nord est', 'nord_est'), ('nord-est', 'nord_est'),
+    ('centro', 'centro'), ('sud', 'sud'), ('isole', 'isole'),
+    ('limitazioni gravi', 'gravi'), ('limitazioni non gravi', 'non_gravi'), ('nessuna limitazione', 'nessuna'),
+    ('rifiuta/non risponde', 'non_risponde'),
+]
+def gruppo_di(etichetta):
+    e = re.sub(r'\s+', ' ', str(etichetta)).strip().lower()
+    return next((g for k, g in GRUPPI if e.startswith(k)), None)
+
+# --- 2006: Violenza_Tavole.xls ----------------------------------------------------------------
+xls06 = xlrd.open_workbook(ORIG / '2006' / 'tavole5' / 'Violenza_Tavole.xls')
+FORME = [('violenza fisica o sess', 'fisica_o_sessuale'), ('violenza fisica', 'fisica'),
+         ('violenza sessuale', 'sessuale'), ('stupro o tentato', 'stupro_o_tentato')]
+def forma_di(etichetta):
+    e = str(etichetta).replace('\xa0', ' ').strip().lower()
+    return next((f for k, f in FORME if e.startswith(k)), None)
+
+T1 = '2006, Violenza_Tavole.xls, tavola 1; tutte le donne 16-70 anni'
+s = xls06.sheet_by_name('tavola 1')
+for i in range(s.nrows):
+    r = s.row_values(i)
+    forma = forma_di(r[0])
+    if not forma:
+        continue
+    for col, periodo, autore in [(2, 'nella_vita', 'qualsiasi'), (3, 'nella_vita', 'partner_o_ex'), (4, 'nella_vita', 'non_partner'),
+                                 (6, 'ultimi_12_mesi', 'qualsiasi'), (7, 'ultimi_12_mesi', 'partner_o_ex'), (8, 'ultimi_12_mesi', 'non_partner')]:
+        n = numero(r[col])
+        if n:
+            prevalenza(2006, periodo, 'tutte_16_70', forma, autore, 'totale', 'totale', n[0], T1, avvertenza=n[1])
+
+T3 = '2006, Violenza_Tavole.xls, tavola 3; tutte le donne 16-70 anni'
+s = xls06.sheet_by_name('tavola 3')
+dim = None
+for i in range(s.nrows):
+    r = s.row_values(i)
+    etichetta = str(r[0]).strip()
+    if not etichetta:
+        continue
+    d = next((v for k, v in SEZIONI.items() if etichetta.lower().startswith(k)), None)
+    if d:
+        dim = d
+        continue
+    if etichetta.lower().startswith('totale'):
+        continue  # il totale è già nella tavola 1
+    g = gruppo_di(etichetta)
+    if not (dim and g):
+        continue
+    for col, forma, periodo in [(1, 'fisica_o_sessuale', 'nella_vita'), (2, 'fisica_o_sessuale', 'ultimi_12_mesi'),
+                                (4, 'fisica', 'nella_vita'), (5, 'fisica', 'ultimi_12_mesi'),
+                                (7, 'sessuale', 'nella_vita'), (8, 'sessuale', 'ultimi_12_mesi'),
+                                (10, 'stupro_o_tentato', 'nella_vita')]:
+        n = numero(r[col])
+        if n:
+            prevalenza(2006, periodo, 'tutte_16_70', forma, 'qualsiasi', dim, g, n[0], T3, avvertenza=n[1])
+
+# --- 2006 e 2014, ultimi 5 anni: report 2014 (Violenze_contro_le_donne.pdf), trascritti --------
+# Prospetto 11: per caratteristiche, colonne 2006 e 2014, violenza fisica o sessuale / fisica / sessuale.
+P11 = 'report 2014 (PDF), prospetto 11; tutte le donne 16-70 anni'
+P11_DATI = {  # gruppo: ((fs06, fs14), (f06, f14), (s06, s14))
+    'stato_civile': {'nubile': ((25.8, 20.2), (14.3, 12.3), (18.9, 12.1)), 'coniugata': ((7.2, 6.5), (4.4, 4.1), (4.0, 3.3)),
+                     'separata_divorziata': ((18.7, 16.3), (13.8, 10.8), (10.3, 9.0)), 'vedova': ((3.2, 4.0), (2.0, 2.3), (1.8, 1.9))},
+    'eta': {'16-24': ((31.7, 27.1), (17.2, 16.6), (24.7, 16.7)), '25-34': ((22.1, 18.2), (12.6, 11.3), (15.0, 10.4)),
+            '35-44': ((10.9, 10.5), (7.3, 7.1), (6.0, 5.8)), '45-54': ((7.9, 8.0), (4.5, 4.7), (4.4, 4.3)),
+            '55-64': ((5.0, 5.4), (2.9, 3.3), (2.7, 2.5)), '65-70': ((2.6, 1.9), (1.2, 1.2), (1.6, 0.9))},
+    'titolo': {'post_secondario': ((19.5, 15.1), (11.0, 8.7), (12.6, 8.8)), 'superiore': ((16.1, 12.7), (9.3, 7.9), (10.9, 7.3)),
+               'media': ((12.1, 10.6), (7.3, 6.8), (8.0, 5.6)), 'elementare_nessuno': ((3.1, 3.7), (1.7, 2.8), (1.9, 1.9))},
+    'condizione': {'dirigenti': ((17.8, 16.3), (12.0, 10.0), (8.6, 8.3)), 'direttive_impiegate': ((14.5, 12.5), (8.5, 8.1), (9.2, 6.7)),
+                   'operaie': ((13.0, 11.4), (8.2, 8.1), (8.7, 5.2)), 'in_proprio': ((12.2, 6.1), (6.7, 3.9), (6.9, 3.7)),
+                   'in_cerca': ((22.0, 17.3), (12.0, 10.1), (15.8, 10.8)), 'casalinghe': ((5.7, 5.1), (3.4, 2.9), (3.2, 3.0)),
+                   'studentesse': ((33.5, 25.9), (18.4, 14.8), (26.2, 16.4)), 'ritirate': ((3.8, 3.5), (2.3, 2.3), (1.9, 1.3)),
+                   'altra': ((6.0, 4.8), (3.1, 4.3), (3.7, 2.1))},
+    'ripartizione': {'nord_ovest': ((12.9, 10.9), (7.6, 6.3), (8.3, 6.6)), 'nord_est': ((14.2, 10.7), (7.3, 6.5), (9.9, 6.3)),
+                     'centro': ((13.8, 12.6), (8.4, 8.8), (9.1, 5.9)), 'sud': ((13.0, 12.3), (7.8, 7.3), (8.4, 7.2)),
+                     'isole': ((12.7, 9.0), (7.5, 5.9), (8.9, 5.2))},
+}
+for dim, gruppi in P11_DATI.items():
+    for g, valori in gruppi.items():
+        for forma, (v06, v14) in zip(['fisica_o_sessuale', 'fisica', 'sessuale'], valori):
+            prevalenza(2006, 'ultimi_5_anni', 'tutte_16_70', forma, 'qualsiasi', dim, g, v06, P11)
+            if dim == 'ripartizione':  # il 2014 per le altre caratteristiche viene dalla banca dati
+                prevalenza(2014, 'ultimi_5_anni', 'tutte_16_70', forma, 'qualsiasi', dim, g, v14, P11)
+
+# Prospetto 8: per autore, 2006 (il 2014 viene dalla banca dati). Basi: partner attuale = donne con partner,
+# ex = donne con un ex, partner o ex = donne con partner attuale o precedente, gli altri = tutte le donne.
+P8_2006 = 'report 2014 (PDF), prospetto 8, colonne 2006; tutte le donne 16-70 anni'
+for forma, valori in {'fisica_o_sessuale': (4.4, 6.0, 6.6, 4.2, 5.2, 9.0, 13.3), 'fisica': (3.3, 4.6, 5.1, 2.3, 1.2, 3.5, 7.7),
+                      'sessuale': (1.6, 2.9, 2.8, 2.5, 4.6, 6.8, 8.9), 'stupro_o_tentato': (0.2, 1.0, 0.7, 0.4, 0.2, 0.6, 1.2)}.items():
+    for autore, v in zip(['partner_attuale', 'ex_partner', 'partner_o_ex', 'conoscenti_parenti_amici', 'sconosciuto', 'non_partner', 'qualsiasi'], valori):
+        prevalenza(2006, 'ultimi_5_anni', 'tutte_16_70', forma, autore, 'totale', 'totale', v, P8_2006)
+
+# --- 2014: CSV della banca dati Istat -------------------------------------------------------------
+NOMI = {}
+with open(QUI / 'codici.csv', encoding='utf-8-sig') as fh:
+    for r in csv.DictReader(fh):
+        NOMI[(r['dimensione'], r['codice'])] = r['etichetta']
+
+PERIODO = {'LT': 'nella_vita', 'Y5': 'ultimi_5_anni', 'M12': 'ultimi_12_mesi'}
+FORMA = {'PHSEX': 'fisica_o_sessuale', 'PHY': 'fisica', 'SEXVIOL': 'sessuale', 'RAPE_OR_ATT': 'stupro_o_tentato'}
+AUTORE = {('CFP', 'CURR_OR_FORM'): 'partner_o_ex', ('CP', 'CURR_P'): 'partner_attuale', ('FP', 'EX_P'): 'ex_partner',
+          ('PNP', 'ANY_P_NOP'): 'qualsiasi', ('PNP', 'NOP'): 'non_partner', ('PNP', 'STRANGER'): 'sconosciuto',
+          ('PNP', 'RELATIVE'): 'parente', ('PNP', 'FRIEND'): 'amico', ('PNP', 'FAM_FRIEND'): 'amico_di_famiglia',
+          ('PNP', 'COLL'): 'collega', ('PNP', 'ACQUAIN'): 'conoscente', ('PNP', 'PER_KNOWN'): 'persona_conosciuta',
+          ('PNP', 'NOT_SPEC'): 'non_partner_non_specificato'}
+CODICI = {
+    'AGE_WOMAN': ('eta', {'Y16-24': '16-24', 'Y25-34': '25-34', 'Y35-44': '35-44', 'Y45-54': '45-54', 'Y55-64': '55-64', 'Y65-70': '65-70'}),
+    'EDU_LEV_WOMAN': ('titolo', {'NP': 'elementare_nessuno', 'LSE': 'media', 'USE_IF': 'superiore', 'CLF_ML': 'post_secondario'}),
+    'MARITAL_STATUS_WOMAN': ('stato_civile', {'SIN': 'nubile', 'MAR': 'coniugata', 'DIV': 'separata_divorziata', 'WID': 'vedova'}),
+    'LABPROF_STATUS_D_WOMAN': ('condizione', {'EXEMPPRO': 'dirigenti', 'MIDMANCO': 'direttive_impiegate', 'BLUCOAP': 'operaie',
+                                              'SLFEMPFA': 'in_proprio', 'SEEKJ': 'in_cerca', 'HOUSWI': 'casalinghe', 'STUD': 'studentesse',
+                                              'RET': 'ritirate', 'OTHER6': 'altra'}),
+    'ACTIVITY_LIMITATION_6M': ('limitazioni', {'SER_LIM': 'gravi', 'SER_NOTLIM': 'non_gravi', 'NO_LIM': 'nessuna', 'NRP': 'non_risponde'}),
+}
+TOTALI = {'AGE_WOMAN': 'Y16-70', 'EDU_LEV_WOMAN': 'ALL', 'MARITAL_STATUS_WOMAN': 'ALL', 'LABPROF_STATUS_D_WOMAN': 'ALL',
+          'ACTIVITY_LIMITATION_6M': 'ALL', 'REF_AREA': 'IT'}
+POPOLAZIONE = {'TOTAL': 'tutte_16_70', 'ITL': 'italiane_16_70', 'FRG': 'straniere_16_70'}
+
+def leggi_csv(nome):
+    (percorso,) = [p for p in (ORIG / '2014').glob(f'*{nome}*.csv') if 'etichette' not in p.name]
+    with open(percorso, encoding='utf-8-sig') as fh:
+        return [r for r in csv.DictReader(fh)], percorso.name
+
+def dove(r):
+    """La caratteristica della riga: (dimensione, gruppo, territorio), oppure totale."""
+    for colonna, (dim, mappa) in CODICI.items():
+        if r[colonna] != TOTALI[colonna]:
+            return dim, mappa[r[colonna]], 'Italia'
+    if r['REF_AREA'] != 'IT':
+        return 'regione', r['REF_AREA'], NOMI[('REF_AREA', r['REF_AREA'])]
+    return 'totale', 'totale', 'Italia'
+
+# File «Tipo di autore, …»: tutte le donne, tutti gli autori.
+for nome in ['Tipo di autore, età', 'Tipo di autore, titolo', 'Tipo di autore, stato civile',
+             'Tipo di autore, condizione', 'Tipo di autore e regione']:
+    dati, file = leggi_csv(nome)
+    for r in dati:
+        base, per = r['DATA_TYPE'].replace('W16_70_', '').split('_')
+        autore = AUTORE.get((base, r['PERPETRATOR']))
+        dim, g, terr = dove(r)
+        if dim == 'totale' and nome != 'Tipo di autore, età':
+            continue  # il totale si prende una volta sola
+        if r['OBS_VALUE'] == '':
+            continue
+        prevalenza(2014, PERIODO[per], 'tutte_16_70', FORMA[r['TYPE_VIOLENCE']], autore, dim, g,
+                   round(float(r['OBS_VALUE']), 2), f'2014, banca dati Istat, {file}', territorio=terr)
+
+# File «Cittadinanza, …»: italiane e straniere (qualsiasi autore); per tutte le donne solo le limitazioni,
+# che negli altri file non ci sono.
+for nome in ['Cittadinanza, età', 'Cittadinanza, titolo', 'Cittadinanza, stato civile',
+             'Cittadinanza, condizione', 'Cittadinanza, presenza di limitazioni']:
+    dati, file = leggi_csv(nome)
+    for r in dati:
+        per = r['DATA_TYPE'].split('_')[-2]
+        pop = POPOLAZIONE[r['CITIZENSHIP_WOMAN']]
+        dim, g, terr = dove(r)
+        if pop == 'tutte_16_70' and dim != 'limitazioni':
+            continue
+        if dim == 'totale' and nome != 'Cittadinanza, età':
+            continue
+        if r['OBS_VALUE'] == '':
+            continue
+        prevalenza(2014, PERIODO[per], pop, FORMA[r['TYPE_VIOLENCE']], 'qualsiasi', dim, g,
+                   round(float(r['OBS_VALUE']), 2), f'2014, banca dati Istat, {file}', territorio=terr)
+
+# --- 2025: allegato Excel ----------------------------------------------------------------------
+wb25 = openpyxl.load_workbook(ORIG / '2025' / 'Allegato-tavole-statistiche.xlsx', data_only=True)
+
+T1_25 = 'allegato 2025, tavola 1; italiane 16-75 anni (partner attuale: % su chi ha un partner; ex: su chi ha un ex; partner o ex: su chi ha o ha avuto un partner; non partner e qualsiasi: su tutte)'
+for r in wb25['Tavola 1'].iter_rows(min_row=6, max_row=12, values_only=True):
+    forma = forma_di(r[0])
+    if not forma:
+        continue
+    for col, autore in [(1, 'partner_attuale'), (2, 'ex_partner'), (3, 'partner_o_ex'), (4, 'non_partner'), (13, 'qualsiasi')]:
+        n = numero(r[col])
+        if n:
+            prevalenza(2025, 'nella_vita', 'italiane_16_75', forma, autore, 'totale', 'totale', n[0], T1_25, avvertenza=n[1])
+
+T3_25 = ('allegato 2025, tavola 3; italiane 16-70 anni; esclusi i rapporti sessuali quando non era in grado di opporsi '
+         '(per il confronto con il 2014)')
+dim = None
+for r in wb25['Tavola 3'].iter_rows(min_row=7, values_only=True):
+    etichetta = str(r[0] or '').strip()
+    if not etichetta:
+        continue
+    if etichetta.lower().startswith('numero totale'):
+        break
+    d = next((v for k, v in SEZIONI.items() if etichetta.lower().startswith(k)), None)
+    if d or etichetta.isupper():
+        dim = d  # None per le sezioni sulla salute, che non si usano
+        continue
+    if etichetta.lower() == 'totale':
+        dim_g = ('totale', 'totale')
+    else:
+        g = gruppo_di(etichetta)
+        if not (dim and g):
+            continue
+        dim_g = (dim, g)
+    for inizio, forma in [(1, 'fisica_o_sessuale'), (6, 'fisica'), (11, 'sessuale'), (16, 'stupro_o_tentato')]:
+        for k, autore in enumerate(['partner_o_ex', 'partner_attuale', 'ex_partner', 'non_partner']):
+            n = numero(r[inizio + k])
+            if n:
+                prevalenza(2025, 'ultimi_5_anni', 'italiane_16_70', forma, autore, *dim_g, n[0], T3_25, avvertenza=n[1])
+
+# --- 2025, ultimi 5 anni, qualsiasi autore: report 2025, prospetto 5 (trascritto, colonna 2025) ----
+P5_2025 = {  # gruppo: (fisica o sessuale, fisica, sessuale)
+    'stato_civile': {'nubile': (22.4, 11.5, 16.5), 'coniugata': (3.5, 2.3, 1.6), 'separata_divorziata': (10.3, 7.8, 4.7), 'vedova': (0.9, 0.8, 0.1)},
+    'eta': {'16-24': (37.6, 18.8, 30.8), '25-34': (18.2, 9.2, 12.2), '35-44': (9.5, 6.1, 4.9), '45-54': (5.4, 4.0, 2.3),
+            '55-64': (3.4, 2.2, 1.5), '65-70': (1.6, 1.0, 0.7)},
+    'titolo': {'elementare_nessuno': (2.3, 1.6, 1.0), 'media': (8.2, 3.7, 5.8), 'superiore': (12.2, 5.6, 8.2), 'post_secondario': (13.9, 6.5, 8.6)},
+    'condizione': {'dirigenti': (11.9, 7.2, 7.1), 'direttive_impiegate': (10.5, 6.1, 6.2), 'operaie': (9.8, 4.6, 7.0),
+                   'in_proprio': (3.5, 1.8, 2.0), 'in_cerca': (14.5, 9.6, 9.2), 'casalinghe': (3.7, 2.4, 1.6),
+                   'studentesse': (36.2, 18.1, 29.1), 'ritirate': (1.1, 0.7, 0.4), 'altra': (7.4, 4.8, 3.2)},
+    'ripartizione': {'nord_ovest': (10.8, 5.6, 7.3), 'nord_est': (12.2, 6.6, 8.2), 'centro': (12.4, 7.7, 7.8),
+                     'sud': (10.0, 5.7, 6.9), 'isole': (9.2, 4.7, 5.9)},
+    'totale': {'totale': (11.0, 6.1, 7.3)},
+}
+# Colonna 2014 del prospetto 5, solo per le ripartizioni: la banca dati 2014 non ha le ripartizioni per cittadinanza.
+P5_2014_RIPARTIZIONI = {'nord_ovest': (10.6, 5.8, 6.6), 'nord_est': (10.3, 5.9, 6.2), 'centro': (12.7, 8.9, 5.9),
+                        'sud': (12.4, 7.2, 7.3), 'isole': (9.0, 5.9, 5.2)}
+P5N = 'report 2025 (PDF), prospetto 5, colonna 2025; italiane 16-70 anni'
+for dim, gruppi in P5_2025.items():
+    for g, valori in gruppi.items():
+        for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale'], valori):
+            prevalenza(2025, 'ultimi_5_anni', 'italiane_16_70', forma, 'qualsiasi', dim, g, v, P5N)
+for g, valori in P5_2014_RIPARTIZIONI.items():
+    for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale'], valori):
+        prevalenza(2014, 'ultimi_5_anni', 'italiane_16_70', forma, 'qualsiasi', 'ripartizione', g, v,
+                   'report 2025 (PDF), prospetto 5, colonna 2014; italiane 16-70 anni')
+
+# ---------------------------------------------------------------------------------------------
 with open(QUI / 'dati.csv', 'w', encoding='utf-8-sig', newline='') as fh:
-    w = csv.writer(fh, lineterminator='\n')
-    w.writerow(['anno', 'periodo', 'territorio', 'indicatore', 'categoria', 'valore', 'unita', 'nota'])
+    w = csv.DictWriter(fh, fieldnames=COLONNE, lineterminator='\n', restval='')
+    w.writeheader()
     w.writerows(righe)
 print(f'{len(righe)} righe scritte in dati.csv')

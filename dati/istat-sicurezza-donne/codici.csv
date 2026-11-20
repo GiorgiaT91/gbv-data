@@ -1,0 +1,106 @@
+﻿dimensione,codice,etichetta,origine
+REF_AREA,IT,Italia,CSV con etichette Istat
+REF_AREA,ITC1,Piemonte,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITC2,Valle d'Aosta,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITC3,Liguria,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITC4,Lombardia,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITDA,Trentino-Alto Adige,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITD1,Provincia autonoma di Bolzano,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITD2,Provincia autonoma di Trento,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITD3,Veneto,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITD4,Friuli-Venezia Giulia,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITD5,Emilia-Romagna,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITE1,Toscana,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITE2,Umbria,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITE3,Marche,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITE4,Lazio,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF1,Abruzzo,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF2,Molise,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF3,Campania,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF4,Puglia,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF5,Basilicata,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITF6,Calabria,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITG1,Sicilia,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+REF_AREA,ITG2,Sardegna,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+DATA_TYPE,W16_70_PNP_LT_C,Donne di 16-70 anni che hanno subito violenza nel corso della vita (% su donne di 16-70 anni con la stessa cittadinanza),CSV con etichette Istat
+DATA_TYPE,W16_70_PNP_Y5_C,Donne di 16-70 anni che hanno subito violenza negli ultimi 5 anni (% su donne di 16-70 anni con la stessa cittadinanza),CSV con etichette Istat
+DATA_TYPE,W16_70_PNP_M12_C,Donne di 16-70 anni che hanno subito violenza negli ultimi 12 mesi (% su donne di 16-70 anni con la stessa cittadinanza),CSV con etichette Istat
+DATA_TYPE,W16_70_PNP_LT,Donne di 16-70 anni che hanno subito violenza nel corso della vita (% su donne di 16-70 anni),CSV con etichette Istat
+DATA_TYPE,W16_70_PNP_Y5,Donne di 16-70 anni che hanno subito violenza negli ultimi 5 anni (% su donne di 16-70 anni),CSV con etichette Istat
+DATA_TYPE,W16_70_PNP_M12,Donne di 16-70 anni che hanno subito violenza negli ultimi 12 mesi (% su donne di 16-70 anni),CSV con etichette Istat
+DATA_TYPE,W16_70_CFP_LT,Donne di 16-70 anni che hanno subito violenza nel corso della vita (% su donne di 16-70 anni che hanno o hanno avuto un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_CFP_Y5,Donne di 16-70 anni che hanno subito violenza negli ultimi 5 anni (% su donne di 16-70 anni che hanno o hanno avuto un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_CFP_M12,Donne di 16-70 anni che hanno subito violenza negli ultimi 12 mesi (% su donne di 16-70 anni che hanno o hanno avuto un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_CP_LT,Donne di 16-70 anni che hanno subito violenza nel corso della vita (% su donne di 16-70 anni che hanno un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_CP_Y5,Donne di 16-70 anni che hanno subito violenza dall'attuale partner negli ultimi 5 anni (% su donne di 16-70 anni che hanno un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_CP_M12,Donne di 16-70 anni che hanno subito violenza dall'attuale partner negli ultimi 12 mesi (% su donne di 16-70 anni che hanno un partner),CSV con etichette Istat
+DATA_TYPE,W16_70_FP_LT,Donne di 16-70 anni che hanno subito violenza nel corso della vita (% su donne di 16-70 anni che hanno un ex partner),CSV con etichette Istat
+DATA_TYPE,W16_70_FP_Y5,Donne di 16-70 anni che hanno subito violenza negli ultimi 5 anni (% su donne di 16-70 anni che hanno un ex partner),CSV con etichette Istat
+DATA_TYPE,W16_70_FP_M12,Donne di 16-70 anni che hanno subito violenza negli ultimi 12 mesi (% su donne di 16-70 anni che hanno un ex partner),CSV con etichette Istat
+PERPETRATOR,ANY_P_NOP,Qualsiasi uomo (partner e non partner),CSV con etichette Istat
+PERPETRATOR,NOP,Uomo non partner,CSV con etichette Istat
+PERPETRATOR,PER_KNOWN,Persona conosciuta (non partner),CSV con etichette Istat
+PERPETRATOR,RELATIVE,Parente/familiare,CSV con etichette Istat
+PERPETRATOR,FRIEND,Un amico,CSV con etichette Istat
+PERPETRATOR,FAM_FRIEND,Un amico di famiglia,CSV con etichette Istat
+PERPETRATOR,COLL,Un collega,CSV con etichette Istat
+PERPETRATOR,ACQUAIN,Un conoscente/uomo che conosce di vista,CSV con etichette Istat
+PERPETRATOR,NOT_SPEC,Non partner (non specifica),CSV con etichette Istat
+PERPETRATOR,STRANGER,Uno sconosciuto,CSV con etichette Istat
+PERPETRATOR,CURR_OR_FORM,Partner attuale o ex partner,CSV con etichette Istat
+PERPETRATOR,CURR_P,Partner attuale,CSV con etichette Istat
+PERPETRATOR,EX_P,Ex partner,CSV con etichette Istat
+TYPE_VIOLENCE,PHSEX,Violenza fisica o sessuale,CSV con etichette Istat
+TYPE_VIOLENCE,PHY,Violenza fisica,CSV con etichette Istat
+TYPE_VIOLENCE,SEXVIOL,Violenza sessuale,CSV con etichette Istat
+TYPE_VIOLENCE,RAPE_OR_ATT,Stupro o tentato stupro,CSV con etichette Istat
+TYPE_VIOLENCE,THRE_TO_HIT,Minacciate di essere colpite fisicamente,CSV con etichette Istat
+TYPE_VIOLENCE,HIT_WI_OBJ,Colpite con un oggetto o cui hanno tirato qualcosa,CSV con etichette Istat
+TYPE_VIOLENCE,PUSH_HAD,"Spinte, afferrate, strattonate, cui hanno storto un braccio, tirato i capelli",CSV con etichette Istat
+TYPE_VIOLENCE,SLAP_KIC,"Schiaffeggiate, prese a calci, a pugni o morse",CSV con etichette Istat
+TYPE_VIOLENCE,STRA_BUR,"Che hanno tentato di strangolare, soffocare, ustionare",CSV con etichette Istat
+TYPE_VIOLENCE,USE_THRE,Contro cui hanno usato o minacciato di usare una pistola o un coltello,CSV con etichette Istat
+TYPE_VIOLENCE,EXPE_OTH,Che hanno subito violenza fisica in un modo diverso,CSV con etichette Istat
+TYPE_VIOLENCE,RAPE,Stupro,CSV con etichette Istat
+TYPE_VIOLENCE,RAPE_ATT,Tentato stupro,CSV con etichette Istat
+TYPE_VIOLENCE,UNW_SEX,Rapporti sessuali indesiderati,CSV con etichette Istat
+TYPE_VIOLENCE,FORC_SEX,Forzate ad attività sessuale con altre persone,CSV con etichette Istat
+TYPE_VIOLENCE,OTH_FORM,Tutto ciò che è violenza sessuale ma non è stato elencato,CSV con etichette Istat
+TYPE_VIOLENCE,PHSEX_EXH,Violenza fisica o sessuale senza molestie,CSV con etichette Istat
+TYPE_VIOLENCE,FORC_HAR,Molestie fisiche sessuali,CSV con etichette Istat
+TYPE_VIOLENCE,FORC_DEG,Forzate ad attività sessuale considerata umiliante,CSV con etichette Istat
+CITIZENSHIP_WOMAN,ITL,Italiano-a,CSV con etichette Istat
+CITIZENSHIP_WOMAN,FRG,Straniero-a,CSV con etichette Istat
+CITIZENSHIP_WOMAN,TOTAL,Totale,CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,EXEMPPRO,"Dirigenti, imprenditori, liberi professionisti",CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,MIDMANCO,"Direttivo, quadro, impiegato",CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,BLUCOAP,"Operaio, apprendista",CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,SLFEMPFA,"Lavoratore in proprio, coadiuvante familiare, co.co.co.",CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,HOUSWI,Casalinga-o,CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,STUD,Studente,CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,SEEKJ,In cerca di occupazione,CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,RET,Ritirato-a dal lavoro,CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,OTHER6,"In altra condizione (diverso da casalinga,studente,in cerca di occupazione,ritirato dal lavoro)",CSV con etichette Istat
+LABPROF_STATUS_D_WOMAN,ALL,Tutte le voci,CSV con etichette Istat
+ACTIVITY_LIMITATION_6M,SER_LIM,Gravi limitazioni nelle attività,CSV con etichette Istat
+ACTIVITY_LIMITATION_6M,SER_NOTLIM,Non gravi limitazioni nelle attività,CSV con etichette Istat
+ACTIVITY_LIMITATION_6M,NO_LIM,Nessuna limitazione nelle attività,CSV con etichette Istat
+ACTIVITY_LIMITATION_6M,NRP,Non risponde,CSV con etichette Istat
+ACTIVITY_LIMITATION_6M,ALL,Tutte le voci,CSV con etichette Istat
+EDU_LEV_WOMAN,NP,"Licenza di scuola elementare, nessun titolo di studio",CSV con etichette Istat
+EDU_LEV_WOMAN,LSE,Licenza di scuola media inferiore o di avviamento professionale,CSV con etichette Istat
+EDU_LEV_WOMAN,USE_IF,Diploma di istruzione secondaria di II grado o di qualifica professionale (corso di 3-4 anni) compresi IFTS,CSV con etichette Istat
+EDU_LEV_WOMAN,CLF_ML,Laurea o diploma universitario,CSV con etichette Istat
+EDU_LEV_WOMAN,ALL,Totale,CSV con etichette Istat
+AGE_WOMAN,Y16-70,16-70 anni (totale),"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y16-24,16-24 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y25-34,25-34 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y35-44,35-44 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y45-54,45-54 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y55-64,55-64 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+AGE_WOMAN,Y65-70,65-70 anni,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+MARITAL_STATUS_WOMAN,ALL,Totale,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+MARITAL_STATUS_WOMAN,SIN,Nubile,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+MARITAL_STATUS_WOMAN,MAR,Coniugata,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+MARITAL_STATUS_WOMAN,DIV,Separata o divorziata,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"
+MARITAL_STATUS_WOMAN,WID,Vedova,"ricavata: nomi delle regioni dall'Excel Istat, età e stato civile dal codice"

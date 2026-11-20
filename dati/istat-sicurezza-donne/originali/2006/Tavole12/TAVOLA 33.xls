@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 11">
+<link rel=File-List href="TAVOLA%2033_file/filelist.xml">
+<link rel=Edit-Time-Data href="TAVOLA%2033_file/editdata.mso">
+<link rel=OLE-Object-Data href="TAVOLA%2033_file/oledata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+x\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>SAS Output</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>istat</o:LastAuthor>
+  <o:LastPrinted>2007-06-20T15:35:05Z</o:LastPrinted>
+  <o:Created>2007-06-05T13:17:24Z</o:Created>
+  <o:LastSaved>2007-06-20T15:35:11Z</o:LastSaved>
+  <o:Version>11.6568</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\,";
+	mso-displayed-thousand-separator:"\.";}
+@page
+	{margin:.98in .79in 1.38in .79in;
+	mso-header-margin:0in;
+	mso-footer-margin:.87in;}
+.font8
+	{color:black;
+	font-size:9.0pt;
+	font-weight:400;
+	font-style:italic;
+	text-decoration:none;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normale;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding:0px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl25
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	color:black;
+	font-size:9.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl30
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl32
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl33
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>TAVOLA 33</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>180</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:Scale>99</x:Scale>
+      <x:HorizontalResolution>600</x:HorizontalResolution>
+      <x:VerticalResolution>600</x:VerticalResolution>
+     </x:Print>
+     <x:ShowPageBreakZoom/>
+     <x:PageBreakZoom>100</x:PageBreakZoom>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveCol>2</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>9120</x:WindowHeight>
+  <x:WindowWidth>12120</x:WindowWidth>
+  <x:WindowTopX>240</x:WindowTopX>
+  <x:WindowTopY>375</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>Print_Area</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 33'!$A$1:$B$17</x:Formula>
+ </x:ExcelName>
+ <x:ExcelName>
+  <x:Name>IDX</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 33'!$A$1</x:Formula>
+ </x:ExcelName>
+ <x:ExcelName>
+  <x:Name>IDX1</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 33'!#REF!</x:Formula>
+ </x:ExcelName>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="2"/>
+ </o:shapelayout></xml><![endif]-->
+<noscript>
+</noscript>
+
+<script language="JavaScript"  type="text/javascript">
+<!-- 
+function startup(){
+
+}
+function shutdown(){
+
+}
+
+//-->
+</script>
+</head>
+
+<body link=black vlink=black class=xl24>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=1112 style='border-collapse:
+ collapse;table-layout:fixed;width:836pt'>
+ <col class=xl24 width=556 style='mso-width-source:userset;mso-width-alt:20333;
+ width:417pt'>
+ <col class=xl25 width=53 span=2 style='mso-width-source:userset;mso-width-alt:
+ 1938;width:40pt'>
+ <col class=xl25 width=45 style='mso-width-source:userset;mso-width-alt:1645;
+ width:34pt'>
+ <col class=xl25 width=60 span=2 style='mso-width-source:userset;mso-width-alt:
+ 2194;width:45pt'>
+ <col class=xl25 width=57 style='mso-width-source:userset;mso-width-alt:2084;
+ width:43pt'>
+ <col class=xl25 width=53 style='mso-width-source:userset;mso-width-alt:1938;
+ width:40pt'>
+ <col class=xl25 width=57 style='mso-width-source:userset;mso-width-alt:2084;
+ width:43pt'>
+ <col class=xl25 width=60 style='mso-width-source:userset;mso-width-alt:2194;
+ width:45pt'>
+ <col class=xl26 width=58 style='mso-width-source:userset;mso-width-alt:2121;
+ width:44pt'>
+ <tr height=32 style='mso-height-source:userset;height:24.0pt'>
+  <td colspan=2 height=32 class=xl27 width=609 style='height:24.0pt;width:457pt'><script language="JavaScript"  type="text/javascript">
+<!-- 
+var _info = navigator.userAgent
+var _ie = (_info.indexOf("MSIE") > 0
+          && _info.indexOf("Win") > 0
+          && _info.indexOf("Windows 3.1") < 0);
+
+//-->
+  </script><a name=IDX></a><a name="Print_Area">Tavola 33 - Donne dai 16 ai 70
+  hanni che hanno subito violenza da un uomo non partner, a seguito della<br>
+    <span style='mso-spacerun:yes'>                    </span>quale hanno
+  riportato ferite, per tipo di ferite - Anno 2006 <font class="font8">(per 100
+  vittime)</font></a></td>
+  <td class=xl27 width=53 style='width:40pt'>&nbsp;</td>
+  <td class=xl27 width=45 style='width:34pt'>&nbsp;</td>
+  <td class=xl27 width=60 style='width:45pt'>&nbsp;</td>
+  <td class=xl27 width=60 style='width:45pt'>&nbsp;</td>
+  <td class=xl27 width=57 style='width:43pt'>&nbsp;</td>
+  <td class=xl27 width=53 style='width:40pt'>&nbsp;</td>
+  <td class=xl27 width=57 style='width:43pt'>&nbsp;</td>
+  <td class=xl27 width=60 style='width:45pt'>&nbsp;</td>
+  <td class=xl27 width=58 style='width:44pt'>&nbsp;</td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td colspan=3 height=16 class=xl28 width=662 style='height:12.0pt;width:497pt'>&nbsp;</td>
+  <td colspan=7 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td height=16 class=xl29 style='height:12.0pt'>Tipo di ferite riportate</td>
+  <td class=xl30 width=53 style='width:40pt'>%</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl24 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=9 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Lividi</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="81.2">81,2</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Tagli/graffi/bruciature
+  etc.</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="25.1">25,1</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Fratture</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="5">5,0</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Trauma
+  cranico</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="3.7">3,7</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Frattura
+  del setto nasale</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="1">1,0</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Lesioni
+  interne</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="0.7">0,7</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Aborto</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="0.5">0,5</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'>Lesioni
+  ai genitali</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="3.5">3,5</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl28 width=556 style='height:9.0pt;width:417pt'
+  x:str="Altro ">Altro<span style='mso-spacerun:yes'> </span></td>
+  <td class=xl31 width=53 style='width:40pt' x:num="1.6">1,6</td>
+  <td class=xl31>&nbsp;</td>
+  <td colspan=7 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl24 style='height:9.0pt'>Totale*</td>
+  <td class=xl31 width=53 style='width:40pt' x:num="100">100,0</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl32 style='height:9.0pt'>&nbsp;</td>
+  <td class=xl33 width=53 style='width:40pt'>&nbsp;</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=8 style='mso-height-source:userset;height:6.0pt'>
+  <td height=8 class=xl24 style='height:6.0pt'>&nbsp;</td>
+  <td class=xl31>&nbsp;</td>
+  <td colspan=8 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl34 style='height:9.0pt'>* La somma può essere superiore
+  a 100 perché la donna può aver riportato più ferite</td>
+  <td colspan=9 class=xl25 style='mso-ignore:colspan'>&nbsp;</td>
+  <td class=xl26>&nbsp;</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=556 style='width:417pt'></td>
+  <td width=53 style='width:40pt'></td>
+  <td width=53 style='width:40pt'></td>
+  <td width=45 style='width:34pt'></td>
+  <td width=60 style='width:45pt'></td>
+  <td width=60 style='width:45pt'></td>
+  <td width=57 style='width:43pt'></td>
+  <td width=53 style='width:40pt'></td>
+  <td width=57 style='width:43pt'></td>
+  <td width=60 style='width:45pt'></td>
+  <td width=58 style='width:44pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

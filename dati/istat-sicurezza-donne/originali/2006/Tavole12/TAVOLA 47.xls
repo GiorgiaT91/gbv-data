@@ -1,0 +1,574 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 11">
+<link rel=File-List href="TAVOLA%2048_file/filelist.xml">
+<link rel=Edit-Time-Data href="TAVOLA%2048_file/editdata.mso">
+<link rel=OLE-Object-Data href="TAVOLA%2048_file/oledata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+x\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>SAS Output</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>istat</o:LastAuthor>
+  <o:LastPrinted>2007-06-12T13:35:33Z</o:LastPrinted>
+  <o:Created>2007-06-05T14:04:21Z</o:Created>
+  <o:LastSaved>2007-06-12T13:41:08Z</o:LastSaved>
+  <o:Version>11.6568</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\,";
+	mso-displayed-thousand-separator:"\.";}
+@page
+	{margin:.98in .79in 1.38in .79in;
+	mso-header-margin:0in;
+	mso-footer-margin:.87in;}
+.font7
+	{color:black;
+	font-size:9.0pt;
+	font-weight:400;
+	font-style:italic;
+	text-decoration:none;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;}
+col
+	{mso-width-source:auto;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normale;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding:0px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl25
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;}
+.xl26
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:center;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl30
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	text-align:right;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl32
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl33
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-number-format:"0\.0";
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl35
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;}
+.xl36
+	{mso-style-parent:style0;
+	color:black;
+	font-size:9.0pt;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:none;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl38
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:left;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl39
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:center;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:.5pt solid windowtext;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl40
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:.5pt solid windowtext;
+	border-right:none;
+	border-bottom:none;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+.xl41
+	{mso-style-parent:style0;
+	color:black;
+	font-size:7.0pt;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	text-align:right;
+	vertical-align:middle;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;
+	background:white;
+	mso-pattern:auto none;
+	white-space:normal;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>TAVOLA 47</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>180</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:HorizontalResolution>600</x:HorizontalResolution>
+      <x:VerticalResolution>600</x:VerticalResolution>
+     </x:Print>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>1</x:ActiveRow>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>11640</x:WindowHeight>
+  <x:WindowWidth>15480</x:WindowWidth>
+  <x:WindowTopX>0</x:WindowTopX>
+  <x:WindowTopY>120</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+ <x:ExcelName>
+  <x:Name>IDX</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 47'!$A$1</x:Formula>
+ </x:ExcelName>
+ <x:ExcelName>
+  <x:Name>IDX1</x:Name>
+  <x:SheetIndex>1</x:SheetIndex>
+  <x:Formula>='TAVOLA 47'!#REF!</x:Formula>
+ </x:ExcelName>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="2"/>
+ </o:shapelayout></xml><![endif]-->
+<noscript>
+</noscript>
+
+<script language="JavaScript"  type="text/javascript">
+<!-- 
+function startup(){
+
+}
+function shutdown(){
+
+}
+
+//-->
+</script>
+</head>
+
+<body link=black vlink=black class=xl24 onload="startup()" onunload="shutdown()">
+<noscript>
+</noscript>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=576 style='border-collapse:
+ collapse;table-layout:fixed;width:432pt'>
+ <col class=xl25 width=174 style='mso-width-source:userset;mso-width-alt:6363;
+ width:131pt'>
+ <col class=xl24 width=84 style='mso-width-source:userset;mso-width-alt:3072;
+ width:63pt'>
+ <col class=xl24 width=111 style='mso-width-source:userset;mso-width-alt:4059;
+ width:83pt'>
+ <col class=xl24 width=119 style='mso-width-source:userset;mso-width-alt:4352;
+ width:89pt'>
+ <col class=xl24 width=88 style='mso-width-source:userset;mso-width-alt:3218;
+ width:66pt'>
+ <tr height=48 style='mso-height-source:userset;height:36.0pt'>
+  <td colspan=5 height=48 class=xl36 width=576 style='height:36.0pt;width:432pt'><script language="JavaScript"  type="text/javascript">
+<!-- 
+var _info = navigator.userAgent
+var _ie = (_info.indexOf("MSIE") > 0
+          && _info.indexOf("Win") > 0
+          && _info.indexOf("Windows 3.1") < 0);
+
+//-->
+  </script><a name=IDX>Tavola 47 - Donne dai 16 ai 70 anni che hanno subito
+  violenza da un uomo non partner e che hanno<br>
+    <span style='mso-spacerun:yes'>                    </span>denunciato la
+  violenza subita, per imputazioni a seguito della denuncia del fatto, <br>
+    <span style='mso-spacerun:yes'>                    </span>ripartizione
+  geografica e tipo di comune - Anno 2006<font class="font7"> (per 100 vittime
+  della stessa zona)</font></a></td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td height=16 class=xl26 style='height:12.0pt'>&nbsp;</td>
+  <td colspan=4 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td rowspan=2 height=32 class=xl37 width=174 style='border-bottom:.5pt solid black;
+  height:24.0pt;width:131pt'></colgroup></colgroup>&nbsp;</td>
+  <td colspan=3 class=xl39 width=314 style='width:235pt'>A seguito di questo
+  episodio ci sono state imputazioni contro di lui</td>
+  <td rowspan=2 class=xl40 width=88 style='border-bottom:.5pt solid black;
+  width:66pt'>Totale</td>
+ </tr>
+ <tr height=16 style='mso-height-source:userset;height:12.0pt'>
+  <td height=16 class=xl28 width=84 style='height:12.0pt;width:63pt'>Sì</td>
+  <td class=xl28 width=111 style='width:83pt'>No</td>
+  <td class=xl28 width=119 style='width:89pt'>Non sa, non ricorda</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl26 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=4 class=xl27 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>RIPARTIZIONI
+  GEOGRAFICHE</td>
+  <td colspan=4 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Nord-ovest</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="40.9">40,9</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="43">43,0</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="16.1">16,1</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Nord-est</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="15.4">15,4</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="75.6">75,6</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="9">9,0</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Centro</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="25.6">25,6</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="50.2">50,2</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="24.1">24,1</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Sud</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="15.5">15,5</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="82.2">82,2</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="2.3">2,3</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Isole</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="44.7">44,7</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="55.3">55,3</td>
+  <td class=xl31 width=119 style='width:89pt'>-</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl32 width=174 style='height:9.0pt;width:131pt'>Italia</td>
+  <td class=xl33 align=right width=84 style='width:63pt' x:num="29.6">29,6</td>
+  <td class=xl33 align=right width=111 style='width:83pt' x:num="57.6">57,6</td>
+  <td class=xl33 align=right width=119 style='width:89pt' x:num="12.7">12,7</td>
+  <td class=xl33 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl32 style='height:9.0pt'>&nbsp;</td>
+  <td colspan=4 class=xl30 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>TIPI DI
+  COMUNE</td>
+  <td colspan=4 class=xl24 style='mso-ignore:colspan'>&nbsp;</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Comune
+  centro dell'area metropolitana</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="40.1">40,1</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="56.3">56,3</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="3.6">3,6</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Periferia
+  dell'area metropolitana</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="34.3">34,3</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="31.5">31,5</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="34.2">34,2</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Fino a
+  2.000 abitanti</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="42.5">42,5</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="54.7">54,7</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="2.8">2,8</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Da 2.001
+  a 10.000 abitanti</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="33.8">33,8</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="64.2">64,2</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="2">2,0</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>Da 10.001
+  a 50.000 abitanti</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="13.3">13,3</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="57.7">57,7</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="29">29,0</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl29 width=174 style='height:9.0pt;width:131pt'>50.001
+  abitanti e più</td>
+  <td class=xl30 align=right width=84 style='width:63pt' x:num="19.1">19,1</td>
+  <td class=xl30 align=right width=111 style='width:83pt' x:num="69.1">69,1</td>
+  <td class=xl30 align=right width=119 style='width:89pt' x:num="11.8">11,8</td>
+  <td class=xl30 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl32 width=174 style='height:9.0pt;width:131pt'>Italia</td>
+  <td class=xl33 align=right width=84 style='width:63pt' x:num="29.6">29,6</td>
+  <td class=xl33 align=right width=111 style='width:83pt' x:num="57.6">57,6</td>
+  <td class=xl33 align=right width=119 style='width:89pt' x:num="12.7">12,7</td>
+  <td class=xl33 align=right width=88 style='width:66pt' x:num="100">100,0</td>
+ </tr>
+ <tr height=12 style='mso-height-source:userset;height:9.0pt'>
+  <td height=12 class=xl34 style='height:9.0pt'>&nbsp;</td>
+  <td class=xl35>&nbsp;</td>
+  <td class=xl35>&nbsp;</td>
+  <td class=xl35>&nbsp;</td>
+  <td class=xl35>&nbsp;</td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=174 style='width:131pt'></td>
+  <td width=84 style='width:63pt'></td>
+  <td width=111 style='width:83pt'></td>
+  <td width=119 style='width:89pt'></td>
+  <td width=88 style='width:66pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>
