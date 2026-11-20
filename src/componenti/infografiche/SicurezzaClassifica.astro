@@ -2,7 +2,7 @@
 // Classifica dei gruppi di donne (scelta da Giorgia il 20/11/2026 per il 2006, mockup «Cento donne, gruppo per gruppo»).
 // In alto: «circa N donne su 100» per tutte le donne e le due righe per autore (partner o ex, non partner).
 // Sotto: ogni gruppo di donne è un quadrato da 100, ordinati dal valore più alto; «Tutte le donne» sta in classifica,
-// tratteggiato, come riferimento. Comandi: periodo, forma, filtro per caratteristica (all'avvio tutte: nessuna scelta da noi),
+// tratteggiato, come totale: i gruppi prima hanno valori più alti, quelli dopo più bassi. Comandi: periodo, forma, filtro per caratteristica (all'avvio tutte: nessuna scelta da noi),
 // «vedi come tabella». Su telefono si vedono i primi 6, il totale e gli ultimi 3, con «mostra tutti».
 // Colori: solo variabili di globale.css.
 import { FORME, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
@@ -136,7 +136,7 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       righe.splice(pos < 0 ? tutti.length : pos, 0, { t: 'Tutte le donne', v: T, tot: true });
       minis.innerHTML = righe.map((x: any) => {
         const b = x === hi ? '<span class="sic-cl-badge">più alto</span>' : x === lo ? '<span class="sic-cl-badge">più basso</span>'
-          : x.tot ? '<span class="sic-cl-badge rif">riferimento</span>' : '<span class="sic-cl-badge vuoto">·</span>';
+          : x.tot ? '<span class="sic-cl-badge rif">totale</span>' : '<span class="sic-cl-badge vuoto">·</span>';
         return `<div class="sic-cl-mini${x.tot ? ' tot' : ''}" role="img" aria-label="${x.t}${x.nome ? ', ' + x.nome : ''}: ${fmt(x.v)}%">${b}${quadrato(x.v)}
           <b>${fmt(x.v)}%${asterisco(x)}</b><span>${x.t}</span>${st.filtro === 'tutte' && x.nome ? `<small>${x.nome}</small>` : ''}</div>`;
       }).join('');
