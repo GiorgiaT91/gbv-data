@@ -10,6 +10,9 @@ export const FORME = [
   ['sessuale', 'Violenza sessuale'],
 ];
 
+// Le quattro forme, con lo stupro o tentato stupro (usate dai riquadri a classifica).
+export const FORME_TUTTE = [...FORME, ['stupro_o_tentato', 'Stupro o tentato stupro']];
+
 export const PERIODI = {
   nella_vita: 'Nel corso della vita',
   ultimi_5_anni: 'Negli ultimi 5 anni',
@@ -25,6 +28,7 @@ export const DIMENSIONI = {
     ['dirigenti', 'Dirigenti, imprenditrici, libere prof.'], ['direttive_impiegate', 'Direttive, quadri, impiegate'], ['operaie', 'Operaie'],
     ['in_proprio', 'Lavoratrici in proprio'], ['in_cerca', 'In cerca di occupazione'], ['casalinghe', 'Casalinghe'],
     ['studentesse', 'Studentesse'], ['ritirate', 'Ritirate dal lavoro'], ['altra', 'Altra condizione']] },
+  limitazioni: { nome: 'Limitazioni nelle attività', gruppi: [['nessuna', 'Nessuna limitazione'], ['non_gravi', 'Limitazioni non gravi'], ['gravi', 'Limitazioni gravi'], ['non_risponde', 'Non risponde']] },
   ripartizione: { nome: 'Area geografica', ordina: true, gruppi: [['nord_ovest', 'Nord-ovest'], ['nord_est', 'Nord-est'], ['centro', 'Centro'], ['sud', 'Sud'], ['isole', 'Isole']] },
   // Regioni: Trentino-Alto Adige è rappresentato dalle due province autonome (come nella mappa).
   regione: { nome: 'Regione', ordina: true, gruppi: [

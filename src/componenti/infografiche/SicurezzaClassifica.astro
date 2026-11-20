@@ -1,50 +1,75 @@
 ---
-// Classifica dei gruppi di donne (scelta da Giorgia il 20/11/2026 per il 2006, mockup «Cento donne, gruppo per gruppo»).
-// In alto: «circa N donne su 100» per tutte le donne e le due righe per autore (partner o ex, non partner).
+// Classifica dei gruppi di donne (scelta da Giorgia il 20/11/2026, mockup «Cento donne, gruppo per gruppo»). Usata dal 2006 e dal 2014.
+// In alto: «circa N donne su 100» per tutte le donne e, se richiesto, le due righe per autore (partner o ex, non partner).
 // Sotto: ogni gruppo di donne è un quadrato da 100, ordinati dal valore più alto; «Tutte le donne» sta in classifica,
-// tratteggiato, come totale: i gruppi prima hanno valori più alti, quelli dopo più bassi. Comandi: periodo, forma, filtro per caratteristica (all'avvio tutte: nessuna scelta da noi),
-// «vedi come tabella». Su telefono si vedono i primi 6, il totale e gli ultimi 3, con «mostra tutti».
+// tratteggiato, come totale: i gruppi prima hanno valori più alti, quelli dopo più bassi. Comandi: periodo, forma, filtro per
+// caratteristica (all'avvio tutte: nessuna scelta da noi), autore (se `filtroAutore`), «vedi come tabella».
+// Su telefono si vedono i primi 6, il totale e gli ultimi 3, con «mostra tutti».
+// Con `evento` periodo e forma arrivano da una barra comune (evento sul document con detail {p, f}) e i comandi propri non compaiono.
 // Colori: solo variabili di globale.css.
-import { FORME, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
+import { FORME_TUTTE, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
 
-interface Props { id: string; anno: string; popolazione: string; periodi: string[]; dimensioni: string[]; note: Record<string, string>; sotto: string }
-const { id, anno, popolazione, periodi, dimensioni, note, sotto } = Astro.props;
+interface Props {
+  id: string; anno: string; popolazione: string; periodi: string[]; dimensioni: string[]; note: Record<string, string>; sotto: string;
+  righeAutore?: boolean; filtroAutore?: boolean; evento?: string;
+}
+const { id, anno, popolazione, periodi, dimensioni, note, sotto, righeAutore = true, filtroAutore = false, evento = '' } = Astro.props;
 
-const FORME_C = [...FORME, ['stupro_o_tentato', 'Stupro o tentato stupro']];
-const AUTORI = [['partner_o_ex', 'da un partner o ex partner'], ['non_partner', 'da un altro uomo (non partner)']];
+const AUTORI_RIGHE = [['partner_o_ex', 'da un partner o ex partner'], ['non_partner', 'da un altro uomo (non partner)']];
+const AUTORI_FILTRO = filtroAutore ? [['qualsiasi', 'Qualsiasi autore'], ['partner_o_ex', 'Partner o ex partner'], ['non_partner', 'Uomo non partner']] : [['qualsiasi', '']];
 const D = {};
 for (const p of periodi) {
   D[p] = {};
-  for (const [f] of FORME_C) {
-    const autori = AUTORI.map(([a, t]) => [t, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v]).filter((r) => r[1] !== undefined);
-    const gruppi = [];
-    for (const d of dimensioni) {
-      for (const [g, t] of DIMENSIONI[d].gruppi) {
-        const c = cella(anno, popolazione, p, f, d, g);
-        if (c) gruppi.push({ t, d, v: c.v, a: c.a });
+  for (const [f] of FORME_TUTTE) {
+    const righe = righeAutore ? AUTORI_RIGHE.map(([a, t]) => [t, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v]).filter((r) => r[1] !== undefined) : [];
+    const per = {};
+    for (const [a] of AUTORI_FILTRO) {
+      const tot = cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v;
+      if (tot === undefined) continue;
+      const gruppi = [];
+      for (const d of dimensioni) {
+        for (const [g, t] of DIMENSIONI[d].gruppi) {
+          const c = cella(anno, popolazione, p, f, d, g, a);
+          if (c) gruppi.push({ t, d, v: c.v, a: c.a });
+        }
       }
+      per[a] = { totale: tot, gruppi };
     }
-    D[p][f] = { totale: prev(anno, popolazione, p, f), autori, gruppi };
+    D[p][f] = { totale: prev(anno, popolazione, p, f), righe, per };
   }
 }
-const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]])), forme: FORME_C, note,
+const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]])), forme: FORME_TUTTE, note, evento,
+  autori: filtroAutore ? AUTORI_FILTRO : [],
   dim: Object.fromEntries(dimensioni.map((d) => [d, DIMENSIONI[d].nome])) };
 ---
 <section class="sic-blocco sic-cl" id={id}>
   <h3>Quante donne, gruppo per gruppo</h3>
   <p class="sic-sotto">{sotto}</p>
-  <div class="sic-schede" role="group" aria-label="Periodo">
-    {periodi.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
-  </div>
-  <label class="sic-cl-forma">Forma
-    <select>{FORME_C.map(([f, t]) => <option value={f}>{t}</option>)}</select>
-  </label>
+  {!evento && (
+    <>
+      <div class="sic-schede" data-periodi role="group" aria-label="Periodo">
+        {periodi.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
+      </div>
+      <label class="sic-cl-forma">Forma
+        <select>{FORME_TUTTE.map(([f, t]) => <option value={f}>{t}</option>)}</select>
+      </label>
+    </>
+  )}
   <div class="sic-cl-sintesi">
     <p class="sic-cl-frase"><span data-n></span><small data-sotto></small></p>
     <div class="sic-cl-autori" data-autori></div>
   </div>
   <div class="sic-cl-insieme">
     <h4>Tutti i gruppi, dal valore più alto</h4>
+    {filtroAutore && (
+      <div class="sic-cl-riga">
+        <span class="sic-cl-et">Autore</span>
+        <div class="sic-schede" data-autore role="group" aria-label="Autore">
+          {AUTORI_FILTRO.map(([a, t], i) => <button type="button" class="sic-scheda" data-k={a} aria-selected={i === 0 ? 'true' : 'false'}>{t}</button>)}
+        </div>
+      </div>
+    )}
+    <p class="sic-cl-nota" data-base></p>
     <p class="sic-cl-nota" data-estremi></p>
     <div class="sic-schede" data-filtro role="group" aria-label="Caratteristica">
       <button type="button" class="sic-scheda" data-k="tutte" aria-selected="true">Tutte le caratteristiche</button>
@@ -61,8 +86,8 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
 
 <style is:global>
   .sic-cl-forma { display:flex; align-items:center; gap:10px; font-size:.85rem; color:var(--testo-3); }
-  .sic-cl-forma select { font:inherit; font-size:.9rem; color:var(--testo); background:var(--carta); border:1px solid var(--info-linea); border-radius:8px; padding:6px 10px; }
-  .sic-cl-forma select:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
+  .sic-cl-forma select, .sic-barra-c select { font:inherit; font-size:.9rem; color:var(--testo); background:var(--carta); border:1px solid var(--info-linea); border-radius:8px; padding:6px 10px; }
+  .sic-cl-forma select:focus-visible, .sic-barra-c select:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
   .sic-cl-sintesi { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; align-items:start; }
   .sic-cl-frase { font-family:var(--titoli); font-weight:600; font-size:1.9rem; line-height:1.15; margin:0; }
   .sic-cl-frase small { display:block; font-family:var(--corpo); font-weight:400; font-size:.95rem; line-height:1.4; color:var(--testo-2); margin-top:6px; }
@@ -74,6 +99,8 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
   .sic-cl-nota { font-size:.85rem; color:var(--testo-3); margin:0; }
   .sic-cl-insieme { display:grid; gap:12px; border-top:1px solid var(--info-linea); padding-top:16px; }
   .sic-cl-insieme h4 { font-family:var(--titoli); font-size:1.05rem; margin:0; }
+  .sic-cl-riga { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
+  .sic-cl-et { font-size:.85rem; color:var(--testo-3); }
   .sic-cl-vista { display:flex; justify-content:flex-end; }
   .sic-cl-minis { display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:16px 12px; }
   .sic-cl-mini { display:grid; align-content:start; gap:5px; padding:6px; border-radius:8px; border:1px solid transparent; }
@@ -82,6 +109,7 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
   .sic-cl-q { display:grid; grid-template-columns:repeat(10,1fr); gap:1.5px; width:100%; max-width:96px; }
   .sic-cl-q i { aspect-ratio:1; background:var(--info-vuoto); border-radius:1px; }
   .sic-cl-q i.si { background:var(--accento); }
+  .sic-cl-q.tondo i { border-radius:50%; }
   .sic-cl-mini.tot .sic-cl-q i.si { background:var(--testo-2); }
   .sic-cl-mini b { font-family:var(--titoli); font-size:1.05rem; font-variant-numeric:tabular-nums; }
   .sic-cl-mini span { font-size:.8rem; line-height:1.25; }
@@ -97,7 +125,7 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
   .sic-cl-tab th { font-weight:600; color:var(--testo-3); font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
   .sic-cl-tab .n { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
   .sic-cl-tab tr.tot td { font-weight:700; border-top:1.5px dashed var(--testo-2); border-bottom:1.5px dashed var(--testo-2); }
-  .sic-cl [hidden] { display:none !important; }
+  .sic [hidden] { display:none !important; }
   @media (max-width:640px) {
     .sic-cl-sintesi { grid-template-columns:minmax(0,1fr); }
     .sic-cl-frase { font-size:1.6rem; }
@@ -107,23 +135,30 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
 <script>
   const fmt = (v: number) => v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const stretto = window.matchMedia('(max-width: 640px)');
+  const BASE: Record<string, string> = {
+    qualsiasi: 'Su 100 donne del gruppo.',
+    non_partner: 'Su 100 donne del gruppo.',
+    partner_o_ex: 'Su 100 donne del gruppo che hanno o hanno avuto un partner: Istat calcola così la violenza da partner.',
+  };
 
   document.querySelectorAll<HTMLElement>('.sic-cl').forEach((root) => {
     const J = JSON.parse(root.querySelector('.sic-cl-json')!.textContent!);
-    const st = { p: Object.keys(J.periodi)[0], f: J.forme[0][0], filtro: 'tutte', tutti: false, tabella: false };
+    const st = { p: Object.keys(J.periodi)[0], f: J.forme[0][0], a: 'qualsiasi', filtro: 'tutte', tutti: false, tabella: false };
     const $ = (s: string) => root.querySelector<HTMLElement>(s)!;
     const minis = $('.sic-cl-minis'), tab = $('.sic-cl-tab'), bTab = $('[data-tabella]'), bAltri = $('[data-altri]');
     const nomeForma = () => J.forme.find((x: string[]) => x[0] === st.f)[1];
     const quadrato = (v: number) => `<span class="sic-cl-q" aria-hidden="true">${Array.from({ length: 100 }, (_, j) => `<i${j < Math.round(v) ? ' class="si"' : ''}></i>`).join('')}</span>`;
     const asterisco = (x: any) => (x.a ? '*' : '');
+    const seleziona = (box: Element, b: Element) => box.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
 
     function insieme() {
-      const dati = J.D[st.p][st.f];
-      const tutti = dati.gruppi.filter((x: any) => st.filtro === 'tutte' || x.d === st.filtro).map((x: any) => ({ ...x, nome: J.dim[x.d] }));
+      const dati = J.D[st.p][st.f].per[st.a];
+      $('[data-base]').textContent = J.autori.length ? BASE[st.a] : '';
       const est = $('[data-estremi]');
+      const tutti = (dati?.gruppi || []).filter((x: any) => st.filtro === 'tutte' || x.d === st.filtro).map((x: any) => ({ ...x, nome: J.dim[x.d] }));
       if (!tutti.length) {
         est.textContent = '';
-        minis.innerHTML = `<p class="sic-cl-nota">Per questa forma e questo periodo Istat dà solo il totale, non i gruppi di donne.</p>`;
+        minis.innerHTML = `<p class="sic-cl-nota">Per questa scelta Istat non dà il dato per gruppi di donne: c'è solo il totale.</p>`;
         minis.hidden = false; tab.hidden = true; bAltri.hidden = true; bTab.hidden = true;
         return;
       }
@@ -145,7 +180,8 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       [...minis.children].forEach((c, i) => c.classList.toggle('nascosto', corto && !(i < 6 || i === iT || i >= n - 3)));
       bAltri.hidden = st.tabella || !stretto.matches || n <= 12;
       bAltri.textContent = st.tutti ? 'Mostra meno gruppi' : `Mostra tutti i ${n - 1} gruppi`;
-      tab.innerHTML = `<table><caption>${nomeForma()}, ${J.periodi[st.p].toLowerCase()}: percentuale di donne</caption>
+      const autore = J.autori.length ? `, ${J.autori.find((x: string[]) => x[0] === st.a)[1].toLowerCase()}` : '';
+      tab.innerHTML = `<table><caption>${nomeForma()}, ${J.periodi[st.p].toLowerCase()}${autore}: percentuale di donne</caption>
         <thead><tr><th scope="col">Gruppo</th><th scope="col">Caratteristica</th><th scope="col" class="n">%</th></tr></thead>
         <tbody>${righe.map((x: any) => `<tr${x.tot ? ' class="tot"' : ''}><td>${x.t}</td><td>${x.nome || ''}</td><td class="n">${fmt(x.v)}${asterisco(x)}</td></tr>`).join('')}</tbody></table>`;
       tab.hidden = !st.tabella; minis.hidden = st.tabella;
@@ -155,8 +191,8 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       const dati = J.D[st.p][st.f], v = dati.totale;
       $('[data-n]').textContent = `Circa ${Math.round(v)} donne su 100`;
       $('[data-sotto]').textContent = `${fmt(v)}% · ${nomeForma().toLowerCase()}, ${J.periodi[st.p].toLowerCase()}`;
-      $('[data-autori]').innerHTML = dati.autori.length
-        ? dati.autori.map(([t, x]: [string, number]) => `<div><span><b>${fmt(x)}%</b> ${t}</span>
+      $('[data-autori]').innerHTML = dati.righe.length
+        ? dati.righe.map(([t, x]: [string, number]) => `<div><span><b>${fmt(x)}%</b> ${t}</span>
             <div class="sic-cl-fila" aria-hidden="true">${Array.from({ length: 100 }, (_, i) => `<i${i < Math.round(x) ? ' class="si"' : ''}></i>`).join('')}</div></div>`).join('')
           + '<p class="sic-cl-nota">Una donna può averla subita da entrambi: per questo le due righe non si sommano.</p>'
         : '';
@@ -164,16 +200,19 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       insieme();
     }
 
-    root.querySelector('.sic-schede')!.addEventListener('click', (e) => {
+    root.querySelector('[data-periodi]')?.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      b.parentElement!.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-      st.p = b.dataset.periodo!; disegna();
+      seleziona(b.parentElement!, b); st.p = b.dataset.periodo!; disegna();
     });
-    root.querySelector('select')!.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; disegna(); });
+    root.querySelector('.sic-cl-forma select')?.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; disegna(); });
+    if (J.evento) document.addEventListener(J.evento, (e: Event) => { const d = (e as CustomEvent).detail; st.p = d.p; st.f = d.f; disegna(); });
+    root.querySelector('[data-autore]')?.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
+      seleziona(b.parentElement!, b); st.a = b.dataset.k!; st.tutti = false; insieme();
+    });
     $('[data-filtro]').addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      b.parentElement!.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-      st.filtro = b.dataset.k!; st.tutti = false; insieme();
+      seleziona(b.parentElement!, b); st.filtro = b.dataset.k!; st.tutti = false; insieme();
     });
     bTab.addEventListener('click', () => {
       st.tabella = !st.tabella; bTab.setAttribute('aria-pressed', String(st.tabella));
