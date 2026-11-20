@@ -3,26 +3,25 @@
 # Questo file è la versione pubblicata. **testo** = grassetto.
 
 etichetta: "Il progetto"
-titolo: "Mettere in ordine i numeri, e mostrare quelli che mancano."
-attacco: "GBV-Data raccoglie i dati pubblici sulla violenza contro le donne e sui femminicidi in Italia. Per ogni dato dice chi lo produce, che cosa conta e che cosa lascia fuori. Non produce numeri propri."
+titolo: "Raccogliere i dati, metterli in ordine e renderli accessibili."
+attacco: "Gender-Based-Violence-Data raccoglie i dati pubblici sulla **violenza di genere** in Italia. Per ogni dato raccolto è citata la fonte che lo produce. Non produce numeri propri."
 
 perche:
   titolo: "Perché esiste"
   paragrafi:
-    - "I dati sulla violenza di genere in Italia ci sono, ma sono sparsi fra enti diversi, in tavole e documenti pensati per chi li sa leggere. Escono con tempi diversi: alcuni ogni mese, altri una volta l'anno, altri ogni dieci anni. Sui femminicidi tre fonti danno tre numeri diversi per lo stesso anno, perché contano cose diverse."
-    - "Chi cerca un numero, per capire o per scriverne, deve ricostruire da sé da dove viene e che cosa misura. GBV-Data lo fa una volta, fonte per fonte, e lo rende leggibile a tutti."
+    - "I dati sulla violenza di genere in Italia ci sono, ma sono sparsi fra enti diversi, in tavole e documenti pensati per chi li sa leggere. Escono con tempi diversi: alcuni ogni mese, altri una volta l'anno, altri ogni dieci anni. Sui femminicidi, ad esempio, tre fonti danno tre numeri diversi per lo stesso anno, perché contano cose diverse."
+    - "GBV-Data è un sito pensato per raccogliere tutti i dati pubblici disponibili e renderli accessibili anche a persone non necessariamente tecniche."
 
 manifesto:
   etichetta: "Il manifesto"
-  titolo: "Cinque principi"
-  attacco: "Guidano il lavoro e valgono per ogni pagina del sito."
+  titolo: "Cinque principi che guidano il lavoro"
   principi:
     - titolo: "Ogni numero ha una fonte, un periodo, una definizione."
-      testo: "Nessun dato compare da solo: accanto a ogni numero ci sono chi lo ha prodotto, il periodo a cui si riferisce e che cosa conta. I numeri sono presentati senza commento; poi il sito indica quanto sono aggiornati e chi escludono."
+      testo: "Nessun dato compare da solo: accanto a ogni numero ci sono chi lo ha prodotto, il periodo a cui si riferisce e che cosa conta. Il sito indica quanto sono aggiornati e cosa escludono."
     - titolo: "Numeri diversi non sono numeri sbagliati, e anche ciò che manca è un dato."
-      testo: "Quando due fonti non coincidono, il sito spiega perché, e non confronta numeri costruiti con definizioni diverse senza dirlo. Ritardi, cambi di metodo e informazioni non raccolte fanno parte del contenuto."
+      testo: "Quando due fonti non coincidono, il sito spiega perché, e non confronta numeri costruiti con definizioni diverse senza specificarlo. Ritardi, cambi di metodo e informazioni non raccolte fanno parte del contenuto."
     - titolo: "Le vittime sono persone."
-      testo: "Nessun nome, nessun dettaglio di cronaca, nessun contatore. Il sito lavora solo su dati aggregati."
+      testo: "Nessun nome, nessun dettaglio di cronaca, nessun contatore. Il sito lavora solo sui dati aggregati."
     - titolo: "Dati aperti, e solo ciò che si può mantenere."
       testo: "Codice, tabelle e metodo sono liberamente consultabili e riutilizzabili, e ogni valore si ritrova nel documento originale. Il progetto è curato da una persona: pubblica soltanto ciò che può tenere aggiornato e indica su ogni pagina la data dell'ultima verifica."
     - titolo: "L'aiuto viene prima di tutto."
@@ -32,10 +31,10 @@ obiettivi:
   titolo: "Che cosa vuole essere"
   voci:
     - etichetta: "La missione"
-      testo: "Rendere comprensibile a chiunque che cosa i dati pubblici dicono, e che cosa non dicono, sulla violenza di genere in Italia: fonte per fonte, con definizioni, periodi e limiti sempre dichiarati."
+      testo: "Rendere comprensibile a chiunque cosa i dati pubblici dicono, e cosa non dicono, sulla violenza di genere in Italia: fonte per fonte, con definizioni, periodi e limiti sempre dichiarati."
     - etichetta: "L'obiettivo"
       testo: "Essere un punto di riferimento affidabile per chi cerca i numeri sulla violenza di genere in Italia e vuole capirli: un luogo dove le fonti sono in ordine, aggiornate e spiegate, e dove i dati che mancano sono messi in evidenza."
-  chiusura: "Il progetto non si propone di cambiare da solo il modo in cui lo Stato produce i dati. Si propone di rendere chiaro, a chi legge e a chi scrive, che cosa manca. Dati più completi sono una condizione per politiche più efficaci."
+  chiusura: "Il progetto non si propone di cambiare da solo il modo in cui lo Stato produce i dati. Si propone di rendere chiaro, a chi legge e a chi scrive, che cosa manca. Dati più completi sono una condizione per **politiche più efficaci**."
 
 perimetro:
   titolo: "Che cosa fa e che cosa non fa"
@@ -43,8 +42,8 @@ perimetro:
     titolo: "Il sito"
     voci:
       - "raccoglie in un solo luogo i dati di Istat, dei ministeri e dell'Osservatorio nazionale di Non Una Di Meno;"
-      - "organizza i dati intorno a cinque domande, dal fenomeno nascosto ai femminicidi;"
-      - "per ogni fonte spiega chi conta, che cosa conta, quando esce e che cosa il dato non dice;"
+      - "organizza i dati intorno a cinque domande, dal fenomeno sommerso ai femminicidi;"
+      - "per ogni fonte spiega chi e cosa conta, quando esce e che cosa il dato non dice;"
       - "segnala quando escono nuovi dati, nel calendario e in «Cosa è cambiato»;"
       - "mette a disposizione i dati in formato aperto."
   non_fa:
@@ -58,7 +57,7 @@ perimetro:
 chi:
   titolo: "Chi lo cura"
   paragrafi:
-    - "GBV-Data è curato da Giorgia Tagliaferri, data analyst. Nasce nel 2024 come progetto conclusivo del Master in Big Data della Sapienza Università di Roma e dal 2026 è stato ripensato da capo."
+    - "GBV-Data è curato da Giorgia Tagliaferri. Nasce nel 2024 come progetto conclusivo del Master in Big Data della Sapienza Università di Roma e dal 2026 è stato ripensato da capo."
     - "Il progetto è indipendente: non riceve finanziamenti e non è legato a enti, partiti o associazioni. Le fonti esterne sono citate e collegate."
 
 correzioni:
