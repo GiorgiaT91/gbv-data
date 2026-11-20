@@ -1,0 +1,129 @@
+---
+// Quadro delle differenze per la sicurezza delle donne (stesso modello degli stereotipi 2018):
+// righe = forme di violenza, colonne = caratteristiche delle donne; ogni casella dà la distanza in punti fra il
+// gruppo più alto e il più basso. Toccando una casella si apre il dettaglio sotto la riga (regione: mappa con i
+// valori ed elenco ordinato; su telefono solo l'elenco). Con più periodi, le schede in alto cambiano periodo.
+// Nessun dettaglio aperto all'avvio. Colori: solo variabili di globale.css.
+import MAPPA from '../../lib/mappa-regioni.json';
+import { FORME, PERIODI, DIMENSIONI, datiQuadro, distanza, gradino, virgola, perc } from '../../lib/sicurezza.js';
+
+interface Props { id: string; anno: string; popolazione: string; periodi: string[]; dimensioni: string[]; sotto: string; note: Record<string, string> }
+const { id, anno, popolazione, periodi, dimensioni, sotto, note } = Astro.props;
+const D = datiQuadro(anno, popolazione, periodi, dimensioni);
+const conRegione = dimensioni.includes('regione');
+const json = {
+  D,
+  ordina: Object.fromEntries(dimensioni.map((d) => [d, !!DIMENSIONI[d].ordina])),
+  nomiDim: Object.fromEntries(dimensioni.map((d) => [d, DIMENSIONI[d].nome])),
+  nomiForma: Object.fromEntries(FORME),
+  mappa: conRegione ? { W: MAPPA.W, H: MAPPA.H, paths: MAPPA.paths, lab: MAPPA.lab } : null,
+};
+const colonne = `grid-template-columns:minmax(8rem,1.1fr) repeat(${dimensioni.length},minmax(7.2rem,1fr))`;
+---
+<section class="sic-blocco sic-quadro" id={id}>
+  <h3>Per caratteristiche delle donne</h3>
+  <p class="sic-sotto">{sotto}</p>
+  {periodi.length > 1 && (
+    <div class="sic-schede" role="tablist" aria-label="Periodo">
+      {periodi.map((p, i) => (
+        <button type="button" role="tab" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>
+      ))}
+    </div>
+  )}
+  <p class="sic-sotto">Ogni casella mostra la distanza, in punti, fra il gruppo con il valore più alto e quello con il più basso. Tocca una casella per vedere tutti i gruppi.</p>
+  {periodi.map((p, i) => (
+    <div class="sic-periodo" data-periodo={p} hidden={i !== 0}>
+      <div class="sic-scorri">
+        <div class="sic-griglia" style={colonne}>
+          <span></span>
+          {dimensioni.map((d) => <span class="sic-th">{DIMENSIONI[d].nome}</span>)}
+          {FORME.map(([f, nome]) => (
+            <>
+              <div class="sic-rh">{nome}<small>totale {perc(D[p].totale[f])}</small></div>
+              {dimensioni.map((d) => {
+                const x = distanza(D[p].dimensioni[d], f);
+                return x ? (
+                  <button type="button" class={`sic-cella g${gradino(x.punti)}`} data-forma={f} data-dim={d} aria-expanded="false"
+                    aria-label={`${nome}, ${DIMENSIONI[d].nome}: ${virgola(x.punti)} punti fra ${x.alto} e ${x.basso}`}>
+                    <span class="gap">{virgola(x.punti)} punti</span>
+                    <span class="est">↑ {x.alto}<br />↓ {x.basso}</span>
+                  </button>
+                ) : <span class="sic-cella vuota">non disponibile</span>;
+              })}
+              <div class="sic-dettaglio" data-forma={f} hidden></div>
+            </>
+          ))}
+        </div>
+      </div>
+      <p class="sic-fonte">{note[p]}</p>
+    </div>
+  ))}
+  <div class="sic-legenda">
+    <span>Distanza fra il gruppo più alto e il più basso, dalla più piccola alla più grande:</span>
+    {[['meno di 5', 1], ['5–10', 2], ['10–20', 3], ['20–30', 4], ['30 e più', 5]].map(([t, g]) => <span><i class={`g${g}`}></i>{t}</span>)}
+  </div>
+  <script type="application/json" class="sic-json" set:html={JSON.stringify(json)}></script>
+</section>
+
+<script>
+  const fmt = (v: number) => v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const fascia = (v: number, lo: number, hi: number) => (hi === lo ? 3 : Math.min(5, 1 + Math.floor(((v - lo) / (hi - lo)) * 5)));
+
+  function punti(righe: any[], forma: string) {
+    const max = Math.max(...righe.map((r) => r[forma].v));
+    const M = Math.max(20, Math.ceil(max / 10) * 10);
+    const passo = M > 60 ? 20 : 10;
+    const tacche = Array.from({ length: M / passo + 1 }, (_, i) => i * passo);
+    return `<div class="sic-punti">${righe.map((r) => `<div class="sic-punto"><span>${r.nome}</span><span class="sic-asse"><i style="left:${(r[forma].v / M) * 100}%"></i></span><b>${fmt(r[forma].v)}%${r[forma].a ? '*' : ''}</b></div>`).join('')}
+      <div class="sic-scala"><span></span><div>${tacche.map((t) => `<span style="left:${(t / M) * 100}%">${t}%</span>`).join('')}</div><span></span></div></div>`;
+  }
+
+  function mappa(M: any, righe: any[], forma: string) {
+    const vals = righe.map((r) => r[forma].v);
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    let s = `<svg viewBox="-6 -6 ${M.W + 12} ${M.H + 12}" width="100%" style="max-width:400px;display:block" role="img" aria-label="Mappa per regione">`;
+    for (const r of righe) s += `<path d="${M.paths[r.g]}" fill="var(--scala-${fascia(r[forma].v, lo, hi)})" stroke="var(--carta)" stroke-width="1.2" stroke-linejoin="round"><title>${r.nome}: ${fmt(r[forma].v)}%</title></path>`;
+    for (const r of righe) {
+      const [x, y] = M.lab[r.g];
+      s += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="15" font-weight="600" fill="var(--testo)" stroke="var(--carta)" stroke-width="3.5" paint-order="stroke" style="pointer-events:none">${fmt(r[forma].v)}%</text>`;
+    }
+    s += '</svg>';
+    const passo = (hi - lo) / 5;
+    const legenda = `<div class="sic-legenda">${[1, 2, 3, 4, 5].map((k) => `<span><i class="g${k}"></i>${fmt(lo + passo * (k - 1))}–${fmt(lo + passo * k)}%</span>`).join('')}</div>`;
+    const elenco = `<ol class="sic-elenco">${righe.map((r) => `<li><i class="g${fascia(r[forma].v, lo, hi)}"></i><span>${r.nome}</span><b>${fmt(r[forma].v)}%</b></li>`).join('')}</ol>`;
+    return `<div class="sic-mappa">${s}${elenco}</div>${legenda}`;
+  }
+
+  document.querySelectorAll<HTMLElement>('.sic-quadro').forEach((root) => {
+    const dati = JSON.parse(root.querySelector('.sic-json')!.textContent!);
+    const chiudi = () => {
+      root.querySelectorAll('.sic-cella').forEach((x) => x.setAttribute('aria-expanded', 'false'));
+      root.querySelectorAll<HTMLElement>('.sic-dettaglio').forEach((x) => { x.hidden = true; x.innerHTML = ''; });
+    };
+    root.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda');
+      if (t) {
+        root.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+        root.querySelectorAll<HTMLElement>('.sic-periodo').forEach((x) => { x.hidden = x.dataset.periodo !== t.dataset.periodo; });
+        chiudi();
+        return;
+      }
+      const c = (e.target as HTMLElement).closest<HTMLElement>('button.sic-cella');
+      if (!c) return;
+      const era = c.getAttribute('aria-expanded') === 'true';
+      chiudi();
+      if (era) return;
+      const per = c.closest<HTMLElement>('.sic-periodo')!;
+      const forma = c.dataset.forma!, dim = c.dataset.dim!;
+      const box = per.querySelector<HTMLElement>(`.sic-dettaglio[data-forma="${forma}"]`)!;
+      c.setAttribute('aria-expanded', 'true');
+      box.hidden = false;
+      let righe = dati.D[per.dataset.periodo!].dimensioni[dim].filter((r: any) => r[forma]);
+      if (dati.ordina[dim]) righe = [...righe].sort((a: any, b: any) => b[forma].v - a[forma].v);
+      const tot = dati.D[per.dataset.periodo!].totale[forma];
+      const grafico = dim === 'regione' && dati.mappa && box.clientWidth >= 560 ? mappa(dati.mappa, righe, forma) : punti(righe, forma);
+      const asterisco = righe.some((r: any) => r[forma].a) ? '<p class="sic-fonte">* Stima con errore campionario superiore al 35%: va letta con cautela.</p>' : '';
+      box.innerHTML = `<p><b>${dati.nomiForma[forma]} · ${dati.nomiDim[dim]}</b> · totale ${fmt(tot)}%</p>${grafico}${asterisco}`;
+    });
+  });
+</script>

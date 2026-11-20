@@ -1,0 +1,107 @@
+---
+// Riquadro «confronto» della domanda 1. Le tre rilevazioni non formano una serie unica:
+// 2006 → 2014 su tutte le donne di 16-70 anni (nella vita, ultimi 5 anni, ultimi 12 mesi);
+// 2014 → 2025 solo sulle italiane di 16-70 anni e solo per gli ultimi 5 anni.
+// Il 2025 «nella vita» riguarda le donne di 16-75 anni e non si confronta.
+import { prev, cella, DIMENSIONI, PERIODI, virgola, perc } from '../../lib/sicurezza.js';
+
+const FS = 'fisica_o_sessuale';
+const t = (anno, pop, periodo) => prev(anno, pop, periodo, FS);
+const coppie5 = [
+  { anni: '2006 → 2014', pop: 'Tutte le donne di 16–70 anni', a: t('2006', 'tutte_16_70', 'ultimi_5_anni'), b: t('2014', 'tutte_16_70', 'ultimi_5_anni') },
+  { anni: '2014 → 2025', pop: 'Donne italiane di 16–70 anni', a: t('2014', 'italiane_16_70', 'ultimi_5_anni'), b: t('2025', 'italiane_16_70', 'ultimi_5_anni') },
+];
+const coppieAltre = [
+  { anni: 'Nella vita · 2006 → 2014', pop: 'Tutte le donne di 16–70 anni', a: t('2006', 'tutte_16_70', 'nella_vita'), b: t('2014', 'tutte_16_70', 'nella_vita') },
+  { anni: 'Ultimi 12 mesi · 2006 → 2014', pop: 'Tutte le donne di 16–70 anni', a: t('2006', 'tutte_16_70', 'ultimi_12_mesi'), b: t('2014', 'tutte_16_70', 'ultimi_12_mesi') },
+];
+
+// Per gruppo: periodo → dimensione → righe con i due confronti (il secondo solo per gli ultimi 5 anni)
+const SEZIONI = ['ultimi_5_anni', 'nella_vita', 'ultimi_12_mesi'].map((p) => {
+  const due = p === 'ultimi_5_anni';
+  const dims = due ? ['eta', 'titolo', 'stato_civile', 'condizione', 'ripartizione'] : ['eta', 'titolo', 'stato_civile', 'condizione'];
+  return {
+    p, due,
+    dims: dims.map((d) => {
+      const righe = DIMENSIONI[d].gruppi.map(([g, nome]) => {
+        const v = (anno, pop) => cella(anno, pop, p, FS, d, g)?.v;
+        return { nome, a06: v('2006', 'tutte_16_70'), a14: v('2014', 'tutte_16_70'), i14: due ? v('2014', 'italiane_16_70') : undefined, i25: due ? v('2025', 'italiane_16_70') : undefined };
+      }).filter((r) => r.a06 !== undefined && r.a14 !== undefined);
+      const max = Math.max(40, Math.ceil(Math.max(...righe.flatMap((r) => [r.a06, r.a14, r.i14, r.i25].filter((x) => x !== undefined))) / 10) * 10);
+      return { d, nome: DIMENSIONI[d].nome, righe, max };
+    }),
+  };
+});
+const segno = (a, b) => `${b - a >= 0 ? '+' : '−'}${virgola(Math.abs(b - a))} punti`;
+const pos = (v, max) => `${(v / max) * 100}%`;
+---
+<div class="sic-avviso">Le tre rilevazioni non si leggono come una sola serie. Il 2006 e il 2014 si confrontano su tutte le donne di 16–70 anni; il 2014 e il 2025 solo sulle italiane di 16–70 anni, e solo per gli ultimi 5 anni. Il dato 2025 «nel corso della vita» riguarda le donne di 16–75 anni e non si confronta.</div>
+
+<section class="sic-blocco">
+  <h3>Violenza fisica o sessuale</h3>
+  <p class="sic-gruppo">Negli ultimi 5 anni</p>
+  <div class="sic-coppie">
+    {coppie5.map((c) => (
+      <div class="sic-coppia"><p class="sic-occhiello">{c.anni}</p><p class="sic-pop">{c.pop}</p>
+        <p class="sic-val"><span class="a">{perc(c.a)}</span><span aria-hidden="true">→</span><span class="b">{perc(c.b)}</span><span class="d">{segno(c.a, c.b)}</span></p></div>
+    ))}
+  </div>
+  <p class="sic-gruppo">Nel corso della vita e negli ultimi 12 mesi</p>
+  <div class="sic-coppie">
+    {coppieAltre.map((c) => (
+      <div class="sic-coppia"><p class="sic-occhiello">{c.anni}</p><p class="sic-pop">{c.pop}</p>
+        <p class="sic-val"><span class="a">{perc(c.a)}</span><span aria-hidden="true">→</span><span class="b">{perc(c.b)}</span><span class="d">{segno(c.a, c.b)}</span></p></div>
+    ))}
+  </div>
+  <p class="sic-fonte">2006: tavole Istat 2006; ultimi 5 anni dal report 2014, prospetto 8. 2014: banca dati Istat. 2025: report 2025, prospetto 5.</p>
+</section>
+
+<section class="sic-blocco sic-confronto">
+  <h3>Come cambia per gruppo</h3>
+  <p class="sic-sotto">Violenza fisica o sessuale. Apri una caratteristica per vedere i confronti.</p>
+  <div class="sic-schede" role="tablist" aria-label="Periodo">
+    {SEZIONI.map((s, i) => <button type="button" role="tab" class="sic-scheda" data-periodo={s.p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[s.p]}</button>)}
+  </div>
+  {SEZIONI.map((s, i) => (
+    <div class="sic-periodo" data-periodo={s.p} hidden={i !== 0}>
+      {s.dims.map((d) => (
+        <details class="sic-dim">
+          <summary>{d.nome}</summary>
+          <div class="sic-manubri">
+            <div class:list={['sic-manubrio', 'testa', { uno: !s.due }]}><span></span><span>2006 → 2014 · tutte le donne</span>{s.due && <span>2014 → 2025 · solo italiane</span>}</div>
+            {d.righe.map((r) => (
+              <div class:list={['sic-manubrio', { uno: !s.due }]}>
+                <span>{r.nome}</span>
+                {[[r.a06, r.a14, 'a06', 'a14', '2006 → 2014'], ...(s.due ? [[r.i14, r.i25, 'a14', 'a25', '2014 → 2025']] : [])].map(([a, b, ka, kb, et]) => (
+                  a === undefined || b === undefined ? <span class="sic-fonte">non disponibile</span> : (
+                    <span class="sic-mb" data-et={et} title={`${et}: ${perc(a)} → ${perc(b)}`}>
+                      <span class="tratto" style={`left:${pos(Math.min(a, b), d.max)};width:${pos(Math.abs(b - a), d.max)}`}></span>
+                      <span class={`p ${ka}`} style={`left:${pos(a, d.max)}`}></span>
+                      <span class={`p ${kb}`} style={`left:${pos(b, d.max)}`}></span>
+                      {Math.max(a, b) / d.max > 0.6
+                        ? <span class="v" style={`right:calc(100% - ${pos(Math.min(a, b), d.max)} + 10px)`}>{virgola(a)} → {virgola(b)}</span>
+                        : <span class="v" style={`left:calc(${pos(Math.max(a, b), d.max)} + 10px)`}>{virgola(a)} → {virgola(b)}</span>}
+                    </span>
+                  )
+                ))}
+              </div>
+            ))}
+          </div>
+        </details>
+      ))}
+    </div>
+  ))}
+  <div class="sic-chiave"><span><i class="p a06"></i>2006</span><span><i class="p a14"></i>2014</span><span><i class="p a25"></i>2025</span></div>
+  <p class="sic-fonte">Per l'area geografica del 2014 e per il confronto 2014 → 2025 i valori vengono dai prospetti dei report (2014, prospetto 11; 2025, prospetto 5): la banca dati 2014 non ha le ripartizioni.</p>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.sic-confronto').forEach((root) => {
+    root.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda');
+      if (!t) return;
+      root.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      root.querySelectorAll<HTMLElement>('.sic-periodo').forEach((x) => { x.hidden = x.dataset.periodo !== t.dataset.periodo; });
+    });
+  });
+</script>

@@ -32,9 +32,11 @@ nuove_domande:
 
 link_fonte: "https://www.istat.it/comunicato-stampa/la-violenza-contro-le-donne-dentro-e-fuori-la-famiglia-primi-risultati-anno-2025/"
 file_originali:
-  - "originali/2025/La-violenza-contro-le-donne-dentro-e-fuori-la-famiglia_Anno-2025.pdf"
   - "originali/2025/Allegato-tavole-statistiche.xlsx"
+  - "originali/2025/La-violenza-contro-le-donne-dentro-e-fuori-la-famiglia_Anno-2025.pdf"
+  - "originali/2014/ (11 file della banca dati Istat, CSV e xlsx, scaricati il 15/11/2026)"
   - "originali/2014/Violenze_contro_le_donne.pdf"
+  - "originali/2006/tavole5/Violenza_Tavole.xls"
 licenza: "DA VERIFICARE"
 
 stato: bozza

@@ -31,10 +31,11 @@ export function getStaticPaths() {
 const { file, d } = Astro.props;
 const t = contenuto('domande', file);
 const ng = t.numero_grande;
-const mostra = (x) => (Number.isInteger(x) ? formatta(x) : `${percentuale(x, 1)}%`);
+// unita: percentuale nel yaml quando il valore è una percentuale tonda (per esempio 11,0%), che altrimenti sembrerebbe un conteggio.
+const mostra = (x, unita) => (unita !== 'percentuale' && Number.isInteger(x) ? formatta(x) : `${percentuale(x, 1)}%`);
 const grande = mostra(richiesto(ng.fonte, ng.filtro));
 let testoGrande = ng.testo;
-for (const [k, val] of Object.entries(ng.valori ?? {})) testoGrande = testoGrande.replace(`{${k}}`, mostra(richiesto(val.fonte, val.filtro)));
+for (const [k, val] of Object.entries(ng.valori ?? {})) testoGrande = testoGrande.replace(`{${k}}`, mostra(richiesto(val.fonte, val.filtro), val.unita));
 
 const riquadri = t.fonti.voci.map((voce) => {
   const [ente, ...resto] = voce.etichetta.split(' · ');

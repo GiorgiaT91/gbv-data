@@ -1,0 +1,28 @@
+---
+// Riquadro 2025 della domanda 1: primi risultati dell'indagine Istat sulla sicurezza delle donne (solo italiane).
+// Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (allegato 2025, tavola 1; report 2025, prospetto 5).
+import SicurezzaSintesi from './SicurezzaSintesi.astro';
+import SicurezzaQuadro from './SicurezzaQuadro.astro';
+import { prev, perc } from '../../lib/sicurezza.js';
+
+const V = (forma, autore = 'qualsiasi') => prev('2025', 'italiane_16_75', 'nella_vita', forma, { autore });
+---
+<SicurezzaSintesi
+  titolo="Nel corso della vita"
+  sotto="Donne italiane di 16–75 anni, violenze subite dai 16 anni in poi."
+  valore={V('fisica_o_sessuale')}
+  dida={`violenza fisica o sessuale nella vita: ${perc(V('fisica_o_sessuale'))}`}
+  gruppi={[
+    { titolo: 'Per forma', voci: [['Violenza fisica', V('fisica')], ['Violenza sessuale', V('sessuale')], ['Stupro o tentato stupro', V('stupro_o_tentato')]] },
+    { titolo: 'Per autore · violenza fisica o sessuale', tenue: true, voci: [
+      ['Da un non partner', V('fisica_o_sessuale', 'non_partner')], ['Da partner o ex partner', V('fisica_o_sessuale', 'partner_o_ex')],
+      ['Da ex partner', V('fisica_o_sessuale', 'ex_partner')], ['Da partner attuale', V('fisica_o_sessuale', 'partner_attuale')]] },
+  ]}
+  nota="Istat, primi risultati 2025, allegato statistico, tavola 1. Per autore la base cambia: donne con partner attuale, donne con un ex, donne con partner attuale o ex, tutte le donne (non partner)."
+/>
+<SicurezzaQuadro
+  id="sic-q25" anno="2025" popolazione="italiane_16_70" periodi={['ultimi_5_anni']}
+  dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'ripartizione']}
+  sotto="Donne italiane di 16–70 anni, violenze negli ultimi 5 anni. Sono esclusi i rapporti sessuali subiti quando la donna non era in grado di opporsi, per il confronto con il 2014."
+  note={{ ultimi_5_anni: "Istat, primi risultati 2025, prospetto 5. Per l'area geografica Istat pubblica cinque ripartizioni, non le regioni." }}
+/>

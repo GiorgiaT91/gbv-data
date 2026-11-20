@@ -8,9 +8,9 @@ domanda: "Quante donne subiscono violenza?"
 numero_grande:
   fonte: istat-sicurezza-donne
   filtro: { anno: 2025, periodo: nella_vita, indicatore: violenza, categoria: fisica_o_sessuale }
-  testo: "delle donne italiane fra 16 e 75 anni ha subito **violenza fisica o sessuale almeno una volta nella vita**. Negli ultimi cinque anni è successo al {cinque} delle donne di 16–70 anni."
+  testo: "delle donne italiane fra 16 e 75 anni ha subito **violenza fisica o sessuale almeno una volta nella vita**. Negli ultimi cinque anni è successo all'{cinque} delle donne di 16–70 anni."
   valori:
-    cinque: { fonte: istat-sicurezza-donne, filtro: { anno: 2025, periodo: ultimi_5_anni, indicatore: violenza_italiane, categoria: fisica_o_sessuale } }
+    cinque: { fonte: istat-sicurezza-donne, filtro: { anno: 2025, periodo: ultimi_5_anni, indicatore: violenza_italiane, categoria: fisica_o_sessuale }, unita: percentuale }
   nota: "Istat, indagine sulla sicurezza delle donne, primi risultati 2025. Per ora solo donne italiane; i risultati con le donne straniere sono attesi nel 2026."
 
 fonti:

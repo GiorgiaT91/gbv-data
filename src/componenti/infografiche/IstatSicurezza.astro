@@ -1,133 +1,201 @@
 ---
-// Infografica dell'indagine Istat sulla sicurezza delle donne, a mosaico (domanda 1).
-// Proposta del 14/11/2026: numero grande "nella vita"; serie degli ultimi 5 anni; età; quanta violenza resta nascosta.
-// Dati: dati/istat-sicurezza-donne. Per ora solo donne italiane per il 2025 (le straniere escono nel 2026).
-import Riquadro from '../grafici/Riquadro.astro';
-import BarreOrizzontali from '../grafici/BarreOrizzontali.astro';
-import BarreGruppi from '../grafici/BarreGruppi.astro';
-import Cifre from '../grafici/Cifre.astro';
-import { richiesto, formatta } from '../../lib/dati.js';
-import { C, PERIODI, percentuale } from '../../lib/colori.js';
+// Infografica dell'indagine Istat sulla sicurezza delle donne (domanda 1). Struttura scelta da Giorgia il 20/11/2026,
+// sul modello degli stereotipi: quattro riquadri in alto (rilevazione 2025, confronto, 2014, 2006); toccandone uno
+// i dati si aprono sotto, uno alla volta. All'apertura della pagina nessun riquadro è aperto.
+// Dati: dati/istat-sicurezza-donne/dati.csv (righe «prevalenza», vedi elabora.py e src/lib/sicurezza.js).
+import Sicurezza2025 from './Sicurezza2025.astro';
+import SicurezzaConfronto from './SicurezzaConfronto.astro';
+import Sicurezza2014 from './Sicurezza2014.astro';
+import Sicurezza2006 from './Sicurezza2006.astro';
 
-const F = 'istat-sicurezza-donne';
-const v = (anno, periodo, indicatore, categoria) => richiesto(F, { anno, periodo, indicatore, categoria });
-const p = (x) => `${percentuale(x, 1)}%`;
-const CHIARO = C.lillaMedio;
-
-const vita = (c) => v(2025, 'nella_vita', 'violenza', c);
-const vittime = v(2025, 'nella_vita', 'violenza', 'fisica_o_sessuale_vittime');
-const milioni = percentuale(vittime / 1e6, 1);
-const coppia = (c) => v(2025, 'nella_vita', 'violenza_da_partner_o_ex', c);
-
-const serieTutte = [2006, 2014].map((a) => ({ etichetta: `${a} · tutte le donne`, valore: v(a, 'ultimi_5_anni', 'violenza_tutte', 'fisica_o_sessuale'), colore: CHIARO }));
-const serieItaliane = [2014, 2025].map((a) => ({ etichetta: `${a} · solo italiane`, valore: v(a, 'ultimi_5_anni', 'violenza_italiane', 'fisica_o_sessuale') }));
-
-const ETA = ['16-24', '25-34', '35-44', '45-54', '55-64', '65-70'];
-const perEta = ETA.map((e) => ({ etichetta: `${e.replace('-', '–')} anni`, valori: [2014, 2025].map((a) => v(a, 'ultimi_5_anni', 'violenza_italiane', `fisica_o_sessuale|${e}`)) }));
-const giovani = perEta[0].valori;
-const sessGiovani = [2014, 2025].map((a) => v(a, 'ultimi_5_anni', 'violenza_italiane', 'sessuale|16-24'));
-
-const dopo = (autore, c) => [2014, 2025].map((a) => v(a, 'ultimi_5_anni', `dopo_la_violenza_${autore}`, c));
-const ANNI = [{ nome: '2014', colore: CHIARO }, { nome: '2025', colore: C.accento }];
-const dopoPartner = [
-  { etichetta: 'Hanno denunciato', valori: dopo('partner_o_ex', 'denuncia') },
-  { etichetta: 'Si sono rivolte a un centro antiviolenza', valori: dopo('partner_o_ex', 'centro_antiviolenza') },
-  { etichetta: 'Considerano un reato quanto subito', valori: dopo('partner_o_ex', 'considera_reato') },
-  { etichetta: 'Non ne hanno parlato con nessuno', valori: dopo('partner_o_ex', 'non_ne_ha_parlato') },
+const RIQUADRI = [
+  { id: '2025', anno: '2025', titolo: 'La rilevazione 2025', testo: 'Primi risultati, novembre 2025. Per ora solo donne italiane.',
+    fatti: ['Nella vita: per forma e autore', 'Ultimi 5 anni: per età, titolo, stato civile, lavoro, area'], h: 'I risultati del 2025' },
+  { id: 'confronto', anno: '2006 · 2014 · 2025', titolo: 'Le rilevazioni a confronto', testo: '2006 e 2014 su tutte le donne; 2014 e 2025 sulle italiane.',
+    fatti: ['Nella vita e 12 mesi: 2006 → 2014', 'Ultimi 5 anni: 2006 → 2014 e 2014 → 2025'], h: "Che cosa cambia fra una rilevazione e l'altra" },
+  { id: '2014', anno: '2014', titolo: 'La rilevazione 2014', testo: 'Donne italiane e straniere di 16–70 anni.',
+    fatti: ['Nella vita, ultimi 5 anni, ultimi 12 mesi', 'Per caratteristiche, regione e cittadinanza'], h: 'I risultati del 2014' },
+  { id: '2006', anno: '2006', titolo: 'La rilevazione 2006', testo: 'Donne italiane e straniere di 16–70 anni.',
+    fatti: ['Nella vita, ultimi 5 anni, ultimi 12 mesi', 'Per caratteristiche e area geografica'], h: 'I risultati del 2006' },
 ];
-const denunciaVita = v(2025, 'nella_vita', 'hanno_denunciato', 'qualsiasi_autore');
 ---
-<div class="mosaico">
-  <div class="s5">
-    <Riquadro titolo="Le forme della violenza, nel corso della vita"
-      nota="Istat · primi risultati 2025, prospetto 1 · donne italiane di 16–75 anni, violenze subite dai 16 anni">
-      <Cifre voci={[
-        { numero: p(vita('fisica_o_sessuale')), testo: `violenza fisica o sessuale: circa ${milioni} milioni di donne` },
-        { numero: p(vita('sessuale')), testo: 'violenza sessuale' },
-        { numero: p(vita('fisica')), testo: 'violenza fisica' },
-        { numero: p(vita('stupro_o_tentato')), testo: 'stupro o tentato stupro' },
-      ]} />
-    </Riquadro>
-  </div>
-  <div class="s7">
-    <Riquadro titolo={`Nella coppia: il ${p(coppia('fisica_o_sessuale'))} ha subito violenza fisica o sessuale, il ${p(coppia('psicologica'))} violenza psicologica`}
-      sottotitolo="Donne che hanno o hanno avuto un partner, violenza da partner o ex nella vita"
-      nota="Istat · primi risultati 2025, prospetto 1 · la violenza psicologica ed economica è rilevata solo nella coppia">
-      <BarreOrizzontali voci={[
-        { etichetta: 'Violenza psicologica', valore: coppia('psicologica') },
-        { etichetta: 'Violenza fisica o sessuale', valore: coppia('fisica_o_sessuale') },
-        { etichetta: 'Violenza economica', valore: coppia('economica') },
-      ]} massimo={40} />
-      <p class="piccola">Fuori dalla coppia (parenti, amici, colleghi, conoscenti, sconosciuti): {p(v(2025, 'nella_vita', 'violenza_da_non_partner', 'fisica_o_sessuale'))} delle donne. Stalking, da qualsiasi autore: {p(vita('stalking'))}.</p>
-    </Riquadro>
+<div class="sic">
+  <p class="sic-intro">Istat ha condotto l'indagine sulla sicurezza delle donne tre volte: nel 2006, nel 2014 e nel 2025. I dati sono divisi in quattro parti, una per rilevazione più il confronto nel tempo. Ciascuna si apre toccando il riquadro.</p>
+
+  <div class="sic-hub">
+    {RIQUADRI.map((r) => (
+      <>
+        <button type="button" class="sic-box" id={`sic-b-${r.id}`} data-pannello={`sic-p-${r.id}`} aria-expanded="false" aria-controls={`sic-p-${r.id}`}>
+          <span class="anno">{r.anno}</span>
+          <span class="titolo">{r.titolo}</span>
+          <span class="testo">{r.testo}</span>
+          <span class="fatti">{r.fatti.map((f) => <span>{f}</span>)}</span>
+          <span class="apri"><span class="o">Apri i dati</span><span class="c">Chiudi</span> <i aria-hidden="true">↓</i></span>
+        </button>
+        <section class="sic-pannello" id={`sic-p-${r.id}`} aria-labelledby={`sic-t-${r.id}`} hidden>
+          <div class="sic-testa">
+            <p class="sic-occhiello">{r.anno}</p>
+            <h2 id={`sic-t-${r.id}`}>{r.h}</h2>
+          </div>
+          {r.id === '2025' && <Sicurezza2025 />}
+          {r.id === 'confronto' && <SicurezzaConfronto />}
+          {r.id === '2014' && <Sicurezza2014 />}
+          {r.id === '2006' && <Sicurezza2006 />}
+        </section>
+      </>
+    ))}
   </div>
 
-  <div class="s12 testata" style={`border-top-color:${C.accento}`}>
-    <span class="bollino" style={`background:${C.accento}`}>Ultimi 5 anni</span>
-    <div><h2>Nel tempo</h2><p>Per confrontare le edizioni si guarda la violenza subita nei cinque anni prima dell'intervista, donne di 16–70 anni</p></div>
-  </div>
-  <div class="s5">
-    <Riquadro titolo={`Dal 2014 al 2025 la quota resta stabile, intorno all'${percentuale(serieItaliane[1].valore, 0)}%`}
-      sottotitolo="Donne che hanno subito violenza fisica o sessuale negli ultimi 5 anni"
-      nota="Istat · 2006 e 2014: report 2014, prospetto 8 (tutte le donne); 2014 e 2025: report 2025, prospetto 5 (solo italiane)">
-      <BarreOrizzontali voci={serieTutte} massimo={20} />
-      <BarreOrizzontali voci={serieItaliane} massimo={20} />
-      <p class="piccola">Le due coppie di barre non formano una serie unica: nel 2025, per ora, sono state intervistate solo le donne italiane.</p>
-    </Riquadro>
-  </div>
-  <div class="s7">
-    <Riquadro titolo={`Fra le ragazze di 16–24 anni la quota sale dal ${p(giovani[0])} al ${p(giovani[1])}`}
-      sottotitolo="Donne italiane che hanno subito violenza fisica o sessuale negli ultimi 5 anni, per età"
-      nota={`Istat · report 2025, prospetto 5. L'aumento fra le più giovani riguarda soprattutto la violenza sessuale: dal ${p(sessGiovani[0])} al ${p(sessGiovani[1])}.`}>
-      <BarreGruppi voci={perEta} serie={ANNI} massimo={40} />
-    </Riquadro>
-  </div>
-
-  <div class="s12 testata" style="border-top-color:var(--testo-2)">
-    <span class="bollino" style="background:var(--testo-2)">Il sommerso</span>
-    <div><h2>Quanta violenza resta nascosta</h2><p>Che cosa fanno le donne dopo la violenza subita da un partner o da un ex</p></div>
-  </div>
-  <div class="s4">
-    <Riquadro titolo={`Il ${p(denunciaVita)} delle vittime ha denunciato almeno una violenza`} nota="Istat · report 2025, pagina 4 · vittime di violenza fisica o sessuale nella vita, italiane 16–75">
-      <Cifre voci={[
-        { numero: p(denunciaVita), testo: 'qualsiasi autore' },
-        { numero: p(v(2025, 'nella_vita', 'hanno_denunciato', 'ex_partner')), testo: 'violenze da un ex partner' },
-        { numero: p(v(2025, 'nella_vita', 'hanno_denunciato', 'partner_attuale')), testo: 'violenze dal partner attuale' },
-      ]} />
-    </Riquadro>
-  </div>
-  <div class="s8">
-    <Riquadro titolo="Più vittime si rivolgono a un centro antiviolenza; la denuncia resta stabile"
-      sottotitolo="Vittime di violenza da partner o ex negli ultimi 5 anni, italiane 16–70"
-      nota="Istat · allegato 2025, tavola 4 · per le violenze da partner i dati comprendono anche episodi precedenti l'ultimo">
-      <BarreGruppi voci={dopoPartner} serie={ANNI} massimo={40} />
-    </Riquadro>
-  </div>
-
-  <div class="s12">
-    <Riquadro titolo="Cosa manca in questa rilevazione">
-      <ul class="manca">
-        <li>Nel 2025, per ora, solo le donne italiane: i risultati con le donne straniere sono attesi nel 2026.</li>
-        <li>Un'indagine ogni otto–dieci anni circa (2006, 2014, 2025): fra un'edizione e l'altra non si sa come cambia il fenomeno.</li>
-        <li>Fasce d'età diverse: 16–70 anni nel 2014, 16–75 nel 2025. Per i confronti Istat usa 16–70.</li>
-        <li>Alcune forme di violenza psicologica ed economica sono rilevate per la prima volta nel 2025 e non hanno serie storica.</li>
-        <li>Nei primi risultati non ci sono dati per regione.</li>
-      </ul>
-    </Riquadro>
-  </div>
+  <p class="sic-fonte">I risultati 2025 completi, con le donne straniere, sono attesi intorno al 25 novembre 2026.</p>
 </div>
 
-<style>
-  .mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
-  .mosaico > * { min-width: 0; }
-  .mosaico > div:not(.testata) > :global(.riquadro) { height: 100%; }
-  .s4 { grid-column: span 4; } .s5 { grid-column: span 5; } .s7 { grid-column: span 7; } .s8 { grid-column: span 8; } .s12 { grid-column: span 12; }
-  .testata { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 16px; border-top: 2px solid; margin-top: 16px; }
-  .testata h2 { font-size: 22px; }
-  .testata p { font-size: 14px; color: var(--testo-2); }
-  .bollino { font-family: var(--titoli); font-weight: 600; font-size: 15px; color: var(--su-scuro); padding: 6px 12px; border-radius: 6px; }
-  .piccola { font-size: 13px; color: var(--testo-3); }
-  .manca { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; color: var(--testo-2); }
-  @media (max-width: 980px) { .s4, .s5, .s7, .s8 { grid-column: span 12; } }
-  @media (max-width: 640px) { .mosaico { gap: 14px; } }
+<script>
+  // Un riquadro aperto alla volta; un secondo tocco sullo stesso lo chiude.
+  const riquadri = [...document.querySelectorAll<HTMLButtonElement>('.sic .sic-box')];
+  const riduci = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  riquadri.forEach((b) => b.addEventListener('click', () => {
+    const aperto = b.getAttribute('aria-expanded') === 'true';
+    riquadri.forEach((x) => {
+      x.setAttribute('aria-expanded', 'false');
+      document.getElementById(x.dataset.pannello!)!.hidden = true;
+    });
+    if (aperto) return;
+    b.setAttribute('aria-expanded', 'true');
+    const p = document.getElementById(b.dataset.pannello!)!;
+    p.hidden = false;
+    const top = p.getBoundingClientRect().top;
+    if (top > innerHeight * 0.8 || top < 0) p.scrollIntoView({ block: 'start', behavior: riduci() ? 'auto' : 'smooth' });
+  }));
+</script>
+
+<style is:global>
+  /* Tutto con le variabili di globale.css; prefisso .sic per i contenuti disegnati dagli script */
+  .sic { display:flex; flex-direction:column; gap:24px; font-size:15px; line-height:1.5; }
+  .sic [hidden] { display:none !important; }
+  .sic p { margin:0; }
+  .sic h3 { font-family:var(--titoli); font-size:1.1rem; font-weight:600; margin:0; }
+  .sic-intro { color:var(--testo-2); max-width:68ch; font-size:17px; }
+  .sic-fonte { font-size:.8rem; color:var(--testo-3); }
+
+  /* Riquadri */
+  .sic-hub { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; align-items:stretch; }
+  .sic-box { all:unset; box-sizing:border-box; cursor:pointer; display:flex; flex-direction:column; gap:8px; background:var(--carta); border:1px solid var(--info-linea); border-radius:10px; padding:18px; min-width:0; }
+  .sic-box:hover { border-color:var(--accento); }
+  .sic-box:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
+  .sic-box[aria-expanded="true"] { border:2px solid var(--accento); padding:17px; background:var(--scala-1); }
+  .sic-box .anno { font-family:var(--titoli); font-size:1.7rem; font-weight:600; line-height:1.05; color:var(--accento); font-variant-numeric:tabular-nums; }
+  .sic-box .titolo { font-family:var(--titoli); font-size:1.05rem; font-weight:600; }
+  .sic-box .testo { font-size:.86rem; color:var(--testo-3); }
+  .sic-box .fatti { display:flex; flex-direction:column; gap:2px; font-size:.8rem; border-top:1px solid var(--info-linea); padding-top:8px; }
+  .sic-box .apri { margin-top:auto; padding-top:4px; font-size:.85rem; font-weight:600; color:var(--accento); }
+  .sic-box .apri i { font-style:normal; display:inline-block; transition:transform .2s; }
+  .sic-box .c { display:none; }
+  .sic-box[aria-expanded="true"] .c { display:inline; }
+  .sic-box[aria-expanded="true"] .o { display:none; }
+  .sic-box[aria-expanded="true"] .apri i { transform:rotate(180deg); }
+  .sic-pannello { grid-column:1 / -1; order:10; display:flex; flex-direction:column; gap:24px; min-width:0; padding-top:8px; }
+  .sic-testa { display:flex; flex-direction:column; gap:6px; }
+  .sic-occhiello { font-family:var(--titoli); font-size:.8rem; font-weight:600; letter-spacing:.04em; color:var(--accento); }
+  .sic-testa h2 { margin:0; font-size:1.5rem; line-height:1.2; }
+
+  /* Blocchi */
+  .sic-blocco { display:flex; flex-direction:column; gap:14px; background:var(--carta); border:1px solid var(--info-linea); border-radius:10px; padding:20px; min-width:0; }
+  .sic-sotto { font-size:.88rem; color:var(--testo-3); max-width:70ch; }
+  .sic-gruppo { font-size:.75rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--testo-3); margin-top:6px !important; }
+  .sic-avviso { background:var(--limiti-fondo); color:var(--limiti-testo); border-radius:8px; padding:12px 14px; font-size:.88rem; }
+
+  /* Sintesi */
+  .sic-vita { display:grid; grid-template-columns:auto minmax(0,1fr); gap:24px; align-items:start; }
+  .sic-cento { display:grid; grid-template-columns:repeat(10,14px); gap:3px; }
+  .sic-cento span { width:14px; height:14px; border-radius:2px; background:var(--info-vuoto); }
+  .sic-cento span.si { background:var(--accento); }
+  .sic-cento-dida { font-size:.82rem; color:var(--testo-3); margin-top:8px !important; max-width:170px; }
+  .sic-barre { display:flex; flex-direction:column; gap:9px; min-width:0; }
+  .sic-barra { display:grid; grid-template-columns:minmax(0,13rem) minmax(0,1fr) 3.4rem; gap:10px; align-items:center; font-size:.9rem; }
+  .sic-bin { height:12px; background:var(--griglia); border-radius:2px; position:relative; }
+  .sic-bin i { position:absolute; inset:0 auto 0 0; background:var(--accento); border-radius:2px; }
+  .sic-bin i.tenue { background:var(--scala-3); }
+  .sic-barra b { font-variant-numeric:tabular-nums; text-align:right; font-weight:600; }
+
+  /* Quadro delle differenze */
+  .sic-schede { display:flex; flex-wrap:wrap; gap:6px; }
+  .sic-scheda { all:unset; box-sizing:border-box; cursor:pointer; font-size:.85rem; font-weight:500; padding:6px 12px; border-radius:999px; border:1px solid var(--info-linea); color:var(--testo-2); }
+  .sic-scheda[aria-selected="true"] { background:var(--accento); border-color:var(--accento); color:var(--su-scuro); }
+  .sic-scheda:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
+  .sic-periodo { display:flex; flex-direction:column; gap:10px; }
+  .sic-scorri { overflow-x:auto; }
+  .sic-griglia { display:grid; gap:4px; min-width:720px; }
+  .sic-th { font-size:.78rem; font-weight:600; color:var(--testo-3); padding:4px 6px; align-self:end; }
+  .sic-rh { font-family:var(--titoli); font-weight:600; font-size:.95rem; padding:8px 6px; align-self:center; }
+  .sic-rh small { display:block; font-family:var(--corpo); font-weight:400; font-size:.78rem; color:var(--testo-3); }
+  .sic-cella { all:unset; box-sizing:border-box; cursor:pointer; border-radius:6px; padding:8px 9px; display:flex; flex-direction:column; gap:2px; min-height:64px; color:var(--testo); }
+  .sic-cella:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
+  .sic-cella[aria-expanded="true"] { outline:2px solid var(--testo); outline-offset:-2px; }
+  .sic-cella .gap { font-family:var(--titoli); font-weight:600; font-size:1.05rem; font-variant-numeric:tabular-nums; }
+  .sic-cella .est { font-size:.72rem; line-height:1.3; }
+  .sic-cella.vuota { cursor:default; border:1px dashed var(--grigio-medio); color:var(--testo-3); font-size:.75rem; justify-content:center; }
+  .sic .g1 { background:var(--scala-1); } .sic .g2 { background:var(--scala-2); } .sic .g3 { background:var(--scala-3); }
+  .sic .g4 { background:var(--scala-4); color:var(--su-scuro); } .sic .g5 { background:var(--scala-5); color:var(--su-scuro); }
+  .sic-dettaglio { grid-column:1 / -1; background:var(--info-fondo); border:1px solid var(--info-linea); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+  .sic-legenda { display:flex; flex-wrap:wrap; gap:12px; align-items:center; font-size:.78rem; color:var(--testo-3); }
+  .sic-legenda span { display:inline-flex; align-items:center; gap:5px; }
+  .sic-legenda i { width:16px; height:12px; border-radius:2px; display:inline-block; border:1px solid var(--info-linea); }
+  .sic-punti { display:flex; flex-direction:column; gap:6px; }
+  .sic-punto, .sic-scala { display:grid; grid-template-columns:minmax(0,12rem) minmax(0,1fr) 3.6rem; gap:10px; align-items:center; font-size:.86rem; }
+  .sic-asse { position:relative; height:16px; }
+  .sic-asse::before { content:""; position:absolute; left:0; right:0; top:7px; height:2px; background:var(--griglia); }
+  .sic-asse i { position:absolute; top:2px; width:12px; height:12px; border-radius:50%; background:var(--accento); transform:translateX(-6px); }
+  .sic-punto b { text-align:right; font-variant-numeric:tabular-nums; }
+  .sic-scala { font-size:.72rem; color:var(--testo-3); }
+  .sic-scala div { position:relative; height:14px; }
+  .sic-scala span { position:absolute; transform:translateX(-50%); }
+  .sic-scala div span:first-child { transform:none; }
+  .sic-scala div span:last-child { transform:translateX(-100%); }
+  .sic-mappa { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(170px,1fr); gap:24px; align-items:start; }
+  .sic-elenco { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px; font-size:.82rem; font-variant-numeric:tabular-nums; }
+  .sic-elenco li { display:grid; grid-template-columns:14px minmax(0,1fr) auto; gap:8px; align-items:center; padding:2px 0; border-bottom:1px solid var(--info-linea); }
+  .sic-elenco i { width:14px; height:14px; border-radius:3px; border:1px solid var(--info-linea); }
+  .sic svg text { font-family:var(--corpo); }
+
+  /* Confronto */
+  .sic-coppie { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .sic-coppia { border:1px solid var(--info-linea); border-radius:10px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+  .sic-pop { font-size:.8rem; color:var(--testo-3); }
+  .sic-val { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; font-family:var(--titoli); font-weight:600; font-variant-numeric:tabular-nums; }
+  .sic-val .a { font-size:1.7rem; color:var(--testo-3); }
+  .sic-val .b { font-size:2.1rem; color:var(--accento); }
+  .sic-val .d { font-family:var(--corpo); font-size:.85rem; font-weight:500; color:var(--testo-2); }
+  details.sic-dim { border-top:1px solid var(--info-linea); padding-top:10px; }
+  details.sic-dim summary { cursor:pointer; font-weight:600; font-family:var(--titoli); list-style:none; display:flex; justify-content:space-between; gap:10px; }
+  details.sic-dim summary::-webkit-details-marker { display:none; }
+  details.sic-dim summary::after { content:"Apri ↓"; font-family:var(--corpo); font-size:.82rem; color:var(--accento); }
+  details.sic-dim[open] summary::after { content:"Chiudi ↑"; }
+  .sic-manubri { display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+  .sic-manubrio { display:grid; grid-template-columns:minmax(0,11rem) minmax(0,1fr) minmax(0,1fr); gap:14px; align-items:center; font-size:.86rem; }
+  .sic-manubrio.uno { grid-template-columns:minmax(0,11rem) minmax(0,1fr); }
+  .sic-manubrio.testa { font-size:.75rem; color:var(--testo-3); font-weight:600; }
+  .sic-mb { position:relative; height:18px; }
+  .sic-mb::before { content:""; position:absolute; left:0; right:0; top:8px; height:2px; background:var(--griglia); }
+  .sic-mb .tratto { position:absolute; top:7px; height:4px; background:var(--grigio-medio); opacity:.5; }
+  .sic-mb .p { position:absolute; top:3px; width:12px; height:12px; transform:translateX(-6px); border:2px solid var(--carta); }
+  .sic-mb .v { position:absolute; top:-1px; font-size:.7rem; color:var(--testo-3); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .sic .p.a06 { background:var(--grigio-medio); border-radius:2px; }
+  .sic .p.a14 { background:var(--lilla-medio); border-radius:50%; }
+  .sic .p.a25 { background:var(--accento); border-radius:50%; }
+  .sic-chiave { display:flex; gap:14px; flex-wrap:wrap; font-size:.8rem; color:var(--testo-2); }
+  .sic-chiave span { display:inline-flex; align-items:center; gap:6px; }
+  .sic-chiave .p { display:inline-block; width:12px; height:12px; }
+
+  @media (prefers-reduced-motion:no-preference) { .sic-pannello { animation:sic-apri .2s ease-out; } @keyframes sic-apri { from { opacity:.4; transform:translateY(-4px); } to { opacity:1; transform:none; } } }
+  @media (max-width:860px) {
+    .sic-hub { grid-template-columns:minmax(0,1fr); }
+    #sic-b-2025 { order:1; } #sic-p-2025 { order:2; } #sic-b-confronto { order:3; } #sic-p-confronto { order:4; }
+    #sic-b-2014 { order:5; } #sic-p-2014 { order:6; } #sic-b-2006 { order:7; } #sic-p-2006 { order:8; }
+    .sic-coppie, .sic-vita { grid-template-columns:minmax(0,1fr); }
+    .sic-barra, .sic-punto, .sic-scala { grid-template-columns:minmax(0,8.5rem) minmax(0,1fr) 3.2rem; }
+    .sic-manubrio, .sic-manubrio.uno { grid-template-columns:minmax(0,1fr); gap:4px; }
+    .sic-manubrio.testa { display:none; }
+    .sic-mb { margin-top:12px; }
+    .sic-mb::after { content:attr(data-et); position:absolute; right:0; top:-14px; font-size:.66rem; color:var(--testo-3); }
+  }
 </style>

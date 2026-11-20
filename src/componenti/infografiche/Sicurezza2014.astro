@@ -1,0 +1,47 @@
+---
+// Riquadro 2014 della domanda 1: indagine Istat sulla sicurezza delle donne, tutte le donne di 16-70 anni.
+// Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (banca dati Istat, indagine 2014).
+import SicurezzaSintesi from './SicurezzaSintesi.astro';
+import SicurezzaQuadro from './SicurezzaQuadro.astro';
+import { prev, perc, PERIODI } from '../../lib/sicurezza.js';
+
+const V = (forma, autore = 'qualsiasi') => prev('2014', 'tutte_16_70', 'nella_vita', forma, { autore });
+const FS = 'fisica_o_sessuale';
+const cittadinanza = Object.keys(PERIODI).map((p) => ({
+  periodo: PERIODI[p], italiane: prev('2014', 'italiane_16_70', p, FS), straniere: prev('2014', 'straniere_16_70', p, FS),
+}));
+const NOTA = 'Istat, banca dati, indagine 2014: violenza per tipo di autore e caratteristiche della donna.';
+---
+<SicurezzaSintesi
+  titolo="Nel corso della vita"
+  sotto="Tutte le donne di 16–70 anni, italiane e straniere, violenze subite dai 16 anni in poi."
+  valore={V(FS)}
+  dida={`violenza fisica o sessuale nella vita: ${perc(V(FS))}`}
+  gruppi={[
+    { titolo: 'Per forma', voci: [['Violenza fisica', V('fisica')], ['Violenza sessuale', V('sessuale')], ['Stupro o tentato stupro', V('stupro_o_tentato')]] },
+    { titolo: 'Per autore · violenza fisica o sessuale', tenue: true, voci: [
+      ['Da un non partner', V(FS, 'non_partner')], ['di cui da uno sconosciuto', V(FS, 'sconosciuto')], ['Da partner o ex partner', V(FS, 'partner_o_ex')],
+      ['Da ex partner', V(FS, 'ex_partner')], ['Da partner attuale', V(FS, 'partner_attuale')]] },
+  ]}
+  nota="Istat, banca dati, indagine 2014. Per autore la base cambia: donne con partner attuale, donne con un ex, donne con partner attuale o ex, tutte le donne (non partner)."
+/>
+<SicurezzaQuadro
+  id="sic-q14" anno="2014" popolazione="tutte_16_70" periodi={['nella_vita', 'ultimi_5_anni', 'ultimi_12_mesi']}
+  dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'regione']}
+  sotto="Tutte le donne di 16–70 anni."
+  note={{ nella_vita: NOTA, ultimi_5_anni: NOTA, ultimi_12_mesi: NOTA }}
+/>
+<section class="sic-blocco">
+  <h3>Italiane e straniere</h3>
+  <p class="sic-sotto">Violenza fisica o sessuale, donne di 16–70 anni. La cittadinanza c'è solo nella rilevazione 2014.</p>
+  <div class="sic-barre">
+    {cittadinanza.map((c) => (
+      <>
+        <p class="sic-gruppo">{c.periodo}</p>
+        <div class="sic-barra"><span>Italiane</span><span class="sic-bin"><i style={`width:${(c.italiane / 40) * 100}%`}></i></span><b>{perc(c.italiane)}</b></div>
+        <div class="sic-barra"><span>Straniere</span><span class="sic-bin"><i class="tenue" style={`width:${(c.straniere / 40) * 100}%`}></i></span><b>{perc(c.straniere)}</b></div>
+      </>
+    ))}
+  </div>
+  <p class="sic-fonte">Istat, banca dati, indagine 2014, violenza per cittadinanza.</p>
+</section>

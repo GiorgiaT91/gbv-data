@@ -1,0 +1,37 @@
+---
+// Blocco di sintesi di una rilevazione sulla sicurezza delle donne: quadrato da 100 (1 donna su 100 per quadratino)
+// e barre per forma e per autore. Usato da Sicurezza2025, Sicurezza2014 e Sicurezza2006.
+import { perc } from '../../lib/sicurezza.js';
+
+interface Gruppo { titolo: string; voci: [string, number][]; tenue?: boolean }
+interface Props { titolo: string; sotto: string; valore: number; dida: string; gruppi: Gruppo[]; nota: string; massimo?: number }
+const { titolo, sotto, valore, dida, gruppi, nota, massimo = 40 } = Astro.props;
+const pieni = Math.round(valore);
+---
+<section class="sic-blocco">
+  <h3>{titolo}</h3>
+  <p class="sic-sotto">{sotto}</p>
+  <div class="sic-vita">
+    <div>
+      <div class="sic-cento" role="img" aria-label={`${perc(valore)}: circa ${pieni} donne su 100`}>
+        {Array.from({ length: 100 }, (_, i) => <span class:list={{ si: i < pieni }}></span>)}
+      </div>
+      <p class="sic-cento-dida">{dida}</p>
+    </div>
+    <div class="sic-barre">
+      {gruppi.map((g) => (
+        <>
+          <p class="sic-gruppo">{g.titolo}</p>
+          {g.voci.map(([etichetta, v]) => (
+            <div class="sic-barra">
+              <span>{etichetta}</span>
+              <span class="sic-bin"><i class:list={{ tenue: g.tenue }} style={`width:${Math.min(v / massimo, 1) * 100}%`}></i></span>
+              <b>{perc(v)}</b>
+            </div>
+          ))}
+        </>
+      ))}
+    </div>
+  </div>
+  <p class="sic-fonte">{nota}</p>
+</section>
