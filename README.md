@@ -9,7 +9,7 @@ Sito: https://giorgiat91.github.io/gbv-data/
 | Cartella | Contenuto |
 |---|---|
 | `dati/<fonte>/` | `dati.csv` (tabella pulita), `scheda.yaml` (informazioni sulla fonte), `note.md` (come sono stati ricavati i numeri), `originali/` |
-| `contenuti/domande.yaml` | Le sei domande, nell'ordine della home, con lo stato (pronta o in lavorazione) |
+| `contenuti/domande.yaml` | Le domande, nell'ordine della home, con lo stato (pronta o in lavorazione) |
 | `contenuti/fonti.yaml` | Le dodici fonti, con la domanda a cui rispondono e lo stato |
 | `contenuti/cambiamenti.yaml` | Gli aggiornamenti del sito: alimenta la pagina «Cosa è cambiato» e il feed RSS |
 | `contenuti/domande/` | I testi delle pagine delle domande |

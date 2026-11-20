@@ -137,7 +137,6 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
         </div>
       ))}
     </div>
-    <a class="prossimamente" href={url('/domande/cosa-non-sappiamo-ancora/')}>{t.limiti.collegamento} →</a>
   </section>
 
   <section class="sezione" aria-labelledby="fonti">
@@ -166,7 +165,6 @@ const testoBoxIstat = istatChiuso === undefined ? `${t.box_fonti.voci[0].testo} 
   .voci { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
   .voci h3 { font-family: var(--corpo); font-size: 16px; color: var(--limiti-titolo); margin-bottom: 4px; }
   .voci p { font-size: 15px; color: var(--limiti-testo); }
-  .prossimamente { font-size: 15px; color: var(--limiti-titolo); font-weight: 600; }
   .titolo-fonti { font-size: 24px !important; }
   .punto-fermo { font-family: var(--titoli); font-size: 22px; line-height: 1.4; padding: 16px 20px; border-left: 4px solid var(--accento); background: var(--accento-chiaro); border-radius: 0 12px 12px 0; color: var(--accento-scuro); }
   .esplora { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; padding: 18px 22px; background: var(--carta); border: 1px solid var(--bordo); border-radius: 12px; }

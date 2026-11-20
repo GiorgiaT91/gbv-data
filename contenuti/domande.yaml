@@ -1,4 +1,4 @@
-# Le sei domande, nell'ordine in cui compaiono in home.
+# Le domande, nell'ordine in cui compaiono in home.
 # id: identificativo interno, usato nei nomi dei file; non cambia mai.
 # stato: pronta | in-verifica | in-lavorazione. Una domanda è "pronta" quando supera il
 #   criterio del Piano di progetto: numeri controllati, schede compilate,
@@ -8,7 +8,7 @@
 # indirizzo: solo per le domande pronte.
 # fonti: identificativi delle fonti (vedi contenuti/fonti.yaml).
 # home: la tessera della domanda in home. etichetta; numero (fonte, filtro, unita: percentuale se è una quota)
-#   oppure testo_numero (numero scritto a mano); descrizione; fonte_breve; forma: vuoti per la tessera tratteggiata.
+#   oppure testo_numero (numero scritto a mano); descrizione; fonte_breve.
 #   La prima domanda dell'elenco è la tessera grande, con cento punti.
 
 - id: 1
@@ -69,16 +69,3 @@
   stato: pronta
   indirizzo: /domande/quante-donne-vengono-uccise/
   fonti: [istat-omicidi, interno-femminicidi, nudm-osservatorio]
-
-- id: 5
-  testo: "Cosa non sappiamo ancora?"
-  home:
-    etichetta: "I vuoti"
-    forma: vuoti
-    testo_numero: "Legge 53/2022"
-    descrizione: "I dati che la legge prevede, messi a confronto con quelli pubblicati oggi."
-    fonte_breve: "Lettura di GBV-Data"
-  stato: in-verifica
-  modello: lista            # pagina propria: src/pages/domande/cosa-non-sappiamo-ancora.astro
-  indirizzo: /domande/cosa-non-sappiamo-ancora/
-  fonti: []
