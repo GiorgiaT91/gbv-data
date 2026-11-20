@@ -3,10 +3,10 @@
 // un cerchio pieno di area proporzionale al dato. Tre gruppi: uomini non partner, persone conosciute, partner ed ex.
 // Le basi cambiano: non partner su tutte le donne; partner o ex su chi ha o ha avuto un partner; partner attuale su chi ha
 // un partner; ex su chi ha un ex (codici.csv, DATA_TYPE PNP/CFP/CP/FP). Periodo e forma arrivano dalla barra comune (`evento`).
-import { FORME_TUTTE, cella } from '../../lib/sicurezza.js';
+import { PERIODI, FORME_TUTTE, cella } from '../../lib/sicurezza.js';
 
-interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string }
-const { anno, popolazione, periodi, evento, nota } = Astro.props;
+interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string; comandi: string }
+const { anno, popolazione, periodi, evento, nota, comandi } = Astro.props;
 const AUTORI = ['non_partner', 'sconosciuto', 'persona_conosciuta', 'non_partner_non_specificato', 'conoscente', 'amico', 'parente', 'collega',
   'amico_di_famiglia', 'partner_o_ex', 'partner_attuale', 'ex_partner'];
 const D = {};
@@ -19,11 +19,12 @@ for (const p of periodi) {
 ---
 <section class="sic-blocco sic-au">
   <h3>Chi è stato</h3>
+  <p class="sic-ora"><span data-ora></span><a href={`#${comandi}`}>cambia</a></p>
   <p class="sic-sotto">Il cerchio tratteggiato sono 100 donne; quello pieno, le donne che hanno subito violenza da quel tipo di autore. L'area del cerchio pieno è proporzionale al dato.</p>
   <div class="sic-au-gruppo" data-np></div>
   <div class="sic-au-gruppo" data-p></div>
   <p class="sic-fonte">{nota}</p>
-  <script type="application/json" class="sic-au-json" set:html={JSON.stringify({ D, evento })}></script>
+  <script type="application/json" class="sic-au-json" set:html={JSON.stringify({ D, evento, forme: Object.fromEntries(FORME_TUTTE), periodi: PERIODI })}></script>
 </section>
 
 <style is:global>
@@ -53,6 +54,7 @@ for (const p of periodi) {
     const J = JSON.parse(root.querySelector('.sic-au-json')!.textContent!);
     const st = { p: Object.keys(J.D)[0], f: 'fisica_o_sessuale' };
     function disegna() {
+      root.querySelector('[data-ora]')!.textContent = `${J.forme[st.f]}, ${J.periodi[st.p].toLowerCase()}.`;
       const A = J.D[st.p][st.f];
       const conosciuti = [['conoscente', 'Un conoscente'], ['amico', 'Un amico'], ['parente', 'Un parente'], ['collega', 'Un collega'], ['amico_di_famiglia', 'Un amico di famiglia']]
         .map(([k, t]) => [t, A[k]] as [string, number]).filter((r) => r[1] !== undefined).sort((a, b) => b[1] - a[1]);

@@ -11,17 +11,17 @@ import { FORME_TUTTE, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurez
 
 interface Props {
   id: string; anno: string; popolazione: string; periodi: string[]; dimensioni: string[]; note: Record<string, string>; sotto: string;
-  righeAutore?: boolean; filtroAutore?: boolean; evento?: string;
+  righeAutore?: boolean; filtroAutore?: boolean; evento?: string; basePartner?: string;
 }
-const { id, anno, popolazione, periodi, dimensioni, note, sotto, righeAutore = true, filtroAutore = false, evento = '' } = Astro.props;
+const { id, anno, popolazione, periodi, dimensioni, note, sotto, righeAutore = true, filtroAutore = false, evento = '', basePartner = '' } = Astro.props;
 
-const AUTORI_RIGHE = [['partner_o_ex', 'da un partner o ex partner'], ['non_partner', 'da un altro uomo (non partner)']];
+const AUTORI_RIGHE = [['partner_o_ex', 'da un partner o ex partner', basePartner], ['non_partner', 'da un altro uomo (non partner)', '']];
 const AUTORI_FILTRO = filtroAutore ? [['qualsiasi', 'Qualsiasi autore'], ['partner_o_ex', 'Partner o ex partner'], ['non_partner', 'Uomo non partner']] : [['qualsiasi', '']];
 const D = {};
 for (const p of periodi) {
   D[p] = {};
   for (const [f] of FORME_TUTTE) {
-    const righe = righeAutore ? AUTORI_RIGHE.map(([a, t]) => [t, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v]).filter((r) => r[1] !== undefined) : [];
+    const righe = righeAutore ? AUTORI_RIGHE.map(([a, t, b]) => [t, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v, b]).filter((r) => r[1] !== undefined) : [];
     const per = {};
     for (const [a] of AUTORI_FILTRO) {
       const tot = cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v;
@@ -45,16 +45,12 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
 <section class="sic-blocco sic-cl" id={id}>
   <h3>Quante donne, gruppo per gruppo</h3>
   <p class="sic-sotto">{sotto}</p>
-  {!evento && (
-    <>
-      <div class="sic-schede" data-periodi role="group" aria-label="Periodo">
-        {periodi.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
-      </div>
-      <label class="sic-cl-forma">Forma
-        <select>{FORME_TUTTE.map(([f, t]) => <option value={f}>{t}</option>)}</select>
-      </label>
-    </>
-  )}
+  <div class="sic-schede" data-periodi role="group" aria-label="Periodo">
+    {periodi.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
+  </div>
+  <label class="sic-cl-forma">Forma
+    <select>{FORME_TUTTE.map(([f, t]) => <option value={f}>{t}</option>)}</select>
+  </label>
   <div class="sic-cl-sintesi">
     <p class="sic-cl-frase"><span data-n></span><small data-sotto></small></p>
     <div class="sic-cl-autori" data-autori></div>
@@ -86,8 +82,8 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
 
 <style is:global>
   .sic-cl-forma { display:flex; align-items:center; gap:10px; font-size:.85rem; color:var(--testo-3); }
-  .sic-cl-forma select, .sic-barra-c select { font:inherit; font-size:.9rem; color:var(--testo); background:var(--carta); border:1px solid var(--info-linea); border-radius:8px; padding:6px 10px; }
-  .sic-cl-forma select:focus-visible, .sic-barra-c select:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
+  .sic-cl-forma select { font:inherit; font-size:.9rem; color:var(--testo); background:var(--carta); border:1px solid var(--info-linea); border-radius:8px; padding:6px 10px; }
+  .sic-cl-forma select:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
   .sic-cl-sintesi { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; align-items:start; }
   .sic-cl-frase { font-family:var(--titoli); font-weight:600; font-size:1.9rem; line-height:1.15; margin:0; }
   .sic-cl-frase small { display:block; font-family:var(--corpo); font-weight:400; font-size:.95rem; line-height:1.4; color:var(--testo-2); margin-top:6px; }
@@ -97,6 +93,9 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
   .sic-cl-fila i { aspect-ratio:1; border-radius:50%; background:var(--info-vuoto); }
   .sic-cl-fila i.si { background:var(--testo-2); }
   .sic-cl-nota { font-size:.85rem; color:var(--testo-3); margin:0; }
+  .sic-cl-base { display:block; font-size:.75rem; color:var(--testo-3); }
+  .sic-ora { font-size:.85rem; color:var(--testo-2); background:var(--info-fondo); border-radius:6px; padding:6px 10px; margin:0; }
+  .sic-ora a { margin-left:6px; }
   .sic-cl-insieme { display:grid; gap:12px; border-top:1px solid var(--info-linea); padding-top:16px; }
   .sic-cl-insieme h4 { font-family:var(--titoli); font-size:1.05rem; margin:0; }
   .sic-cl-riga { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; }
@@ -192,7 +191,7 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       $('[data-n]').textContent = `Circa ${Math.round(v)} donne su 100`;
       $('[data-sotto]').textContent = `${fmt(v)}% · ${nomeForma().toLowerCase()}, ${J.periodi[st.p].toLowerCase()}`;
       $('[data-autori]').innerHTML = dati.righe.length
-        ? dati.righe.map(([t, x]: [string, number]) => `<div><span><b>${fmt(x)}%</b> ${t}</span>
+        ? dati.righe.map(([t, x, b]: [string, number, string]) => `<div><span><b>${fmt(x)}%</b> ${t}</span>${b ? `<small class="sic-cl-base">${b}</small>` : ''}
             <div class="sic-cl-fila" aria-hidden="true">${Array.from({ length: 100 }, (_, i) => `<i${i < Math.round(x) ? ' class="si"' : ''}></i>`).join('')}</div></div>`).join('')
           + '<p class="sic-cl-nota">Una donna può averla subita da entrambi: per questo le due righe non si sommano.</p>'
         : '';
@@ -202,10 +201,11 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
 
     root.querySelector('[data-periodi]')?.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      seleziona(b.parentElement!, b); st.p = b.dataset.periodo!; disegna();
+      seleziona(b.parentElement!, b); st.p = b.dataset.periodo!; cambia();
     });
-    root.querySelector('.sic-cl-forma select')?.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; disegna(); });
-    if (J.evento) document.addEventListener(J.evento, (e: Event) => { const d = (e as CustomEvent).detail; st.p = d.p; st.f = d.f; disegna(); });
+    root.querySelector('.sic-cl-forma select')?.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; cambia(); });
+    // Con `evento` la scelta di periodo e forma vale anche per le altre parti del riquadro.
+    function cambia() { disegna(); if (J.evento) document.dispatchEvent(new CustomEvent(J.evento, { detail: { p: st.p, f: st.f } })); }
     root.querySelector('[data-autore]')?.addEventListener('click', (e) => {
       const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
       seleziona(b.parentElement!, b); st.a = b.dataset.k!; st.tutti = false; insieme();

@@ -1,53 +1,25 @@
 ---
 // Riquadro 2014 della domanda 1: indagine Istat sulla sicurezza delle donne, donne di 16-70 anni (scelto da Giorgia il 20/11/2026).
-// Una barra comune (periodo e forma) guida quattro parti: classifica dei gruppi (come il 2006, con filtro per autore e limitazioni),
+// Periodo e forma, scelti nel primo blocco (come nel 2006), valgono per tutte e quattro le parti: classifica dei gruppi (come il 2006, con filtro per autore e limitazioni),
 // chi è stato (cerchi da 100), regioni in fila con forme per area, italiane e straniere (quadratini e pallini).
 // Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (banca dati Istat, indagine 2014).
 import SicurezzaClassifica from './SicurezzaClassifica.astro';
 import SicurezzaAutori from './SicurezzaAutori.astro';
 import SicurezzaRegioni from './SicurezzaRegioni.astro';
 import SicurezzaCittadinanza from './SicurezzaCittadinanza.astro';
-import { PERIODI, FORME_TUTTE } from '../../lib/sicurezza.js';
 
 const PER = ['nella_vita', 'ultimi_5_anni', 'ultimi_12_mesi'];
 const EVENTO = 'sic-2014';
 const BD = 'Fonte: Istat, banca dati dell\'indagine sulla sicurezza delle donne 2014, donne di 16–70 anni';
 const NOTA = `${BD} (dataset «Tipo di autore…» e «Cittadinanza…»).`;
 ---
-<div class="sic-barra-c" data-evento={EVENTO}>
-  <div class="sic-schede" role="group" aria-label="Periodo">
-    {PER.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
-  </div>
-  <label class="sic-cl-forma">Forma
-    <select>{FORME_TUTTE.map(([f, t]) => <option value={f}>{t}</option>)}</select>
-  </label>
-  <p class="sic-sotto">Periodo e forma valgono per tutte le parti del 2014.</p>
-</div>
 <SicurezzaClassifica
   id="sic-c14" anno="2014" popolazione="tutte_16_70" periodi={PER}
   dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'limitazioni', 'ripartizione']}
-  righeAutore={false} filtroAutore={true} evento={EVENTO}
-  sotto="Tutte le donne di 16–70 anni, italiane e straniere. Ogni quadrato è un gruppo di donne: i quadratini pieni sono quelle che hanno subito violenza, su 100. Il quadrato tratteggiato «Tutte le donne» è il totale: i gruppi prima hanno valori più alti del totale, quelli dopo più bassi. L'area geografica c'è solo per gli ultimi 5 anni; le regioni sono nella parte qui sotto."
+  righeAutore={true} filtroAutore={true} evento={EVENTO} basePartner="su 100 donne che hanno o hanno avuto un partner"
+  sotto="Tutte le donne di 16–70 anni, italiane e straniere. Ogni quadrato è un gruppo di donne: i quadratini pieni sono quelle che hanno subito violenza, su 100. Il quadrato tratteggiato «Tutte le donne» è il totale: i gruppi prima hanno valori più alti del totale, quelli dopo più bassi. L'area geografica c'è solo per gli ultimi 5 anni; le regioni sono nella parte qui sotto. Periodo e forma scelti qui valgono per tutte le parti del 2014."
   note={{ nella_vita: NOTA, ultimi_5_anni: `${NOTA} Area geografica: report Istat 2014, prospetto 11.`, ultimi_12_mesi: NOTA }}
 />
-<SicurezzaAutori anno="2014" popolazione="tutte_16_70" periodi={PER} evento={EVENTO} nota={`${BD}, dataset «Tipo di autore…».`} />
-<SicurezzaRegioni anno="2014" popolazione="tutte_16_70" periodi={PER} evento={EVENTO} nota={`${BD}, dataset «Tipo di autore e regione».`} />
-<SicurezzaCittadinanza anno="2014" periodi={PER} dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'limitazioni']} evento={EVENTO} nota={`${BD}, dataset «Cittadinanza…».`} />
-
-<style is:global>
-  .sic-barra-c { position:sticky; top:0; z-index:4; display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; background:var(--fondo); border-bottom:1px solid var(--info-linea); padding:10px 0; }
-  .sic-barra-c .sic-sotto { flex-basis:100%; margin:0; }
-</style>
-
-<script>
-  document.querySelectorAll<HTMLElement>('.sic-barra-c').forEach((bar) => {
-    const st = { p: 'nella_vita', f: 'fisica_o_sessuale' };
-    const invia = () => document.dispatchEvent(new CustomEvent(bar.dataset.evento!, { detail: { ...st } }));
-    bar.querySelector('.sic-schede')!.addEventListener('click', (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      bar.querySelectorAll('.sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-      st.p = b.dataset.periodo!; invia();
-    });
-    bar.querySelector('select')!.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; invia(); });
-  });
-</script>
+<SicurezzaAutori anno="2014" popolazione="tutte_16_70" periodi={PER} evento={EVENTO} comandi="sic-c14" nota={`${BD}, dataset «Tipo di autore…».`} />
+<SicurezzaRegioni anno="2014" popolazione="tutte_16_70" periodi={PER} evento={EVENTO} comandi="sic-c14" nota={`${BD}, dataset «Tipo di autore e regione».`} />
+<SicurezzaCittadinanza anno="2014" periodi={PER} dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'limitazioni']} evento={EVENTO} comandi="sic-c14" nota={`${BD}, dataset «Cittadinanza…».`} />

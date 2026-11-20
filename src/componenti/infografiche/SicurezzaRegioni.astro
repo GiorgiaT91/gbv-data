@@ -3,10 +3,10 @@
 // un segno che va più a destra quanto più alto è il valore; la forma del segno dice l'area (cerchio Nord, quadrato Centro,
 // triangolo Sud, rombo Isole). Linea tratteggiata: dato dell'Italia. Periodo e forma dalla barra comune (`evento`).
 // Trentino-Alto Adige: le due province autonome, come nei dati Istat.
-import { FORME_TUTTE, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
+import { PERIODI, FORME_TUTTE, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
 
-interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string }
-const { anno, popolazione, periodi, evento, nota } = Astro.props;
+interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string; comandi: string }
+const { anno, popolazione, periodi, evento, nota, comandi } = Astro.props;
 const D = {};
 for (const p of periodi) {
   D[p] = {};
@@ -18,6 +18,7 @@ for (const p of periodi) {
 ---
 <section class="sic-blocco sic-rg">
   <h3>Regione per regione</h3>
+  <p class="sic-ora"><span data-ora></span><a href={`#${comandi}`}>cambia</a></p>
   <p class="sic-sotto">Le regioni in ordine, dal valore più alto. Più il segno è a destra, più alto è il valore. La forma indica l'area del paese. La linea tratteggiata è il dato di tutta Italia: le regioni a destra della linea sono sopra il dato nazionale, quelle a sinistra sotto.</p>
   <div class="sic-rg-leg" aria-hidden="true">
     <span><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" /></svg>Nord</span>
@@ -28,7 +29,7 @@ for (const p of periodi) {
   </div>
   <div class="sic-rg-graf"><svg role="img"></svg></div>
   <p class="sic-fonte">{nota} Trentino-Alto Adige è diviso nelle due province autonome, come nei dati Istat.</p>
-  <script type="application/json" class="sic-rg-json" set:html={JSON.stringify({ D, evento })}></script>
+  <script type="application/json" class="sic-rg-json" set:html={JSON.stringify({ D, evento, forme: Object.fromEntries(FORME_TUTTE), periodi: PERIODI })}></script>
 </section>
 
 <style is:global>
@@ -55,6 +56,7 @@ for (const p of periodi) {
     const st = { p: Object.keys(J.D)[0], f: 'fisica_o_sessuale' };
     const svg = root.querySelector('svg[role="img"]')!;
     function disegna() {
+      root.querySelector('[data-ora]')!.textContent = `${J.forme[st.f]}, ${J.periodi[st.p].toLowerCase()}.`;
       const dati = J.D[st.p][st.f];
       if (!dati) { svg.innerHTML = ''; return; }
       const r = [...dati.righe].sort((a: any, b: any) => b.v - a.v), T = dati.italia;
