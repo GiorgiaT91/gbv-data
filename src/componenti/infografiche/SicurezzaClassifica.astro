@@ -1,10 +1,10 @@
 ---
 // Classifica dei gruppi di donne (scelta da Giorgia il 20/11/2026, mockup «Cento donne, gruppo per gruppo»). Usata dal 2006 e dal 2014.
 // In alto: «circa N donne su 100» per tutte le donne e, se richiesto, le due righe per autore (partner o ex, non partner).
-// Sotto: ogni gruppo di donne è un quadrato da 100, ordinati dal valore più alto; «Tutte le donne» sta in classifica,
-// tratteggiato, come totale: i gruppi prima hanno valori più alti, quelli dopo più bassi. Comandi: periodo, forma, filtro per
+// Sotto: ogni gruppo di donne è un quadrato da 100, ordinati dal valore più alto (il quadrato del totale è stato tolto
+// su richiesta di Giorgia, 20/11/2026: il totale è nella frase in alto). Comandi: periodo, forma, filtro per
 // caratteristica (all'avvio tutte: nessuna scelta da noi), autore (se `filtroAutore`), «vedi come tabella».
-// Su telefono si vedono i primi 6, il totale e gli ultimi 3, con «mostra tutti».
+// Su telefono si vedono i primi 6 e gli ultimi 3, con «mostra tutti».
 // Con `evento` periodo e forma arrivano da una barra comune (evento sul document con detail {p, f}) e i comandi propri non compaiono.
 // Colori: solo variabili di globale.css.
 import { FORME_TUTTE, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
@@ -163,22 +163,20 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
       }
       bTab.hidden = false;
       tutti.sort((a: any, b: any) => b.v - a.v);
-      const hi = tutti[0], lo = tutti[tutti.length - 1], T = dati.totale;
+      const hi = tutti[0], lo = tutti[tutti.length - 1];
       est.innerHTML = `Valore più alto: <b>${hi.t}</b> (${hi.nome.toLowerCase()}), ${fmt(hi.v)}%. Valore più basso: <b>${lo.t}</b> (${lo.nome.toLowerCase()}), ${fmt(lo.v)}%.`;
       const righe = [...tutti];
-      const pos = tutti.findIndex((x: any) => x.v < T);
-      righe.splice(pos < 0 ? tutti.length : pos, 0, { t: 'Tutte le donne', v: T, tot: true });
       minis.innerHTML = righe.map((x: any) => {
         const b = x === hi ? '<span class="sic-cl-badge">più alto</span>' : x === lo ? '<span class="sic-cl-badge">più basso</span>'
           : x.tot ? '<span class="sic-cl-badge rif">totale</span>' : '<span class="sic-cl-badge vuoto">·</span>';
         return `<div class="sic-cl-mini${x.tot ? ' tot' : ''}" role="img" aria-label="${x.t}${x.nome ? ', ' + x.nome : ''}: ${fmt(x.v)}%">${b}${quadrato(x.v)}
           <b>${fmt(x.v)}%${asterisco(x)}</b><span>${x.t}</span>${st.filtro === 'tutte' && x.nome ? `<small>${x.nome}</small>` : ''}</div>`;
       }).join('');
-      const iT = righe.findIndex((x: any) => x.tot), n = righe.length;
+      const n = righe.length;
       const corto = stretto.matches && n > 12 && !st.tutti;
-      [...minis.children].forEach((c, i) => c.classList.toggle('nascosto', corto && !(i < 6 || i === iT || i >= n - 3)));
+      [...minis.children].forEach((c, i) => c.classList.toggle('nascosto', corto && !(i < 6 || i >= n - 3)));
       bAltri.hidden = st.tabella || !stretto.matches || n <= 12;
-      bAltri.textContent = st.tutti ? 'Mostra meno gruppi' : `Mostra tutti i ${n - 1} gruppi`;
+      bAltri.textContent = st.tutti ? 'Mostra meno gruppi' : `Mostra tutti i ${n} gruppi`;
       const autore = J.autori.length ? `, ${J.autori.find((x: string[]) => x[0] === st.a)[1].toLowerCase()}` : '';
       tab.innerHTML = `<table><caption>${nomeForma()}, ${J.periodi[st.p].toLowerCase()}${autore}: percentuale di donne</caption>
         <thead><tr><th scope="col">Gruppo</th><th scope="col">Caratteristica</th><th scope="col" class="n">%</th></tr></thead>
