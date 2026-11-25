@@ -21,11 +21,15 @@ Da dove vengono i numeri della parte 2:
   tutte le donne 16-70 e, per cittadinanza, italiane e straniere 16-70.
   Le ripartizioni del 2014 non sono nella banca dati (ci sono le regioni): vengono dal
   report 2014, prospetto 11.
-- 2025: originali/2025/Allegato-tavole-statistiche.xlsx (tavole 1 e 3), solo italiane;
-  per gli ultimi 5 anni senza distinzione di autore, report 2025, prospetto 5 (trascritto).
+- 2025, nel corso della vita: originali/2025/Tavole-Violenza.xlsx (25/11/2026), tav. 1, italiane e straniere 16-75.
+- 2025, ultimi 5 anni:
+  italiane 16-70 per autore e caratteristiche: Allegato-tavole-statistiche.xlsx (primi risultati), tavola 3;
+  italiane 16-70 senza distinzione di autore: primi risultati, prospetto 5 (trascritto);
+  tutte le donne 16-70 e straniere 16-70: report del 25/11/2026, prospetti 9 (per autore) e 11 (per
+  caratteristiche), trascritti. Di quei prospetti si usa solo la colonna 2025: i valori 2006 hanno errori.
 
-Popolazioni: tutte_16_70 (2006, 2014), italiane_16_70 e straniere_16_70 (2014, 2025),
-italiane_16_75 (2025, nel corso della vita). Non si confrontano popolazioni diverse.
+Popolazioni: tutte_16_70 (2006, 2014, 2025), italiane_16_70 e straniere_16_70 (2014, 2025),
+italiane_16_75 e straniere_16_75 (2025, nel corso della vita). Non si confrontano popolazioni diverse.
 «Non risponde» resta un gruppo a sé (gruppo = non_risponde), mai zero o dato mancante.
 avvertenza = errore_oltre_35 quando Istat segna il valore con * (errore campionario oltre il 35%).
 """
@@ -299,15 +303,18 @@ for nome in ['Cittadinanza, età', 'Cittadinanza, titolo', 'Cittadinanza, stato 
 # --- 2025: allegato Excel ----------------------------------------------------------------------
 wb25 = openpyxl.load_workbook(ORIG / '2025' / 'Allegato-tavole-statistiche.xlsx', data_only=True)
 
-T1_25 = 'allegato 2025, tavola 1; italiane 16-75 anni (partner attuale: % su chi ha un partner; ex: su chi ha un ex; partner o ex: su chi ha o ha avuto un partner; non partner e qualsiasi: su tutte)'
-for r in wb25['Tavola 1'].iter_rows(min_row=6, max_row=12, values_only=True):
+T1_25 = ('Tavole-Violenza.xlsx (25/11/2026), tav. 1; {} 16-75 anni (partner attuale: % su chi ha un partner; '
+         'ex: su chi ha un ex; partner o ex: su chi ha o ha avuto un partner; non partner e qualsiasi: su tutte)')
+t1 = openpyxl.load_workbook(ORIG / '2025' / 'Tavole-Violenza.xlsx', data_only=True)['Tav. 1']
+for r in t1.iter_rows(min_row=6, max_row=11, values_only=True):
     forma = forma_di(r[0])
     if not forma:
         continue
-    for col, autore in [(1, 'partner_attuale'), (2, 'ex_partner'), (3, 'partner_o_ex'), (4, 'non_partner'), (13, 'qualsiasi')]:
-        n = numero(r[col])
-        if n:
-            prevalenza(2025, 'nella_vita', 'italiane_16_75', forma, autore, 'totale', 'totale', n[0], T1_25, avvertenza=n[1])
+    for base, autore in [(1, 'partner_attuale'), (5, 'ex_partner'), (9, 'partner_o_ex'), (13, 'non_partner'), (17, 'qualsiasi')]:
+        for k, (pop, chi) in enumerate([('italiane_16_75', 'italiane'), ('straniere_16_75', 'straniere')]):
+            n = numero(r[base + 2 * k])
+            if n:
+                prevalenza(2025, 'nella_vita', pop, forma, autore, 'totale', 'totale', n[0], T1_25.format(chi), avvertenza=n[1])
 
 T3_25 = ('allegato 2025, tavola 3; italiane 16-70 anni; esclusi i rapporti sessuali quando non era in grado di opporsi '
          '(per il confronto con il 2014)')
@@ -360,6 +367,40 @@ for g, valori in P5_2014_RIPARTIZIONI.items():
     for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale'], valori):
         prevalenza(2014, 'ultimi_5_anni', 'italiane_16_70', forma, 'qualsiasi', 'ripartizione', g, v,
                    'report 2025 (PDF), prospetto 5, colonna 2014; italiane 16-70 anni')
+
+
+# --- 2025, ultimi 5 anni, tutte le donne e straniere 16-70: report 25/11/2026, prospetti 9 e 11 (trascritti) ---
+# Solo la colonna 2025: i valori 2006 di questi prospetti hanno errori (titolo di studio invertito nel prospetto 11;
+# partner stupro o tentato 2,0 e ex partner sessuale 1,6 nel prospetto 9). Il 2006 viene sempre dai nostri dati.
+P11_2025 = {  # gruppo: (fisica o sessuale, fisica, sessuale)
+    'stato_civile': {'nubile': (21.3, 11.1, 15.5), 'coniugata': (3.8, 2.4, 1.7), 'separata_divorziata': (9.9, 7.5, 4.6), 'vedova': (0.9, 0.9, 0.2)},
+    'eta': {'16-24': (36.1, 17.9, 29.7), '25-34': (17.3, 8.7, 11.5), '35-44': (9.3, 6.2, 4.7), '45-54': (5.2, 3.8, 2.1),
+            '55-64': (3.4, 2.2, 1.5), '65-70': (1.6, 1.1, 0.6)},
+    'titolo': {'elementare_nessuno': (3.0, 2.2, 1.4), 'media': (8.1, 4.9, 5.6), 'superiore': (11.7, 6.5, 7.8), 'post_secondario': (13.4, 7.1, 8.3)},
+    'condizione': {'dirigenti': (11.3, 6.9, 6.8), 'direttive_impiegate': (10.4, 6.0, 6.2), 'operaie': (8.9, 5.1, 5.4),
+                   'in_proprio': (4.0, 2.4, 2.6), 'in_cerca': (14.3, 8.9, 9.5), 'casalinghe': (3.5, 2.3, 1.6),
+                   'studentesse': (35.1, 17.5, 28.3), 'ritirate': (1.2, 0.8, 0.4), 'altra': (7.9, 5.4, 3.0)},
+    'ripartizione': {'nord_ovest': (10.5, 5.5, 7.2), 'nord_est': (11.8, 6.6, 7.7), 'centro': (11.9, 7.5, 7.4),
+                     'sud': (9.5, 5.4, 6.5), 'isole': (8.9, 4.6, 5.7)},
+}
+P11N = 'report 25/11/2026 (PDF), prospetto 11, colonna 2025; tutte le donne 16-70 anni'
+for dim, gruppi in P11_2025.items():
+    for g, valori in gruppi.items():
+        for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale'], valori):
+            prevalenza(2025, 'ultimi_5_anni', 'tutte_16_70', forma, 'qualsiasi', dim, g, v, P11N)
+
+P9_2025 = {  # popolazione: autore: (fisica o sessuale, fisica, sessuale, stupro o tentato)
+    'tutte_16_70': {'partner_attuale': (1.8, 1.3, 0.6, 0.2), 'ex_partner': (4.4, 3.0, 2.3, 1.0), 'partner_o_ex': (3.9, 2.8, 1.8, 0.6),
+                    'non_partner': (8.3, 3.9, 5.9, 0.7), 'qualsiasi': (10.6, 6.0, 7.0, 1.3)},
+    'straniere_16_70': {'partner_attuale': (2.9, 2.3, 1.1, 0.4), 'ex_partner': (2.5, 2.3, 1.1, 0.2), 'partner_o_ex': (3.5, 2.9, 1.4, 0.4),
+                        'non_partner': (4.4, 2.1, 3.1, 0.6), 'qualsiasi': (7.3, 4.6, 4.2, 1.0)},
+}
+for pop, autori in P9_2025.items():
+    chi = 'tutte le donne' if pop.startswith('tutte') else 'straniere'
+    for autore, valori in autori.items():
+        for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale', 'stupro_o_tentato'], valori):
+            prevalenza(2025, 'ultimi_5_anni', pop, forma, autore, 'totale', 'totale', v,
+                       f'report 25/11/2026 (PDF), prospetto 9, colonna 2025; {chi} 16-70 anni')
 
 # ---------------------------------------------------------------------------------------------
 with open(QUI / 'dati.csv', 'w', encoding='utf-8-sig', newline='') as fh:

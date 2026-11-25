@@ -1,179 +1,287 @@
 ---
-// Riquadro «confronto» della domanda 1 (rifatto su scelta di Giorgia il 24/11/2026, mockup «Le rilevazioni a confronto»).
-// Le tre rilevazioni non formano una serie unica: due coppie sempre separate.
-// 2006 → 2014 su tutte le donne di 16-70 anni (nella vita, ultimi 5 anni, ultimi 12 mesi);
-// 2014 → 2025 solo sulle italiane di 16-70 anni e solo per gli ultimi 5 anni. Il 2025 «nella vita» (16-75 anni) non si confronta.
-// Parte 1: per ogni coppia due quadrati da 100; nel secondo i quadratini vuoti sono le donne «in meno», quelli con il punto le donne «in più».
-// Parte 2: pendenze gruppo per gruppo, una per coppia; all'avvio nessuna caratteristica scelta; tutte le donne = linea tratteggiata.
-// Periodo e forma si scelgono nella prima parte e valgono anche per la seconda. Colori: solo variabili di globale.css.
+// Riquadro «confronto» della domanda 1 (rifatto su scelta di Giorgia il 25/11/2026, mockup «Le rilevazioni a confronto», v6).
+// Tutte le donne di 16-70 anni: negli ultimi 5 anni tre rilevazioni (2006 → 2014 → 2025); nel corso della vita e negli
+// ultimi 12 mesi solo 2006 → 2014 (il 2025 ha 16-75 anni o solo il totale). Italiane e straniere: 2014 → 2025, ultimi 5 anni.
+// Parte 1: un quadrato da 100 donne per rilevazione; quadratini vuoti = donne «in meno», con il punto = «in più».
+// Parte 2: frecce sulla variazione, gruppo per gruppo, da una linea centrale «nessun cambiamento»; si sceglie
+// la caratteristica e il passaggio (tutto il periodo o un passaggio alla volta). Calo = freccia vuota, aumento = piena,
+// sotto 1 punto = «più o meno stabile» (soglia di lettura nostra, non un test Istat).
+// Parte 3: le stesse frecce per italiane e straniere, più i gruppi delle italiane.
+// Il 2006 viene sempre dai nostri dati (tavole 2006 e report 2014), mai dal report 2025, che per il 2006 ha errori.
+// Colori: solo variabili di globale.css; i gruppi si distinguono per forma, non per colore.
 import { FORME, PERIODI, DIMENSIONI, cella } from '../../lib/sicurezza.js';
 
 const ORDINE = ['ultimi_5_anni', 'nella_vita', 'ultimi_12_mesi'];
-const COPPIE = {
-  A: { anni: ['2006', '2014'], pop: ['tutte_16_70', 'tutte_16_70'], testo: 'Tutte le donne di 16–70 anni' },
-  B: { anni: ['2014', '2025'], pop: ['italiane_16_70', 'italiane_16_70'], testo: 'Donne italiane di 16–70 anni' },
-};
+const ANNI = ['2006', '2014', '2025'];
 const DIMS = ['eta', 'titolo', 'stato_civile', 'condizione', 'ripartizione'];
-const coppia = (k, p, f, d = 'totale', g = 'totale') => {
-  const c = COPPIE[k];
-  const a = cella(c.anni[0], c.pop[0], p, f, d, g)?.v, b = cella(c.anni[1], c.pop[1], p, f, d, g)?.v;
-  return a === undefined || b === undefined ? undefined : [a, b];
+const FORME3 = FORME.filter(([f]) => ['fisica_o_sessuale', 'fisica', 'sessuale'].includes(f));
+const v = (anno, pop, p, f, d = 'totale', g = 'totale') => cella(anno, pop, p, f, d, g)?.v ?? null;
+// Tutte le donne: [2006, 2014, 2025]; il 2025 solo negli ultimi 5 anni.
+const serie = (p, f, d, g) => {
+  const s = [v('2006', 'tutte_16_70', p, f, d, g), v('2014', 'tutte_16_70', p, f, d, g),
+    p === 'ultimi_5_anni' ? v('2025', 'tutte_16_70', p, f, d, g) : null];
+  const servono = p === 'ultimi_5_anni' ? 3 : 2;
+  return s.slice(0, servono).every((x) => x !== null) ? s : null;
 };
-const D = {};
-for (const p of ORDINE) {
-  D[p] = {};
-  for (const [f] of FORME) {
-    D[p][f] = {};
-    for (const k of Object.keys(COPPIE)) {
-      const tot = coppia(k, p, f);
-      if (!tot) continue;
-      const dim = {};
-      for (const d of DIMS) {
-        const gs = DIMENSIONI[d].gruppi.map(([g, t]) => ({ t, v: coppia(k, p, f, d, g) })).filter((r) => r.v);
-        if (gs.length) dim[d] = gs;
-      }
-      D[p][f][k] = { tot, dim };
-    }
-  }
+const coppia = (pop, f, d, g) => {
+  const s = [v('2014', pop, 'ultimi_5_anni', f, d, g), v('2025', pop, 'ultimi_5_anni', f, d, g)];
+  return s.every((x) => x !== null) ? s : null;
+};
+const tot = {};
+for (const [f] of FORME3) {
+  tot[f] = Object.fromEntries(ORDINE.map((p) => [p, serie(p, f, 'totale', 'totale')]));
+  tot[f].I = coppia('italiane_16_70', f, 'totale', 'totale');
+  tot[f].S = coppia('straniere_16_70', f, 'totale', 'totale');
 }
-const json = { D, periodi: Object.fromEntries(ORDINE.map((p) => [p, PERIODI[p]])), forme: Object.fromEntries(FORME),
-  coppie: Object.fromEntries(Object.entries(COPPIE).map(([k, c]) => [k, { anni: c.anni, testo: c.testo }])),
-  dim: Object.fromEntries(DIMS.map((d) => [d, DIMENSIONI[d].nome])) };
+const dim = {};
+for (const d of DIMS) {
+  dim[d] = { nome: DIMENSIONI[d].nome, gruppi: DIMENSIONI[d].gruppi.map(([g, t]) => {
+    const r = { t };
+    for (const [f] of FORME3) {
+      for (const p of ORDINE) { const s = serie(p, f, d, g); if (s) r[`${f}|${p}|T`] = s; }
+      const i = coppia('italiane_16_70', f, d, g); if (i) r[`${f}|I`] = i;
+    }
+    return r;
+  }) };
+}
+const json = { tot, dim, anni: ANNI, periodi: Object.fromEntries(ORDINE.map((p) => [p, PERIODI[p]])) };
 ---
 <div class="sic-cf">
-  <div class="sic-avviso">Le tre rilevazioni non si leggono come una sola serie. Il 2006 e il 2014 si confrontano su tutte le donne di 16–70 anni; il 2014 e il 2025 solo sulle italiane di 16–70 anni, e solo per gli ultimi 5 anni. Il dato 2025 «nel corso della vita» riguarda le donne di 16–75 anni e non si confronta.</div>
+  <p class="sic-sotto sic-cf-intro">Negli ultimi 5 anni si possono mettere in fila tre rilevazioni, 2006, 2014 e 2025, sulle donne di 16–70 anni. Per «nel corso della vita» e «negli ultimi 12 mesi» il confronto si ferma al 2014. Periodo e forma scelti qui valgono per tutte le parti.</p>
 
-  <section class="sic-blocco" id="sic-cf-comandi">
-    <h3>Su 100 donne, prima e dopo</h3>
-    <p class="sic-sotto">Ogni coppia è fatta di due quadrati da 100 donne. Nel secondo, i quadratini vuoti sono le donne «in meno» rispetto alla rilevazione precedente, quelli con il punto le donne «in più». Periodo e forma scelti qui valgono anche per la parte qui sotto.</p>
+  <div class="sic-cf-barra">
     <div class="sic-schede" data-periodi role="group" aria-label="Periodo">
-      {ORDINE.map((p, i) => <button type="button" class="sic-scheda" data-periodo={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
+      {ORDINE.map((p, i) => <button type="button" class="sic-scheda" data-k={p} aria-selected={i === 0 ? 'true' : 'false'}>{PERIODI[p]}</button>)}
     </div>
-    <label class="sic-cl-forma">Forma
-      <select data-forma>{FORME.map(([f, t]) => <option value={f}>{t}</option>)}</select>
-    </label>
+    <select data-forma aria-label="Forma di violenza">{FORME3.map(([f, t]) => <option value={f}>{t}</option>)}</select>
+  </div>
+
+  <section class="sic-blocco">
+    <h3>Su 100 donne, rilevazione dopo rilevazione</h3>
+    <p class="sic-sotto">Un quadrato da 100 donne per ogni rilevazione. In ciascuno, i quadratini vuoti sono le donne «in meno» rispetto alla rilevazione precedente, quelli con il punto le donne «in più».</p>
     <div class="sic-cf-leg" aria-hidden="true"><span><i></i>Hanno subito violenza</span><span><i class="meno"></i>In meno rispetto a prima</span><span><i class="piu"></i>In più rispetto a prima</span></div>
-    <div class="sic-cf-coppie" data-tot></div>
-    <p class="sic-fonte">2006: tavole Istat 2006; ultimi 5 anni dal report 2014, prospetto 8. 2014: banca dati Istat. 2025: report 2025, prospetto 5.</p>
+    <div data-p1></div>
   </section>
 
   <section class="sic-blocco">
-    <h3>Gruppo per gruppo</h3>
-    <p class="sic-ora"><span data-ora></span><a href="#sic-cf-comandi">cambia</a></p>
-    <p class="sic-sotto">Ogni gruppo è una linea che va dal primo anno al secondo: se scende, il valore è calato; la punta indica la direzione. La linea tratteggiata è il dato di tutte le donne. Le due coppie stanno in due riquadri separati, perché riguardano donne diverse.</p>
+    <h3>Gruppo per gruppo: in calo o in aumento?</h3>
+    <p class="sic-sotto">Ogni freccia parte da «nessun cambiamento» e mostra di quanti punti è cambiato il dato. Verso sinistra, freccia vuota: meno donne. Verso destra, freccia piena: più donne. Accanto, i due valori. Si può guardare tutto il periodo o un passaggio alla volta.</p>
     <div class="sic-schede" data-dim role="group" aria-label="Caratteristica">
-      {DIMS.map((d) => <button type="button" class="sic-scheda" data-k={d} aria-selected="false">{DIMENSIONI[d].nome}</button>)}
+      {DIMS.map((d, i) => <button type="button" class="sic-scheda" data-k={d} aria-selected={i === 0 ? 'true' : 'false'}>{DIMENSIONI[d].nome}</button>)}
     </div>
-    <div class="sic-cf-pend" data-pend></div>
-    <p class="sic-fonte">Per l'area geografica del 2014 e per il confronto 2014 → 2025 i valori vengono dai prospetti dei report (2014, prospetto 11; 2025, prospetto 5): la banca dati 2014 non ha le ripartizioni.</p>
+    <div class="sic-schede" data-passo role="group" aria-label="Passaggio"></div>
+    <ul class="sic-cf-note" data-p2note></ul>
+    <div class="sic-cf-leg" aria-hidden="true">
+      <span><svg width="34" height="16"><polygon points="32,5 12,5 12,1 2,8 12,15 12,11 32,11" fill="var(--carta)" stroke="var(--accento)" stroke-width="1.6"/></svg>In calo</span>
+      <span><svg width="34" height="16"><polygon points="2,5 22,5 22,1 32,8 22,15 22,11 2,11" fill="var(--accento)"/></svg>In aumento</span>
+      <span><svg width="22" height="16"><rect x="1" y="5" width="20" height="6" rx="3" fill="var(--testo-3)"/></svg>Più o meno stabile (meno di 1 punto)</span>
+    </div>
+    <div data-p2></div>
+    <p class="sic-fonte">«Più o meno stabile»: variazione sotto 1 punto. È una nostra soglia di lettura, non un test statistico Istat.</p>
   </section>
+
+  <section class="sic-blocco">
+    <h3>Italiane e straniere, 2014 → 2025</h3>
+    <p class="sic-sotto">Solo per questi due anni le donne italiane e straniere hanno campioni separati. Stesse frecce della parte qui sopra; se è scelta una caratteristica, sotto compaiono i gruppi delle italiane.</p>
+    <div data-p3msg></div>
+    <div data-p3></div>
+    <ul class="sic-cf-note" data-p3note></ul>
+  </section>
+
+  <section class="sic-blocco">
+    <h3>Cosa manca e dove la fonte sbaglia</h3>
+    <ul class="sic-cf-note">
+      <li><b>2025, tutte le donne:</b> i valori vengono dalle tabelle del report Istat del 25 novembre 2026 (prospetti 9 e 11). Non sono nelle tavole Excel, che per il 2025 riportano solo il periodo «nel corso della vita».</li>
+      <li><b>Nel corso della vita:</b> nel 2025 riguarda le donne di 16–75 anni, nel 2006 e nel 2014 quelle di 16–70. Il 2025 non si può affiancare.</li>
+      <li><b>Ultimi 12 mesi:</b> nel 2025 c'è solo il totale delle donne di 16–75 anni, senza gruppi. Non si può affiancare.</li>
+      <li><b>Regioni:</b> ci sono nel 2014, non nel 2006 e non nel 2025. Il confronto usa le cinque aree geografiche.</li>
+      <li><b>Limitazioni nelle attività quotidiane:</b> ci sono nel 2014 e nel 2025 (solo italiane), non nel 2006. Non sono nel confronto a tre anni.</li>
+      <li><b>Straniere nel 2006:</b> erano nel campione, ma senza un campione dedicato. Per questo italiane e straniere si separano solo dal 2014.</li>
+      <li class="err"><b>Errore nella fonte:</b> nel report 2025 (prospetto 11) i valori del 2006 per titolo di studio sono in ordine invertito: «Elementare o nessuno» 19,5 e «Laurea» 3,1, mentre le tavole del 2006 e il report 2014 riportano 3,1 e 19,5. Qui si usano i valori delle tavole.</li>
+      <li class="err"><b>Errore nella fonte:</b> nel report 2025 (prospetto 9) lo stupro o tentato stupro da partner nel 2006 vale 2,0, più della somma di stupro (0,3) e tentato stupro (0,3); il report 2014 riporta 0,2. La violenza sessuale da ex partner nel 2006 vale 1,6, il report 2014 riporta 2,9. Qui si usano i valori del 2014.</li>
+      <li><b>Piccole differenze:</b> per il 2014 il report 2025 e la banca dati Istat differiscono a volte di 0,1 punti (per esempio violenza sessuale 6,4 nel report, 6,3 nella banca dati). Qui si usa la banca dati.</li>
+    </ul>
+  </section>
+
+  <p class="sic-fonte">Fonte: Istat, indagini sulla sicurezza delle donne. 2006: tavole 2006 e report 2014; 2014: banca dati Istat; 2025: report del 25/11/2026 (prospetti 9 e 11) e, per le italiane per gruppo, primi risultati (prospetto 5).</p>
   <script type="application/json" class="sic-cf-json" set:html={JSON.stringify(json)}></script>
 </div>
 
 <style is:global>
   .sic-cf { display:flex; flex-direction:column; gap:18px; }
+  .sic-cf-barra { position:sticky; top:0; z-index:5; background:var(--fondo); padding:10px 0; border-bottom:1px solid var(--bordo); display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; }
+  .sic-cf-barra select { font:inherit; font-size:.88rem; padding:6px 10px; border-radius:8px; border:1px solid var(--info-linea); background:var(--carta); color:var(--testo); }
+  .sic-cf-barra select:focus-visible { outline:2px solid var(--testo); outline-offset:2px; }
   .sic-cf-leg { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:.85rem; color:var(--testo-2); }
   .sic-cf-leg span { display:inline-flex; gap:6px; align-items:center; }
   .sic-cf-leg i { width:12px; height:12px; display:inline-block; background:var(--accento); }
-  .sic-cf-coppie, .sic-cf-pend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
-  .sic-cf-coppia { display:flex; flex-direction:column; gap:8px; min-width:0; }
-  .sic-cf-coppia h4, .sic-cf-pend h4 { font-family:var(--titoli); font-size:1rem; margin:0; }
-  .sic-cf-coppia h4 small, .sic-cf-pend h4 small { display:block; font-family:var(--corpo); font-weight:400; font-size:.82rem; color:var(--testo-3); }
-  .sic-cf-q2 { display:flex; gap:16px; flex-wrap:wrap; }
-  .sic-cf-q2 figure { margin:0; display:grid; gap:4px; justify-items:start; }
-  .sic-cf-q2 figcaption { font-family:var(--titoli); font-weight:600; font-size:.9rem; font-variant-numeric:tabular-nums; }
-  .sic-cf-q { display:grid; grid-template-columns:repeat(10,1fr); gap:2px; width:120px; }
+  .sic-cf-q { display:grid; grid-template-columns:repeat(10,1fr); gap:2px; width:104px; }
   .sic-cf-q i { aspect-ratio:1; background:var(--info-vuoto); display:block; border-radius:1px; }
   .sic-cf-q i.si { background:var(--accento); }
   .sic-cf i.meno { background:transparent; outline:1.5px solid var(--accento); outline-offset:-1.5px; }
   .sic-cf i.piu { background:var(--accento); background-image:radial-gradient(circle, var(--carta) 0 28%, transparent 30%); }
-  .sic-cf-frase { font-family:var(--titoli); font-weight:600; font-size:1.3rem; line-height:1.25; margin:0; }
-  .sic-cf-pend > div { display:flex; flex-direction:column; gap:6px; min-width:0; }
-  .sic-cf-pend svg { width:100%; max-width:420px; height:auto; display:block; }
-  @media (max-width:640px) { .sic-cf-coppie, .sic-cf-pend { grid-template-columns:minmax(0,1fr); } }
+  .sic-cf-tre { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+  .sic-cf-tre figure { margin:0; display:grid; gap:4px; justify-items:start; }
+  .sic-cf-tre figcaption { font-family:var(--titoli); font-weight:600; font-size:.9rem; font-variant-numeric:tabular-nums; }
+  .sic-cf-passi { display:grid; gap:4px; margin:0; padding:0; list-style:none; }
+  .sic-cf-passi li { font-size:.95rem; color:var(--testo-2); }
+  .sic-cf-passi b { font-family:var(--titoli); font-weight:600; font-size:1.05rem; color:var(--testo); }
+  .sic-cf-note { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+  .sic-cf-note:empty { display:none; }
+  .sic-cf-note li { font-size:.88rem; color:var(--testo-2); padding-left:14px; border-left:3px solid var(--bordo); }
+  .sic-cf-note li.err { border-left-color:var(--accento); }
+  .sic-cf-note b { color:var(--testo); }
+  .sic-cf-frecce { width:100%; height:auto; display:block; }
+  .sic-cf-frecce text { font-family:var(--corpo); }
+  .sic-cf-tab summary { cursor:pointer; font-size:.88rem; color:var(--accento); }
+  .sic-cf-tab table { border-collapse:collapse; margin-top:6px; font-size:.85rem; font-variant-numeric:tabular-nums; }
+  .sic-cf-tab td, .sic-cf-tab th { padding:3px 10px; text-align:right; border-bottom:1px solid var(--griglia); }
+  .sic-cf-tab td:first-child, .sic-cf-tab th:first-child { text-align:left; padding-left:0; }
+  .sic-cf-tab tr.t td { font-weight:700; }
+  @keyframes sic-cf-appare { from { opacity:0; } }
+  @keyframes sic-cf-cresce { from { transform:scaleX(0); } }
+  .sic-cf .app { animation:sic-cf-appare .3s ease-out both; }
+  .sic-cf polygon.cresce { animation:sic-cf-cresce .6s cubic-bezier(.2,.7,.3,1) both; }
+  @media (prefers-reduced-motion:reduce) { .sic-cf .app, .sic-cf polygon.cresce { animation:none; } }
+  @media (max-width:640px) { .sic-cf-barra { position:static; } .sic-cf-q { width:84px; } .sic-cf-tre { gap:8px; } }
 </style>
 
 <script>
+  type Riga = { t: string; v: number[]; tot?: boolean };
   const fmt = (v: number) => v.toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const punti = (d: number) => `${d > 0 ? '+' : d < 0 ? '−' : ''}${fmt(Math.abs(d))} punti`;
+  const segno = (d: number) => `${d >= 0 ? '+' : '−'}${fmt(Math.abs(d))}`;
+  const SOGLIA = 1; // sotto 1 punto: «più o meno stabile»
+  const esito = (d: number) => (Math.abs(d) < SOGLIA ? 'stabile' : d < 0 ? 'calo' : 'aumento');
+  const MOTIVO: Record<string, string> = {
+    nella_vita: 'Il 2025 non si affianca: «nel corso della vita» riguarda le donne di 16–75 anni.',
+    ultimi_12_mesi: "Il 2025 non si affianca: per gli ultimi 12 mesi c'è solo il totale delle donne di 16–75 anni.",
+  };
+  const NOTE_DIM: Record<string, [string, string]> = {
+    titolo: ['err', 'Errore nella fonte: il report 2025 riporta il 2006 per titolo di studio in ordine invertito. Qui il 2006 viene dalle tavole del 2006.'],
+    ripartizione: ['', 'Le regioni ci sono solo nel 2014: si confronta per area geografica.'],
+  };
   const CORTO: Record<string, string> = { 'Dirigenti, imprenditrici, libere prof.': 'Dirigenti, libere prof.', 'Direttive, quadri, impiegate': 'Impiegate e quadri',
     'Laurea, post-secondario': 'Laurea o più', 'Separata o divorziata': 'Separata, divorziata', 'In cerca di occupazione': 'In cerca di lavoro' };
-  function quadrato(prima: number, dopo: number) {
-    const a = Math.round(prima), b = Math.round(dopo);
-    return `<span class="sic-cf-q" aria-hidden="true">${Array.from({ length: 100 }, (_, j) =>
-      j < Math.min(a, b) ? '<i class="si"></i>' : j < a ? '<i class="meno"></i>' : j < b ? '<i class="piu"></i>' : '<i></i>').join('')}</span>`;
+  const nome = (t: string) => CORTO[t] || t;
+  const stretto = matchMedia('(max-width: 640px)');
+  const note = (el: Element, righe: [string, string][]) => { el.innerHTML = righe.map(([c, t]) => `<li class="${c}">${t}</li>`).join(''); };
+
+  function quadrato(prima: number | null, dopo: number) {
+    const a = prima == null ? null : Math.round(prima), b = Math.round(dopo);
+    return `<span class="sic-cf-q" aria-hidden="true">${Array.from({ length: 100 }, (_, j) => {
+      if (a == null) return `<i${j < b ? ' class="si"' : ''}></i>`;
+      if (j < Math.min(a, b)) return '<i class="si"></i>';
+      if (j < a) return '<i class="meno"></i>';
+      if (j < b) return '<i class="piu"></i>';
+      return '<i></i>';
+    }).join('')}</span>`;
   }
+  function frase(a: number, b: number) {
+    const d = Math.round(b) - Math.round(a);
+    return d === 0 ? 'più o meno lo stesso numero di donne su 100' : `circa ${Math.abs(d)} ${Math.abs(d) === 1 ? 'donna' : 'donne'} su 100 ${d < 0 ? 'in meno' : 'in più'}`;
+  }
+  const estremi = (r: Riga, passo: string) => (passo === 'tutto' ? [r.v[0], r.v[r.v.length - 1]] : [r.v[+passo], r.v[+passo + 1]]);
+
+  // Frecce sulla variazione: una riga per gruppo, ordinate dal calo più forte all'aumento più forte; la riga del totale in cima.
+  function frecce(righe: Riga[], anni: string[], tot: Riga, passo: string) {
+    const dd = (r: Riga) => { const [a, b] = estremi(r, passo); return b - a; };
+    const tutte = [tot, ...[...righe].sort((a, b) => dd(a) - dd(b))];
+    const MX = Math.max(2, Math.ceil(Math.max(...tutte.map((r) => Math.abs(dd(r)))) / 2) * 2);
+    const tel = stretto.matches;
+    const W = tel ? 340 : 700, L = tel ? 10 : 190, R = tel ? W - 10 : W - 150, C = (L + R) / 2, RH = tel ? 62 : 46, top = 34;
+    const x = (d: number) => C + (d / MX) * ((R - L) / 2 - 44);
+    const fondo = top + tutte.length * RH;
+    let s = `<text x="${L}" y="14" font-size="12" fill="var(--testo-2)">← meno donne</text><text x="${R}" y="14" font-size="12" text-anchor="end" fill="var(--testo-2)">più donne →</text>`;
+    s += `<text x="${C}" y="28" font-size="11" text-anchor="middle" fill="var(--testo-3)">nessun cambiamento</text>`;
+    const passoG = MX > 10 ? 5 : MX > 4 ? 2 : 1;
+    for (let t = -MX; t <= MX; t += passoG) if (t) s += `<line x1="${x(t)}" x2="${x(t)}" y1="${top}" y2="${fondo}" stroke="var(--griglia)"/><text x="${x(t)}" y="${fondo + 14}" font-size="10.5" text-anchor="middle" fill="var(--testo-3)">${t > 0 ? '+' : '−'}${Math.abs(t)}</text>`;
+    s += `<line x1="${C}" x2="${C}" y1="${top}" y2="${fondo}" stroke="var(--testo-3)" stroke-width="1.5"/>`;
+    tutte.forEach((r, k) => {
+      const y0 = top + k * RH, cy = tel ? y0 + 40 : y0 + RH / 2;
+      const [a, b] = estremi(r, passo), d = b - a, e = esito(d);
+      if (r.tot) s += `<rect x="0" y="${y0 + 2}" width="${W}" height="${RH - 4}" rx="8" fill="var(--accento-chiaro)"/>`;
+      const valori = `${fmt(a)}% → ${fmt(b)}%`;
+      if (tel) s += `<text x="${L}" y="${y0 + 18}" font-size="14" paint-order="stroke" stroke="${r.tot ? 'var(--accento-chiaro)' : 'var(--carta)'}" stroke-width="5" stroke-linejoin="round" fill="var(--testo)"${r.tot ? ' font-weight="700"' : ''}>${r.t} <tspan font-weight="400" fill="var(--testo-2)" font-size="12.5">${valori}</tspan></text>`;
+      else s += `<text x="${L - 14}" y="${cy + 5}" font-size="14" text-anchor="end" fill="var(--testo)"${r.tot ? ' font-weight="700"' : ''}>${r.t}</text><text x="${R + 16}" y="${cy + 5}" font-size="13" fill="var(--testo-2)">${valori}</text>`;
+      const ritardo = (k * 0.07).toFixed(2);
+      if (e === 'stabile') {
+        s += `<g class="app" style="animation-delay:${ritardo}s"><rect x="${C - 10}" y="${cy - 3}" width="20" height="6" rx="3" fill="var(--testo-3)"/><text x="${C + 16}" y="${cy + 5}" font-size="13" font-weight="700" fill="var(--testo)">${segno(d)} <tspan font-weight="400" fill="var(--testo-2)">stabile</tspan></text></g>`;
+      } else {
+        const X = x(d), dir = Math.sign(d), h = tel ? 9 : 10, punta = Math.min(16, Math.abs(X - C)), corpo = X - dir * punta;
+        const pts = `${C},${cy - h / 2} ${corpo},${cy - h / 2} ${corpo},${cy - h} ${X},${cy} ${corpo},${cy + h} ${corpo},${cy + h / 2} ${C},${cy + h / 2}`;
+        s += `<polygon class="cresce" style="animation-delay:${ritardo}s;transform-origin:${C}px ${cy}px" points="${pts}" ${e === 'aumento' ? 'fill="var(--accento)"' : 'fill="var(--carta)" stroke="var(--accento)" stroke-width="2" stroke-linejoin="round"'}/>`;
+        s += `<text class="app" style="animation-delay:${(+ritardo + 0.5).toFixed(2)}s" x="${X + dir * 8}" y="${cy + 5}" font-size="14" font-weight="700" text-anchor="${dir > 0 ? 'start' : 'end'}" fill="var(--testo)">${segno(d)}</text>`;
+      }
+    });
+    const H = fondo + 20;
+    const aria = tutte.map((r) => { const [a, b] = estremi(r, passo); return `${r.t}: da ${fmt(a)}% a ${fmt(b)}%, ${segno(b - a)} punti`; }).join('; ');
+    const tab = `<details class="sic-cf-tab"><summary>Vedi i numeri</summary><table><thead><tr><th></th>${anni.map((a) => `<th>${a}</th>`).join('')}</tr></thead><tbody>${tutte.map((r) => `<tr${r.tot ? ' class="t"' : ''}><td>${r.t}</td>${r.v.map((v) => `<td>${fmt(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></details>`;
+    return `<svg class="sic-cf-frecce" viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">${s}</svg>${tab}`;
+  }
+
   document.querySelectorAll<HTMLElement>('.sic-cf').forEach((root) => {
     const J = JSON.parse(root.querySelector('.sic-cf-json')!.textContent!);
-    const st: { p: string; f: string; d: string | null } = { p: Object.keys(J.periodi)[0], f: 'fisica_o_sessuale', d: null };
-    const nonC = (k: string) => { const c = J.coppie[k]; return `<div class="sic-cf-coppia"><h4>${c.anni.join(' → ')}<small>${c.testo}</small></h4><p class="sic-sotto">Si confronta solo per gli ultimi 5 anni.</p></div>`; };
+    const st = { p: 'ultimi_5_anni', f: 'fisica_o_sessuale', dim: 'eta', passo: 'tutto' };
+    const q = (s: string) => root.querySelector<HTMLElement>(s)!;
+    const seleziona = (box: Element, k: string) => box.querySelectorAll<HTMLElement>('.sic-scheda').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.k === k)));
 
-    function totali() {
-      const X = J.D[st.p][st.f];
-      root.querySelector('[data-tot]')!.innerHTML = Object.keys(J.coppie).map((k) => {
-        if (!X[k]) return nonC(k);
-        const c = J.coppie[k], [a, b] = X[k].tot, d = Math.round(b) - Math.round(a);
-        const frase = d === 0 ? 'Più o meno lo stesso numero di donne su 100' : `Circa ${Math.abs(d)} ${Math.abs(d) === 1 ? 'donna' : 'donne'} su 100 ${d < 0 ? 'in meno' : 'in più'}`;
-        return `<div class="sic-cf-coppia"><h4>${c.anni.join(' → ')}<small>${c.testo}</small></h4>
-          <div class="sic-cf-q2"><figure role="img" aria-label="${c.anni[0]}: ${fmt(a)}%">${quadrato(a, a)}<figcaption>${c.anni[0]} · ${fmt(a)}%</figcaption></figure>
-          <figure role="img" aria-label="${c.anni[1]}: ${fmt(b)}%">${quadrato(a, b)}<figcaption>${c.anni[1]} · ${fmt(b)}%</figcaption></figure></div>
-          <p class="sic-cf-frase">${frase}</p><p class="sic-sotto">${punti(b - a)}</p></div>`;
-      }).join('');
-    }
-
-    function pendenze() {
-      root.querySelector('[data-ora]')!.textContent = `${J.forme[st.f]}, ${J.periodi[st.p].toLowerCase()}.`;
-      root.querySelectorAll<HTMLElement>('[data-dim] .sic-scheda').forEach((b) => {
-        const ce = Object.values(J.D[st.p][st.f]).some((x: any) => x.dim[b.dataset.k!]);
-        b.hidden = !ce;
-        b.setAttribute('aria-selected', String(b.dataset.k === st.d));
+    function parte1() {
+      const t: (number | null)[] = J.tot[st.f][st.p];
+      let figs = '', passi = '';
+      t.forEach((v, i) => {
+        if (v == null) return;
+        const prima = i ? t[i - 1] : null;
+        figs += `<figure role="img" aria-label="${J.anni[i]}: ${fmt(v)}%">${quadrato(prima, v)}<figcaption>${J.anni[i]} · ${fmt(v)}%</figcaption></figure>`;
+        if (prima != null) passi += `<li><b>${J.anni[i - 1]} → ${J.anni[i]}:</b> ${frase(prima, v)} (${segno(v - prima)} punti)</li>`;
       });
-      const box = root.querySelector('[data-pend]')!;
-      const X = J.D[st.p][st.f];
-      if (!st.d) { box.innerHTML = '<p class="sic-sotto">Scegli una caratteristica per vedere i gruppi.</p>'; return; }
-      if (!Object.values(X).some((x: any) => x.dim[st.d!])) { box.innerHTML = `<p class="sic-sotto">${J.dim[st.d]}: il confronto c'è solo per gli ultimi 5 anni. Scegli un'altra caratteristica.</p>`; return; }
-      const pannelli = Object.keys(J.coppie).map((k) => {
-        if (!X[k]) return [k, null];
-        const righe = [{ t: 'Tutte le donne', v: X[k].tot, tot: true }, ...(X[k].dim[st.d!] || []).map((g: any) => ({ t: CORTO[g.t] || g.t, v: g.v, tot: false }))];
-        return [k, righe];
-      }) as [string, any[] | null][];
-      const vals = pannelli.flatMap(([, r]) => (r || []).flatMap((x) => x.v));
-      const M = Math.max(20, Math.ceil(Math.max(...vals) / 10) * 10);
-      const W = 330, H = 300, X0 = 44, X1 = 124, T = 36, B = H - 14;
-      const y = (v: number) => B - (v / M) * (B - T);
-      box.innerHTML = pannelli.map(([k, righe]) => {
-        if (!righe) return nonC(k);
-        const c = J.coppie[k];
-        let s = '';
-        for (let t = 0; t <= M; t += 10) s += `<line x1="${X0 - 4}" x2="${X1 + 4}" y1="${y(t)}" y2="${y(t)}" stroke="var(--griglia)"/><text x="0" y="${y(t) + 4}" font-size="11" fill="var(--testo-3)">${t}%</text>`;
-        s += `<text x="${X0}" y="14" font-size="13" font-weight="700" text-anchor="middle" fill="var(--testo)">${c.anni[0]}</text><text x="${X1}" y="14" font-size="13" font-weight="700" text-anchor="middle" fill="var(--testo)">${c.anni[1]}</text>`;
-        for (const r of righe) {
-          const [a, b] = r.v, ya = y(a), yb = y(b);
-          s += `<line x1="${X0}" x2="${X1}" y1="${ya}" y2="${yb}" stroke="var(--accento)" stroke-width="${r.tot ? 2.5 : 1.6}"${r.tot ? ' stroke-dasharray="6 4"' : ''}/>`;
-          s += `<circle cx="${X0}" cy="${ya}" r="${r.tot ? 4.5 : 3.5}" fill="var(--accento)"/>`;
-          s += b < a ? `<path d="M${X1} ${yb + 5}L${X1 + 5} ${yb - 3}L${X1 - 5} ${yb - 3}Z" fill="var(--accento)"/>` : `<path d="M${X1} ${yb - 5}L${X1 + 5} ${yb + 3}L${X1 - 5} ${yb + 3}Z" fill="var(--accento)"/>`;
-        }
-        const lab = righe.map((r) => ({ r, yy: y(r.v[1]) })).sort((p, q) => p.yy - q.yy);
-        for (let i = 1; i < lab.length; i++) if (lab[i].yy - lab[i - 1].yy < 14) lab[i].yy = lab[i - 1].yy + 14;
-        for (const { r, yy } of lab) s += `<text x="${X1 + 10}" y="${yy + 4}" font-size="11.5" fill="var(--testo)"${r.tot ? ' font-weight="700"' : ''}>${r.t} <tspan fill="var(--testo-2)" font-weight="400">${fmt(r.v[0])} → ${fmt(r.v[1])}</tspan></text>`;
-        const HH = Math.max(H, lab[lab.length - 1].yy + 12);
-        const aria = righe.map((r) => `${r.t}: da ${fmt(r.v[0])}% a ${fmt(r.v[1])}%`).join('; ');
-        return `<div><h4>${c.anni.join(' → ')}<small>${c.testo}</small></h4><svg viewBox="0 0 ${W} ${HH}" role="img" aria-label="${aria}">${s}</svg></div>`;
-      }).join('');
+      q('[data-p1]').innerHTML = `<p class="sic-sotto">Tutte le donne di 16–70 anni</p><div class="sic-cf-tre">${figs}</div><ul class="sic-cf-passi">${passi}</ul>${MOTIVO[st.p] ? `<p class="sic-avviso">${MOTIVO[st.p]}</p>` : ''}`;
     }
 
-    const tutto = () => { totali(); pendenze(); };
-    root.querySelector('[data-periodi]')!.addEventListener('click', (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      st.p = b.dataset.periodo!;
-      root.querySelectorAll('[data-periodi] .sic-scheda').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-      tutto();
+    function parte2() {
+      const righeNote: [string, string][] = [];
+      if (MOTIVO[st.p]) righeNote.push(['', MOTIVO[st.p]]);
+      const el = q('[data-p2]'), boxPasso = q('[data-passo]');
+      const anni: string[] = st.p === 'ultimi_5_anni' ? J.anni : J.anni.slice(0, 2);
+      const taglia = (v: number[]) => v.slice(0, anni.length);
+      const righe: Riga[] = J.dim[st.dim].gruppi.filter((g: any) => g[`${st.f}|${st.p}|T`]).map((g: any) => ({ t: nome(g.t), v: taglia(g[`${st.f}|${st.p}|T`]) }));
+      boxPasso.innerHTML = '';
+      if (!righe.length) el.innerHTML = `<p class="sic-avviso">${J.dim[st.dim].nome}: per questo periodo il 2014 ha solo le regioni, non le aree geografiche. Non si può affiancare al 2006.</p>`;
+      else {
+        const passi = [['tutto', `${anni[0]} → ${anni[anni.length - 1]}`]];
+        if (anni.length === 3) passi.push(['0', `${anni[0]} → ${anni[1]}`], ['1', `${anni[1]} → ${anni[2]}`]);
+        if (!passi.some(([k]) => k === st.passo)) st.passo = 'tutto';
+        boxPasso.innerHTML = passi.length > 1 ? passi.map(([k, t]) => `<button type="button" class="sic-scheda" data-k="${k}" aria-selected="${k === st.passo}">${t}</button>`).join('') : '';
+        el.innerHTML = frecce(righe, anni, { t: 'Tutte le donne', v: taglia(J.tot[st.f][st.p]), tot: true }, st.passo);
+      }
+      if (NOTE_DIM[st.dim]) righeNote.push(NOTE_DIM[st.dim]);
+      note(q('[data-p2note]'), righeNote);
+    }
+
+    function parte3() {
+      const righeNote: [string, string][] = [];
+      const ok = st.p === 'ultimi_5_anni';
+      q('[data-p3msg]').innerHTML = ok ? '' : `<p class="sic-avviso">Italiane e straniere si confrontano solo negli ultimi 5 anni. ${st.p === 'nella_vita' ? 'Nel corso della vita il 2025 riguarda le donne di 16–75 anni.' : 'Per gli ultimi 12 mesi il 2025 ha solo il totale di 16–75 anni.'}</p>`;
+      q('[data-p3]').innerHTML = '';
+      if (ok) {
+        const T = J.tot[st.f];
+        const righe: Riga[] = [{ t: 'Straniere', v: T.S, tot: true }];
+        for (const g of J.dim[st.dim].gruppi) { const v = g[`${st.f}|I`]; if (v) righe.push({ t: `${nome(g.t)} · it.`, v }); }
+        q('[data-p3]').innerHTML = frecce(righe, ['2014', '2025'], { t: 'Italiane', v: T.I, tot: true }, 'tutto');
+        righeNote.push(['', 'I gruppi per caratteristica ci sono solo per le italiane (2025: primi risultati di novembre). Per le straniere il 2025 non ha dati per caratteristica negli ultimi 5 anni.']);
+        righeNote.push(['', 'Fra il 2014 e il 2025 le straniere residenti sono cambiate per età, istruzione e nazionalità (nel 2025 entrano le filippine ed escono le moldave): Istat invita a leggere il confronto con cautela.']);
+      }
+      note(q('[data-p3note]'), righeNote);
+    }
+
+    const tutto = () => { parte1(); parte2(); parte3(); };
+    const clic = (sel: string, fn: (k: string) => void) => q(sel).addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (b) fn(b.dataset.k!);
     });
-    root.querySelector<HTMLSelectElement>('[data-forma]')!.addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; tutto(); });
-    root.querySelector('[data-dim]')!.addEventListener('click', (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLElement>('.sic-scheda'); if (!b) return;
-      st.d = b.dataset.k!; pendenze();
-    });
+    clic('[data-periodi]', (k) => { st.p = k; seleziona(q('[data-periodi]'), k); tutto(); });
+    clic('[data-dim]', (k) => { st.dim = k; seleziona(q('[data-dim]'), k); parte2(); parte3(); });
+    clic('[data-passo]', (k) => { st.passo = k; parte2(); });
+    q('[data-forma]').addEventListener('change', (e) => { st.f = (e.target as HTMLSelectElement).value; tutto(); });
+    stretto.addEventListener('change', tutto);
     tutto();
   });
 </script>
