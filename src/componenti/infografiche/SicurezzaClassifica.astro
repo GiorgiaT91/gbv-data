@@ -12,14 +12,17 @@ import { FORME_TUTTE, PERIODI, DIMENSIONI, prev, cella } from '../../lib/sicurez
 interface Props {
   id: string; anno: string; popolazione: string; periodi: string[]; dimensioni: string[]; note: Record<string, string>; sotto: string;
   righeAutore?: boolean; filtroAutore?: boolean; evento?: string; basePartner?: string;
+  popolazioni?: Record<string, string>; // popolazione diversa per periodo (2025: 16-75 nella vita e 12 mesi, 16-70 negli ultimi 5 anni)
 }
-const { id, anno, popolazione, periodi, dimensioni, note, sotto, righeAutore = true, filtroAutore = false, evento = '', basePartner = '' } = Astro.props;
+const { id, anno, popolazione, periodi, dimensioni, note, sotto, righeAutore = true, filtroAutore = false, evento = '', basePartner = '', popolazioni = {} } = Astro.props;
+const popDi = (p) => popolazioni[p] ?? popolazione;
 
 const AUTORI_RIGHE = [['partner_o_ex', 'da un partner o ex partner', basePartner], ['non_partner', 'da un altro uomo (non partner)', '']];
 const AUTORI_FILTRO = filtroAutore ? [['qualsiasi', 'Qualsiasi autore'], ['partner_o_ex', 'Partner o ex partner'], ['non_partner', 'Uomo non partner']] : [['qualsiasi', '']];
 const D = {};
 for (const p of periodi) {
   D[p] = {};
+  const popolazione = popDi(p);
   for (const [f] of FORME_TUTTE) {
     const righe = righeAutore ? AUTORI_RIGHE.map(([a, t, b]) => [t, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v, b]).filter((r) => r[1] !== undefined) : [];
     const per = {};
@@ -117,6 +120,7 @@ const json = { D, periodi: Object.fromEntries(periodi.map((p) => [p, PERIODI[p]]
   .sic-cl-badge.rif { background:var(--testo-2); }
   .sic-cl-badge.vuoto { visibility:hidden; }
   .sic-cl-altri { justify-self:center; }
+  .sic-cl-minis > p { grid-column:1 / -1; }
   .sic-cl-tab { overflow-x:auto; }
   .sic-cl-tab table { border-collapse:collapse; width:100%; font-size:.9rem; }
   .sic-cl-tab caption { text-align:left; font-size:.85rem; color:var(--testo-3); padding-bottom:6px; }

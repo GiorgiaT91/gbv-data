@@ -21,7 +21,7 @@ export const PERIODI = {
 
 // Caratteristiche delle donne: nome e gruppi nell'ordine naturale. «ordina»: nel dettaglio dal valore più alto.
 export const DIMENSIONI = {
-  eta: { nome: 'Età', gruppi: [['16-24', '16–24 anni'], ['25-34', '25–34 anni'], ['35-44', '35–44 anni'], ['45-54', '45–54 anni'], ['55-64', '55–64 anni'], ['65-70', '65–70 anni']] },
+  eta: { nome: 'Età', gruppi: [['16-24', '16–24 anni'], ['25-34', '25–34 anni'], ['35-44', '35–44 anni'], ['45-54', '45–54 anni'], ['55-64', '55–64 anni'], ['65-70', '65–70 anni'], ['70-75', '70–75 anni']] },
   titolo: { nome: 'Titolo di studio', gruppi: [['elementare_nessuno', 'Elementare o nessuno'], ['media', 'Licenza media'], ['superiore', 'Diploma superiore'], ['post_secondario', 'Laurea, post-secondario']] },
   stato_civile: { nome: 'Stato civile', gruppi: [['nubile', 'Nubile'], ['coniugata', 'Coniugata'], ['separata_divorziata', 'Separata o divorziata'], ['vedova', 'Vedova']] },
   condizione: { nome: 'Condizione professionale', ordina: true, gruppi: [
@@ -29,6 +29,13 @@ export const DIMENSIONI = {
     ['in_proprio', 'Lavoratrici in proprio'], ['in_cerca', 'In cerca di occupazione'], ['casalinghe', 'Casalinghe'],
     ['studentesse', 'Studentesse'], ['ritirate', 'Ritirate dal lavoro'], ['altra', 'Altra condizione']] },
   limitazioni: { nome: 'Limitazioni nelle attività', gruppi: [['nessuna', 'Nessuna limitazione'], ['non_gravi', 'Limitazioni non gravi'], ['gravi', 'Limitazioni gravi'], ['non_risponde', 'Non risponde']] },
+  // Solo 2025 (report del 25/11/2026, prospetto 8 e tavola 9).
+  salute: { nome: 'Salute percepita', gruppi: [['bene', 'Bene o molto bene'], ['ne_bene_ne_male', 'Né bene né male'], ['male', 'Male o molto male']] },
+  malattie: { nome: 'Malattie croniche', gruppi: [['si', 'Con malattie croniche'], ['no', 'Senza malattie croniche']] },
+  // Solo 2025 (prospetto 3): le prime sei cittadinanze straniere residenti e le rifugiate.
+  cittadinanza: { nome: 'Cittadinanza', ordina: true, gruppi: [['italiana', 'Italiane'], ['straniera', 'Straniere, tutte'], ['romania', 'Romene'],
+    ['ucraina', 'Ucraine'], ['albania', 'Albanesi'], ['marocco', 'Marocchine'], ['cina', 'Cinesi'], ['filippine', 'Filippine'],
+    ['altre_straniere', 'Altre cittadinanze straniere'], ['rifugiate', 'Rifugiate']] },
   ripartizione: { nome: 'Area geografica', ordina: true, gruppi: [['nord_ovest', 'Nord-ovest'], ['nord_est', 'Nord-est'], ['centro', 'Centro'], ['sud', 'Sud'], ['isole', 'Isole']] },
   // Regioni: Trentino-Alto Adige è rappresentato dalle due province autonome (come nella mappa).
   regione: { nome: 'Regione', ordina: true, gruppi: [

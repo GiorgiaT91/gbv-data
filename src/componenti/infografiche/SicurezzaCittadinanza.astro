@@ -2,18 +2,27 @@
 // Italiane e straniere (2014, scelta da Giorgia il 20/11/2026): in alto due quadrati da 100 (quadratini = italiane,
 // pallini = straniere, stesso colore); sotto un grafico a righe, una per gruppo: quadratino e pallino sullo stesso righello,
 // uniti da una linea sottile, valori a destra. Forme diverse, non colori diversi. Periodo e forma dalla barra comune (`evento`).
-import { PERIODI, FORME_TUTTE, DIMENSIONI, prev, cella } from '../../lib/sicurezza.js';
+// Con `popolazioni` (periodo → [italiane, straniere]) ogni periodo ha le sue popolazioni; se per un periodo o una forma
+// il dato non c'è, il riquadro lo dice invece del grafico.
+import { PERIODI, FORME_TUTTE, DIMENSIONI, cella } from '../../lib/sicurezza.js';
 
-interface Props { anno: string; periodi: string[]; dimensioni: string[]; evento: string; nota: string; comandi: string }
-const { anno, periodi, dimensioni, evento, nota, comandi } = Astro.props;
+interface Props { anno: string; periodi: string[]; dimensioni: string[]; evento: string; nota: string; comandi: string;
+  popolazioni?: Record<string, [string, string]>; sotto?: string; notaArea?: string }
+const { anno, periodi, dimensioni, evento, nota, comandi, popolazioni = {},
+  sotto = "Le donne italiane e straniere che vivono in Italia, ciascun gruppo calcolato sulle donne della stessa cittadinanza. La cittadinanza c'è solo nella rilevazione 2014.",
+  notaArea = "Per l'area geografica il dato per cittadinanza non c'è." } = Astro.props;
+const popDi = (p) => popolazioni[p] ?? ['italiane_16_70', 'straniere_16_70'];
 const CORTO = { dirigenti: 'Dirigenti, libere prof.', direttive_impiegate: 'Impiegate e quadri', post_secondario: 'Laurea o più' };
 const D = {};
 for (const p of periodi) {
   D[p] = {};
   for (const [f] of FORME_TUTTE) {
-    const righe = [{ t: 'Tutte', a: prev(anno, 'italiane_16_70', p, f), b: prev(anno, 'straniere_16_70', p, f), tot: true }];
+    const [pi, ps] = popDi(p);
+    const a = cella(anno, pi, p, f, 'totale', 'totale')?.v, b = cella(anno, ps, p, f, 'totale', 'totale')?.v;
+    if (a === undefined || b === undefined) { D[p][f] = null; continue; }
+    const righe = [{ t: 'Tutte', a, b, tot: true }];
     for (const d of dimensioni) {
-      const gs = DIMENSIONI[d].gruppi.map(([g, t]) => ({ t: CORTO[g] || t, a: cella(anno, 'italiane_16_70', p, f, d, g)?.v, b: cella(anno, 'straniere_16_70', p, f, d, g)?.v }))
+      const gs = DIMENSIONI[d].gruppi.map(([g, t]) => ({ t: CORTO[g] || t, a: cella(anno, pi, p, f, d, g)?.v, b: cella(anno, ps, p, f, d, g)?.v }))
         .filter((r) => r.a !== undefined || r.b !== undefined);
       if (gs.length) righe.push({ h: DIMENSIONI[d].nome }, ...gs);
     }
@@ -24,12 +33,13 @@ for (const p of periodi) {
 <section class="sic-blocco sic-ct">
   <h3>Italiane e straniere</h3>
   <p class="sic-ora"><span data-ora></span><a href={`#${comandi}`}>cambia</a></p>
-  <p class="sic-sotto">Le donne italiane e straniere che vivono in Italia, ciascun gruppo calcolato sulle donne della stessa cittadinanza. La cittadinanza c'è solo nella rilevazione 2014.</p>
+  <p class="sic-sotto">{sotto}</p>
+  <p class="sic-cl-nota" data-manca hidden></p>
   <div class="sic-ct-tot"></div>
   <div class="sic-ct-leg" aria-hidden="true"><span><i></i>Italiane</span><span><i class="t"></i>Straniere</span></div>
   <p class="sic-sotto">Gruppo per gruppo: più il segno è a destra, più alto è il valore; la linea sottile unisce italiane e straniere dello stesso gruppo.</p>
   <div class="sic-ct-graf"><svg role="img"></svg></div>
-  <p class="sic-fonte">{nota} Per l'area geografica il dato per cittadinanza non c'è.</p>
+  <p class="sic-fonte">{nota} {notaArea}</p>
   <script type="application/json" class="sic-ct-json" set:html={JSON.stringify({ D, evento, forme: Object.fromEntries(FORME_TUTTE), periodi: PERIODI })}></script>
 </section>
 
@@ -57,7 +67,15 @@ for (const p of periodi) {
     function disegna() {
       root.querySelector('[data-ora]')!.textContent = `${J.forme[st.f]}, ${J.periodi[st.p].toLowerCase()}.`;
       const righe = J.D[st.p][st.f];
+      const manca = root.querySelector<HTMLElement>('[data-manca]')!;
+      manca.hidden = !!righe;
+      root.querySelectorAll<HTMLElement>('.sic-ct-tot, .sic-ct-leg, .sic-ct-graf, .sic-ct-graf ~ .sic-sotto').forEach((el) => { el.hidden = !righe; });
+      root.querySelector<HTMLElement>('.sic-ct-leg + .sic-sotto')!.hidden = !righe;
+      if (!righe) { manca.textContent = `Per questo periodo e questa forma Istat non dà il dato separato per italiane e straniere.`; return; }
       const tot = righe[0];
+      const soloTot = righe.length === 1;
+      root.querySelector<HTMLElement>('.sic-ct-graf')!.hidden = soloTot;
+      root.querySelector<HTMLElement>('.sic-ct-leg + .sic-sotto')!.hidden = soloTot;
       root.querySelector('.sic-ct-tot')!.innerHTML = [['Italiane', tot.a, false], ['Straniere', tot.b, true]].map(([t, v, tondo]) =>
         `<div role="img" aria-label="${t}: ${fmt(v as number)}%, circa ${Math.round(v as number)} su 100">${quadrato(v as number, tondo as boolean)}<b>${fmt(v as number)}%</b><span>${t}: circa ${Math.round(v as number)} su 100</span></div>`).join('');
       const vals = righe.flatMap((r: any) => [r.a, r.b]).filter((v: any) => v !== undefined);

@@ -137,7 +137,7 @@ GRUPPI = [
     ('dirigenti', 'dirigenti'), ('direttiv', 'direttive_impiegate'), ('operaie', 'operaie'),
     ('lavoratrici in proprio', 'in_proprio'), ('in cerca', 'in_cerca'), ('casalinghe', 'casalinghe'),
     ('studentesse', 'studentesse'), ('ritirate', 'ritirate'), ('in altra condizione', 'altra'), ('altre inattive', 'altra'),
-    ('nord ovest', 'nord_ovest'), ('nord-ovest', 'nord_ovest'), ('nord est', 'nord_est'), ('nord-est', 'nord_est'),
+    ('70-75', '70-75'), ('no limitazioni', 'nessuna'), ('nord ovest', 'nord_ovest'), ('nord-ovest', 'nord_ovest'), ('nord est', 'nord_est'), ('nord-est', 'nord_est'),
     ('centro', 'centro'), ('sud', 'sud'), ('isole', 'isole'),
     ('limitazioni gravi', 'gravi'), ('limitazioni non gravi', 'non_gravi'), ('nessuna limitazione', 'nessuna'),
     ('rifiuta/non risponde', 'non_risponde'),
@@ -401,6 +401,112 @@ for pop, autori in P9_2025.items():
         for forma, v in zip(['fisica_o_sessuale', 'fisica', 'sessuale', 'stupro_o_tentato'], valori):
             prevalenza(2025, 'ultimi_5_anni', pop, forma, autore, 'totale', 'totale', v,
                        f'report 25/11/2026 (PDF), prospetto 9, colonna 2025; {chi} 16-70 anni')
+
+# --- 2025, report del 25/11/2026: prospetti 1, 3 e 8 (trascritti) e tavola 9 (Excel) -------------------------------
+FORME4 = ['fisica_o_sessuale', 'fisica', 'sessuale', 'stupro_o_tentato']
+# Prospetto 1: tutte le donne di 16-75 anni, tre periodi, per autore. Nota (a) del prospetto: i valori fra 0,0 e 0,2
+# hanno errore campionario oltre il 35%.
+P1_2025 = {
+    'nella_vita': {'partner_attuale': (3.0, 2.4, 1.1, 0.3), 'ex_partner': (18.7, 15.6, 8.7, 4.7), 'partner_o_ex': (12.6, 10.5, 5.6, 2.9),
+                   'non_partner': (25.9, 12.3, 20.2, 3.7), 'qualsiasi': (31.5, 18.9, 22.8, 5.9)},
+    'ultimi_5_anni': {'partner_attuale': (1.7, 1.3, 0.6, 0.2), 'ex_partner': (4.1, 2.9, 2.3, 1.1), 'partner_o_ex': (3.6, 2.6, 1.7, 0.7),
+                      'non_partner': (7.7, 3.6, 5.6, 0.7), 'qualsiasi': (9.9, 5.6, 6.5, 1.4)},
+    'ultimi_12_mesi': {'partner_attuale': (0.7, 0.5, 0.3, 0.1), 'ex_partner': (0.9, 0.6, 0.5, 0.2), 'partner_o_ex': (1.1, 0.7, 0.5, 0.1),
+                       'non_partner': (3.1, 1.5, 2.2, 0.2), 'qualsiasi': (3.9, 2.1, 2.5, 0.3)},
+}
+for periodo, autori in P1_2025.items():
+    for autore, valori in autori.items():
+        for forma, v in zip(FORME4, valori):
+            prevalenza(2025, periodo, 'tutte_16_75', forma, autore, 'totale', 'totale', v,
+                       'report 25/11/2026 (PDF), prospetto 1; tutte le donne 16-75 anni',
+                       avvertenza='errore_oltre_35' if v <= 0.2 else '')
+
+# Prospetto 8: nel corso della vita, qualsiasi autore, per caratteristiche; tutte, italiane, straniere (16-75).
+# Per gruppo: (tutte: fis. o sess., fisica, sessuale, stupro o tentato; italiane: idem; straniere: idem).
+P8_2025 = {
+    'stato_civile': {'nubile': (40.4, 23.3, 30.9, 7.8, 41.8, 23.8, 32.3, 7.7, 26.7, 18.2, 18.2, 8.5),
+                     'coniugata': (23.9, 13.5, 16.9, 3.8, 23.8, 12.9, 17.1, 3.6, 25.5, 18.5, 15.6, 5.2),
+                     'separata_divorziata': (48.2, 37.1, 31.7, 12.0, 48.3, 37.3, 31.5, 11.7, 47.9, 34.1, 33.9, 15.3),
+                     'vedova': (19.6, 13.5, 13.4, 3.7, 19.0, 12.7, 13.1, 3.4, 26.7, 22.6, 16.8, 7.1)},
+    'eta': {'16-24': (39.8, 19.9, 33.0, 8.2, 41.4, 20.8, 34.2, 8.5, 19.9, 8.5, 18.1, 3.7),
+            '25-34': (41.3, 24.3, 31.4, 8.9, 43.4, 25.5, 33.4, 9.1, 28.1, 17.0, 19.6, 7.1),
+            '35-44': (37.5, 24.1, 26.4, 7.3, 38.6, 24.3, 27.2, 6.8, 31.2, 23.0, 22.1, 10.6),
+            '45-54': (30.6, 20.2, 20.6, 5.4, 31.1, 20.0, 21.5, 5.4, 27.3, 22.0, 13.5, 5.5),
+            '55-64': (28.0, 17.0, 20.0, 4.4, 27.9, 16.5, 20.2, 4.3, 28.4, 22.5, 17.5, 6.3),
+            '65-70': (19.1, 11.0, 13.4, 3.4, 19.1, 10.8, 13.5, 3.3, 19.3, 14.4, 10.7, 5.8),
+            '70-75': (17.6, 9.2, 11.8, 2.4, 17.4, 9.0, 11.6, 2.2, 23.4, 14.8, 17.9, 8.2)},
+    'titolo': {'elementare_nessuno': (12.1, 9.2, 5.6, 1.9, 10.0, 7.6, 4.6, 1.3, 25.9, 20.5, 12.2, 5.6),
+               'media': (23.4, 15.2, 15.9, 4.8, 22.9, 14.5, 16.0, 4.5, 28.0, 22.4, 15.6, 7.7),
+               'superiore': (34.7, 21.0, 25.3, 6.5, 35.8, 21.3, 26.3, 6.4, 26.4, 18.1, 17.5, 7.3),
+               'post_secondario': (42.0, 22.7, 32.8, 7.2, 42.9, 23.0, 33.3, 7.3, 30.3, 18.7, 25.3, 6.1)},
+    'condizione': {'dirigenti': (42.4, 26.5, 31.6, 8.2, 43.3, 26.9, 32.3, 7.7, 25.8, 19.3, 20.1, 16.3),
+                   'direttive_impiegate': (37.1, 21.7, 27.6, 5.9, 37.6, 21.9, 27.9, 6.0, 26.6, 15.3, 21.3, 4.0),
+                   'operaie': (29.7, 20.4, 19.3, 6.3, 29.7, 18.9, 20.3, 5.1, 29.6, 22.7, 17.6, 8.2),
+                   'in_proprio': (30.2, 18.2, 22.0, 5.3, 27.4, 15.1, 20.8, 3.4, 37.2, 26.1, 25.1, 10.1),
+                   'in_cerca': (42.6, 30.0, 29.4, 11.2, 43.9, 31.3, 29.9, 11.6, 33.9, 22.0, 26.2, 8.7),
+                   'casalinghe': (20.2, 12.9, 13.4, 4.0, 20.1, 12.5, 13.8, 4.0, 20.8, 15.9, 9.9, 3.6),
+                   'studentesse': (39.2, 19.9, 32.0, 8.1, 40.5, 20.6, 33.0, 8.4, 19.4, 9.6, 17.0, 3.4),
+                   'ritirate': (21.2, 11.1, 15.4, 3.5, 21.2, 11.0, 15.4, 3.3, 20.3, 15.6, 13.5, 9.0),
+                   'altra': (34.7, 26.5, 22.5, 8.3, 34.1, 25.4, 21.9, 6.9, 43.4, 42.0, 30.3, 28.2)},
+    'salute': {'bene': (31.3, 18.2, 22.8, 5.4, 31.9, 18.2, 23.5, 5.3, 26.3, 18.5, 16.6, 6.4),
+               'ne_bene_ne_male': (30.3, 20.1, 21.8, 6.7, 30.2, 19.7, 21.8, 6.3, 31.5, 23.8, 21.7, 10.6),
+               'male': (38.6, 26.4, 27.6, 10.4, 38.8, 26.4, 27.6, 10.6, 35.8, 26.2, 27.7, 7.8)},
+    'malattie': {'si': (37.3, 23.4, 27.8, 7.9, 37.1, 23.0, 27.6, 7.6, 44.9, 34.5, 33.8, 18.0),
+                 'no': (29.3, 17.3, 21.1, 5.1, 29.8, 17.1, 21.7, 5.0, 25.7, 18.1, 16.2, 6.0)},
+    'limitazioni': {'gravi': (39.3, 25.1, 29.1, 9.6, 39.4, 24.9, 29.4, 9.3, 37.2, 29.2, 24.6, 15.3),
+                    'non_gravi': (34.6, 23.6, 25.6, 8.2, 34.3, 22.9, 25.3, 7.9, 38.4, 31.4, 29.2, 11.3),
+                    'nessuna': (30.7, 17.9, 22.2, 5.4, 31.2, 17.9, 22.9, 5.2, 25.8, 17.9, 16.1, 6.4)},
+}
+for dim, gruppi in P8_2025.items():
+    for g, valori in gruppi.items():
+        for k, (pop, chi) in enumerate([('tutte_16_75', 'tutte le donne'), ('italiane_16_75', 'italiane'), ('straniere_16_75', 'straniere')]):
+            for forma, v in zip(FORME4, valori[4 * k:4 * k + 4]):
+                prevalenza(2025, 'nella_vita', pop, forma, 'qualsiasi', dim, g, v,
+                           f'report 25/11/2026 (PDF), prospetto 8; {chi} 16-75 anni')
+
+# Prospetto 3: nel corso della vita per cittadinanza (prime sei cittadinanze straniere e rifugiate), 16-75 anni.
+NAZ = ['italiana', 'straniera', 'romania', 'ucraina', 'albania', 'marocco', 'cina', 'filippine', 'altre_straniere', 'rifugiate']
+P3_2025 = {  # autore: forma: valori nelle colonne di NAZ (la prima colonna del prospetto, italiane e straniere, è il totale)
+    'partner_o_ex': {'fisica_o_sessuale': (12.6, 12.1, 19.2, 15.9, 10.2, 9.6, 6.6, 8.1, 9.0, 19.0), 'fisica': (10.6, 9.7, 14.6, 12.9, 7.5, 9.2, 4.0, 5.6, 7.8, 15.7),
+                     'sessuale': (5.6, 5.6, 8.4, 9.0, 5.5, 4.8, 4.8, 5.1, 3.7, 8.1), 'stupro_o_tentato': (2.9, 3.0, 4.1, 4.1, 3.8, 2.7, 0.8, 3.4, 2.3, 4.6)},
+    'non_partner': {'fisica_o_sessuale': (26.5, 20.6, 21.4, 22.2, 18.2, 10.4, 19.0, 27.0, 20.9, 35.4), 'fisica': (12.2, 13.1, 10.7, 16.5, 10.7, 7.5, 12.6, 15.5, 14.2, 29.9),
+                    'sessuale': (20.8, 14.7, 15.9, 12.4, 10.8, 4.6, 11.4, 19.0, 16.3, 22.8), 'stupro_o_tentato': (3.5, 5.0, 5.4, 3.9, 4.1, 0.2, 4.9, 7.3, 5.4, 13.6)},
+    'qualsiasi': {'fisica_o_sessuale': (31.9, 27.4, 32.7, 30.0, 24.4, 17.9, 21.8, 30.6, 25.9, 44.9), 'fisica': (18.8, 19.6, 21.9, 23.4, 16.2, 14.9, 14.5, 19.0, 18.9, 39.8),
+                  'sessuale': (23.4, 17.8, 21.3, 17.6, 14.4, 8.5, 13.1, 20.9, 17.9, 26.0), 'stupro_o_tentato': (5.7, 7.1, 8.7, 6.7, 7.1, 2.5, 5.5, 9.7, 6.7, 17.0)},
+}
+for autore, forme in P3_2025.items():
+    for forma, valori in forme.items():
+        for g, v in zip(NAZ, valori):
+            prevalenza(2025, 'nella_vita', 'tutte_16_75', forma, autore, 'cittadinanza', g, v,
+                       'report 25/11/2026 (PDF), prospetto 3; donne 16-75 anni della stessa cittadinanza')
+
+# Tavola 9: nel corso della vita, non partner e partner o ex partner, per caratteristiche; tutte le donne 16-75.
+SEZ9 = {'stato civile': 'stato_civile', 'età': 'eta', 'titolo di studio': 'titolo', 'condizione professionale': 'condizione',
+        'salute autopercepita': 'salute', 'malattie croniche': 'malattie', 'limitazioni': 'limitazioni'}
+GR9 = {'salute': {'bene o molto bene': 'bene', 'nè bene nè male': 'ne_bene_ne_male', 'né bene né male': 'ne_bene_ne_male', 'male o molto male': 'male'},
+       'malattie': {'sì': 'si', 'no': 'no'}, 'eta': {'70-75': '70-75'}}
+T9N = ('Tavole-Violenza.xlsx (25/11/2026), tav. 9; tutte le donne 16-75 anni (Istat scrive «per 100 donne» '
+       'anche per partner o ex partner, senza dire se la base sono le donne con un partner attuale o precedente)')
+t9 = openpyxl.load_workbook(ORIG / '2025' / 'Tavole-Violenza.xlsx', data_only=True)['Tav. 9']
+dim = None
+for r in t9.iter_rows(min_row=4, values_only=True):
+    et = re.sub(r'\s+', ' ', str(r[0] or '').replace('\xa0', ' ')).strip()
+    if not et or et.upper() == 'TOTALE' or et.startswith('Fonte'):
+        if et.startswith('Fonte'):
+            break
+        continue
+    d = next((v for k, v in SEZ9.items() if et.lower().startswith(k)), None) if et.isupper() else None
+    if d:
+        dim = d
+        continue
+    g = GR9.get(dim, {}).get(et.lower()) or gruppo_di(et)
+    if not (dim and g):
+        raise SystemExit(f'Tavola 9: gruppo non riconosciuto {et!r}')
+    for inizio, autore in [(1, 'non_partner'), (5, 'partner_o_ex')]:
+        for k, forma in enumerate(FORME4):
+            n = numero(r[inizio + k])
+            if n:
+                prevalenza(2025, 'nella_vita', 'tutte_16_75', forma, autore, dim, g, n[0], T9N, avvertenza=n[1])
 
 # ---------------------------------------------------------------------------------------------
 with open(QUI / 'dati.csv', 'w', encoding='utf-8-sig', newline='') as fh:

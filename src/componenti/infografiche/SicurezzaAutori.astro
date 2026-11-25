@@ -5,15 +5,18 @@
 // un partner; ex su chi ha un ex (codici.csv, DATA_TYPE PNP/CFP/CP/FP). Periodo e forma arrivano dalla barra comune (`evento`).
 import { PERIODI, FORME_TUTTE, cella } from '../../lib/sicurezza.js';
 
-interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string; comandi: string }
-const { anno, popolazione, periodi, evento, nota, comandi } = Astro.props;
+interface Props { anno: string; popolazione: string; periodi: string[]; evento: string; nota: string; comandi: string; popolazioni?: Record<string, string> }
+const { anno, popolazione, periodi, evento, nota, comandi, popolazioni = {} } = Astro.props;
+const popDi = (p) => popolazioni[p] ?? popolazione;
+// Età della popolazione, dal nome (tutte_16_70 → 16–70).
+const ETA = Object.fromEntries(periodi.map((p) => [p, popDi(p).split('_').slice(1).join('–')]));
 const AUTORI = ['non_partner', 'sconosciuto', 'persona_conosciuta', 'non_partner_non_specificato', 'conoscente', 'amico', 'parente', 'collega',
   'amico_di_famiglia', 'partner_o_ex', 'partner_attuale', 'ex_partner'];
 const D = {};
 for (const p of periodi) {
   D[p] = {};
   for (const [f] of FORME_TUTTE) {
-    D[p][f] = Object.fromEntries(AUTORI.map((a) => [a, cella(anno, popolazione, p, f, 'totale', 'totale', a)?.v]).filter((r) => r[1] !== undefined));
+    D[p][f] = Object.fromEntries(AUTORI.map((a) => [a, cella(anno, popDi(p), p, f, 'totale', 'totale', a)?.v]).filter((r) => r[1] !== undefined));
   }
 }
 ---
@@ -24,7 +27,7 @@ for (const p of periodi) {
   <div class="sic-au-gruppo" data-np></div>
   <div class="sic-au-gruppo" data-p></div>
   <p class="sic-fonte">{nota}</p>
-  <script type="application/json" class="sic-au-json" set:html={JSON.stringify({ D, evento, forme: Object.fromEntries(FORME_TUTTE), periodi: PERIODI })}></script>
+  <script type="application/json" class="sic-au-json" set:html={JSON.stringify({ D, ETA, evento, forme: Object.fromEntries(FORME_TUTTE), periodi: PERIODI })}></script>
 </section>
 
 <style is:global>
@@ -59,7 +62,7 @@ for (const p of periodi) {
       const conosciuti = [['conoscente', 'Un conoscente'], ['amico', 'Un amico'], ['parente', 'Un parente'], ['collega', 'Un collega'], ['amico_di_famiglia', 'Un amico di famiglia']]
         .map(([k, t]) => [t, A[k]] as [string, number]).filter((r) => r[1] !== undefined).sort((a, b) => b[1] - a[1]);
       root.querySelector('[data-np]')!.innerHTML = `<h4>Uomini che non sono il partner</h4>
-        <p class="sic-sotto">Su 100 donne di 16–70 anni. Una donna può aver subito violenza da più autori: i cerchi non si sommano.</p>
+        <p class="sic-sotto">Su 100 donne di ${J.ETA[st.p]} anni. Una donna può aver subito violenza da più autori: i cerchi non si sommano.</p>
         <div class="sic-au-cerchi">${cerchio(A.non_partner, 'Un uomo non partner', 'tutti insieme')}${cerchio(A.sconosciuto, 'Uno sconosciuto')}${cerchio(A.persona_conosciuta, 'Una persona conosciuta', 'tutte insieme')}${cerchio(A.non_partner_non_specificato, 'Autore non indicato')}</div>
         ${conosciuti.length ? `<h5>Fra le persone conosciute</h5><div class="sic-au-cerchi">${conosciuti.map(([t, v]) => cerchio(v, t)).join('')}</div>` : ''}`;
       root.querySelector('[data-p]')!.innerHTML = `<h4>Partner ed ex partner</h4>

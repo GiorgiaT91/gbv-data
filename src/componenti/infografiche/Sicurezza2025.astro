@@ -1,28 +1,65 @@
 ---
-// Riquadro 2025 della domanda 1: primi risultati dell'indagine Istat sulla sicurezza delle donne (solo italiane).
-// Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (allegato 2025, tavola 1; report 2025, prospetto 5).
-import SicurezzaSintesi from './SicurezzaSintesi.astro';
-import SicurezzaQuadro from './SicurezzaQuadro.astro';
-import { prev, perc } from '../../lib/sicurezza.js';
+// Riquadro 2025 della domanda 1 (mockup del 25/11/2026, sul modello del 2014): indagine Istat sulla sicurezza delle donne 2025,
+// risultati completi del 25/11/2026. Periodo e forma, scelti nel primo blocco, valgono per tutte le parti:
+// classifica dei gruppi (con filtro per autore), chi è stato (cerchi da 100), italiane e straniere.
+// Le età cambiano col periodo: nel corso della vita e negli ultimi 12 mesi 16-75 anni; negli ultimi 5 anni 16-70
+// (l'età usata da Istat per il confronto con il 2014 e il 2006, l'unica con i gruppi di donne).
+// Le regioni non ci sono: niente mappa, ma il buco è detto nelle note, con gli errori trovati nella fonte.
+// Dati: dati/istat-sicurezza-donne/dati.csv, righe «prevalenza» (vedi elabora.py).
+import SicurezzaClassifica from './SicurezzaClassifica.astro';
+import SicurezzaAutori from './SicurezzaAutori.astro';
+import SicurezzaCittadinanza from './SicurezzaCittadinanza.astro';
 
-const V = (forma, autore = 'qualsiasi') => prev('2025', 'italiane_16_75', 'nella_vita', forma, { autore });
+const PER = ['nella_vita', 'ultimi_5_anni', 'ultimi_12_mesi'];
+const POP = { nella_vita: 'tutte_16_75', ultimi_5_anni: 'tutte_16_70', ultimi_12_mesi: 'tutte_16_75' };
+const EVENTO = 'sic-2025';
+const R = 'Fonte: Istat, indagine sulla sicurezza delle donne 2025, report del 25/11/2026';
+const NOTE = {
+  nella_vita: `${R}, prospetti 1, 3 e 8; per autore e gruppo, tavole Excel, tavola 9. Donne di 16–75 anni.`,
+  ultimi_5_anni: `${R}, prospetti 9 e 11. Donne di 16–70 anni.`,
+  ultimi_12_mesi: `${R}, prospetto 1. Donne di 16–75 anni.`,
+};
 ---
-<SicurezzaSintesi
-  titolo="Nel corso della vita"
-  sotto="Donne italiane di 16–75 anni, violenze subite dai 16 anni in poi."
-  valore={V('fisica_o_sessuale')}
-  dida={`violenza fisica o sessuale nella vita: ${perc(V('fisica_o_sessuale'))}`}
-  gruppi={[
-    { titolo: 'Per forma', voci: [['Violenza fisica', V('fisica')], ['Violenza sessuale', V('sessuale')], ['Stupro o tentato stupro', V('stupro_o_tentato')]] },
-    { titolo: 'Per autore · violenza fisica o sessuale', tenue: true, voci: [
-      ['Da un non partner', V('fisica_o_sessuale', 'non_partner')], ['Da partner o ex partner', V('fisica_o_sessuale', 'partner_o_ex')],
-      ['Da ex partner', V('fisica_o_sessuale', 'ex_partner')], ['Da partner attuale', V('fisica_o_sessuale', 'partner_attuale')]] },
-  ]}
-  nota="Istat, primi risultati 2025, allegato statistico, tavola 1. Per autore la base cambia: donne con partner attuale, donne con un ex, donne con partner attuale o ex, tutte le donne (non partner)."
+<SicurezzaClassifica
+  id="sic-c25" anno="2025" popolazione="tutte_16_75" popolazioni={POP} periodi={PER}
+  dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'salute', 'malattie', 'limitazioni', 'cittadinanza', 'ripartizione']}
+  righeAutore={true} filtroAutore={true} evento={EVENTO} basePartner="su 100 donne che hanno o hanno avuto un partner"
+  sotto="Donne italiane e straniere. Nel corso della vita e negli ultimi 12 mesi le donne hanno 16–75 anni; negli ultimi 5 anni 16–70, come nelle rilevazioni precedenti. Ogni quadrato è un gruppo di donne: i quadratini pieni sono quelle che hanno subito violenza, su 100. Periodo e forma scelti qui valgono per tutte le parti del 2025."
+  note={NOTE}
 />
-<SicurezzaQuadro
-  id="sic-q25" anno="2025" popolazione="italiane_16_70" periodi={['ultimi_5_anni']}
-  dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'ripartizione']}
-  sotto="Donne italiane di 16–70 anni, violenze negli ultimi 5 anni. Sono esclusi i rapporti sessuali subiti quando la donna non era in grado di opporsi, per il confronto con il 2014."
-  note={{ ultimi_5_anni: "Istat, primi risultati 2025, prospetto 5. Per l'area geografica Istat pubblica cinque ripartizioni, non le regioni." }}
-/>
+<SicurezzaAutori anno="2025" popolazione="tutte_16_75" popolazioni={POP} periodi={PER} evento={EVENTO} comandi="sic-c25"
+  nota={`${R}, prospetto 1 (16–75 anni) e prospetto 9 (ultimi 5 anni, 16–70 anni). Istat non dà, per il 2025, il dettaglio degli uomini non partner (sconosciuti, conoscenti, parenti) su 100 donne.`} />
+<SicurezzaCittadinanza anno="2025" periodi={PER} dimensioni={['eta', 'titolo', 'stato_civile', 'condizione', 'salute', 'malattie', 'limitazioni']}
+  evento={EVENTO} comandi="sic-c25"
+  popolazioni={{ nella_vita: ['italiane_16_75', 'straniere_16_75'], ultimi_5_anni: ['italiane_16_70', 'straniere_16_70'], ultimi_12_mesi: ['italiane_16_75', 'straniere_16_75'] }}
+  sotto="Le donne italiane e straniere che vivono in Italia, ciascun gruppo calcolato sulle donne della stessa cittadinanza. Nel corso della vita ci sono tutti i gruppi; negli ultimi 5 anni i gruppi ci sono solo per le italiane."
+  nota={`${R}, prospetto 8 (nel corso della vita); prospetto 9 e primi risultati di novembre, prospetto 5 (ultimi 5 anni).`}
+  notaArea="Le aree geografiche per cittadinanza non ci sono." />
+
+<section class="sic-blocco">
+  <h3>Cosa manca e dove la fonte sbaglia</h3>
+  <ul class="sic-25-note">
+    <li><b>Dove sono i numeri:</b> le tavole Excel del 2025 riportano solo il periodo «nel corso della vita». Gli ultimi 5 anni, gli ultimi 12 mesi, i gruppi di donne e le cittadinanze sono solo nelle tabelle del report in PDF (prospetti 1, 3, 8, 9 e 11).</li>
+    <li><b>Età diverse:</b> nel corso della vita e negli ultimi 12 mesi le donne hanno 16–75 anni, negli ultimi 5 anni 16–70. Per gli ultimi 5 anni il report dà anche il totale delle donne di 16–75 anni (9,9%), ma senza gruppi: qui si usa 16–70.</li>
+    <li><b>Ultimi 12 mesi:</b> c'è solo il totale, anche per autore. Nessun gruppo di donne, nessuna distinzione fra italiane e straniere.</li>
+    <li><b>Regioni:</b> non ci sono nelle tabelle. Il report ne cita alcune solo nel testo e solo per le italiane (per esempio Lazio 12,7%); le aree geografiche delle italiane di 16–75 anni sono solo in un grafico. Le cinque aree qui mostrate sono quelle delle donne di 16–70 anni negli ultimi 5 anni (prospetto 11).</li>
+    <li><b>Autore per gruppo:</b> nel corso della vita c'è solo «non partner» e «partner o ex partner», non il partner attuale e l'ex separati. Negli ultimi 5 anni i gruppi ci sono solo senza distinzione di autore.</li>
+    <li><b>Straniere per gruppo:</b> solo nel corso della vita. Negli ultimi 5 anni per le straniere c'è solo il totale.</li>
+    <li><b>Cittadinanze:</b> sono le sei cittadinanze straniere più presenti nel 2025, più le rifugiate (un campione nuovo). Nel 2014 al posto delle filippine c'erano le moldave.</li>
+    <li><b>Errore campionario:</b> i prospetti 3 e 8 non segnalano quali valori hanno un errore campionario alto, anche per gruppi piccoli (per esempio le straniere dirigenti o le rifugiate). Il prospetto 1 avverte che i valori fra 0,0 e 0,2 hanno un errore oltre il 35%: qui sono segnati con *.</li>
+    <li class="err"><b>Errore nella fonte:</b> nella tavola 1 delle tavole Excel, per le straniere il numero di donne che hanno subito uno stupro (99.134) è identico a quello del tentato stupro, al decimale. Uno dei due è sbagliato.</li>
+    <li class="err"><b>Errore nella fonte:</b> nel prospetto 1 il numero di donne che hanno subito un tentato stupro da un non partner è stampato «5358 33», con una cifra mancante.</li>
+    <li class="err"><b>Errore nella fonte:</b> per lo stalking da non partner il prospetto 1 riporta 1.903.136 donne; sommando italiane e straniere della tavola 1 si ottiene 1.956.280.</li>
+    <li class="err"><b>Errore nella fonte:</b> la tavola 6 delle tavole Excel è intitolata «donne dai 16 ai 70 anni, anno 2014», ma contiene i dati del 2025 (il totale, 3,74, è lo stesso della tavola 5).</li>
+    <li class="err"><b>Classi di età sovrapposte:</b> nel prospetto 8 e nella tavola 9 le ultime due classi sono «65-70» e «70-75»: le donne di 70 anni stanno in entrambe.</li>
+    <li class="err"><b>Base non dichiarata:</b> la tavola 9 dice «per 100 donne» anche per la violenza da partner o ex partner, senza dire se il calcolo è su tutte le donne o su quelle che hanno o hanno avuto un partner, come nelle altre tavole.</li>
+    <li><b>Primi risultati e report finale:</b> alcuni valori delle italiane sono cambiati fra i primi risultati e il report del 25 novembre. Per esempio la violenza fisica da partner o ex partner nel corso della vita passa da 10,5% a 10,6%. Qui si usano i valori finali.</li>
+  </ul>
+</section>
+
+<style is:global>
+  .sic-25-note { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+  .sic-25-note li { font-size:.88rem; color:var(--testo-2); padding-left:14px; border-left:3px solid var(--bordo); }
+  .sic-25-note li.err { border-left-color:var(--accento); }
+  .sic-25-note b { color:var(--testo); }
+</style>
